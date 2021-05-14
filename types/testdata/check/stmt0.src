@@ -86,7 +86,7 @@ func assignments1() {
 
 	g := func(int, bool){}
 	var m map[int]int
-	g(m[0]) /* ERROR "too few arguments" */
+	g(m[0]) /* ERROR "not enough arguments" */
 
 	// assignments to _
 	_ = nil /* ERROR "use of untyped nil" */
@@ -143,11 +143,11 @@ func issue6487() {
 }
 
 func issue6766a() {
-	a, a /* ERROR redeclared */ := 1, 2
+	a, a /* ERROR a repeated on left side of := */ := 1, 2
 	_ = a
-	a, b, b /* ERROR redeclared */ := 1, 2, 3
+	a, b, b /* ERROR b repeated on left side of := */ := 1, 2, 3
 	_ = b
-	c, c /* ERROR redeclared */, b := 1, 2, 3
+	c, c /* ERROR c repeated on left side of := */, b := 1, 2, 3
 	_ = c
 	a, b := /* ERROR no new variables */ 1, 2
 }
@@ -886,7 +886,7 @@ func rangeloops1() {
 		ee = e
 		_ = ee
 	}
-	for _ = range sc /* ERROR "cannot range over send-only channel" */ {}
+	for _ = range sc /* ERROR "cannot range over" */ {}
 	for _ = range rc {}
 
 	// constant strings
