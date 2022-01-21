@@ -4,15 +4,23 @@
 
 package p
 
-var x T[B]
+// examples from the issue
 
-type T[_ any] struct{}
-type A T[B]
-type B = T[A]
+type (
+	e = f
+	f = g
+	g = []h
+	h i
+	i = j
+	j = e
+)
 
-// test case from issue
+type (
+	e1 = []h1
+	h1 e1
+)
 
-var v Box[Step]
-type Box[T any] struct{}
-type Step = Box[StepBox]
-type StepBox Box[Step]
+type (
+	P = *T
+	T P
+)
