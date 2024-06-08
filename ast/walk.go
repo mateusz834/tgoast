@@ -52,6 +52,10 @@ func Walk(v Visitor, node Node) {
 		return
 	}
 
+	if walkTgo(v, node) {
+		return
+	}
+
 	// walk children
 	// (the order of the cases matches the order
 	// of the corresponding node types in ast.go)

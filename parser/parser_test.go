@@ -6,11 +6,12 @@ package parser
 
 import (
 	"fmt"
-	"go/ast"
-	"go/token"
 	"io/fs"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 var validFiles = []string{

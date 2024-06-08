@@ -9,15 +9,16 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/token"
-	"internal/diff"
 	"io"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/internal/diff"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 const (

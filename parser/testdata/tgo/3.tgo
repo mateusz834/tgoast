@@ -1,0 +1,35 @@
+package templates
+
+func test(sth string) {
+	if sth == "test" {
+		"test \{sth}"
+	}
+
+	for _,v := range sth {
+		"test \{string(v)}"
+	}
+
+	switch sth {
+	case "test":
+		"test"
+		<div>"test2"</div>
+		<div @attr>"test2"</div>
+	case "test2":
+		"test \{sth}"
+		<div>"test \{sth}"</div>
+		<div @attr="value">"test \{sth}"</div>
+	default:
+		"test \{sth}"
+		<div @attr="\{sth}">"test \{sth}"</div>
+	}
+
+	{
+		<span
+			sth2 := "test"
+			@attr="value"
+			@attr2="\{sth2} test \{sth}"
+		>
+			"test \{sth}"
+		</span>
+	}
+}

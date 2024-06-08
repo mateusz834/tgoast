@@ -5,10 +5,11 @@
 package ast_test
 
 import (
-	"go/ast"
-	"go/parser"
-	"go/token"
 	"testing"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func TestIssue33649(t *testing.T) {

@@ -1,0 +1,10 @@
+package templates
+
+func test(sth string) {
+	<div>
+		"test \{func() string {
+			"test \{sth}"
+			return "test"
+		}}"
+	</div>
+}

@@ -8,12 +8,13 @@ package ast_test
 
 import (
 	"fmt"
-	. "go/ast"
-	"go/parser"
-	"go/token"
 	"sort"
 	"strings"
 	"testing"
+
+	. "github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 const src = `

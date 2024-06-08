@@ -6,9 +6,10 @@ package diff
 
 import (
 	"bytes"
-	"internal/txtar"
 	"path/filepath"
 	"testing"
+
+	"github.com/mateusz834/tgoast/internal/txtar"
 )
 
 func clean(text []byte) []byte {

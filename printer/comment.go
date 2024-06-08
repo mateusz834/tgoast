@@ -5,9 +5,10 @@
 package printer
 
 import (
-	"go/ast"
 	"go/doc/comment"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
 )
 
 // formatDocComment reformats the doc comment list,

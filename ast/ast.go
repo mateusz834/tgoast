@@ -7,8 +7,9 @@
 package ast
 
 import (
-	"go/token"
 	"strings"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // ----------------------------------------------------------------------------

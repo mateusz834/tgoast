@@ -1,0 +1,126 @@
+     0  *ast.File {
+     1  .  Package: 4.tgo:1:1
+     2  .  Name: *ast.Ident {
+     3  .  .  NamePos: 4.tgo:1:9
+     4  .  .  Name: "templates"
+     5  .  }
+     6  .  Decls: []ast.Decl (len = 1) {
+     7  .  .  0: *ast.FuncDecl {
+     8  .  .  .  Name: *ast.Ident {
+     9  .  .  .  .  NamePos: 4.tgo:3:6
+    10  .  .  .  .  Name: "test"
+    11  .  .  .  }
+    12  .  .  .  Type: *ast.FuncType {
+    13  .  .  .  .  Func: 4.tgo:3:1
+    14  .  .  .  .  Params: *ast.FieldList {
+    15  .  .  .  .  .  Opening: 4.tgo:3:10
+    16  .  .  .  .  .  List: []*ast.Field (len = 1) {
+    17  .  .  .  .  .  .  0: *ast.Field {
+    18  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+    19  .  .  .  .  .  .  .  .  0: *ast.Ident {
+    20  .  .  .  .  .  .  .  .  .  NamePos: 4.tgo:3:11
+    21  .  .  .  .  .  .  .  .  .  Name: "sth"
+    22  .  .  .  .  .  .  .  .  }
+    23  .  .  .  .  .  .  .  }
+    24  .  .  .  .  .  .  .  Type: *ast.Ident {
+    25  .  .  .  .  .  .  .  .  NamePos: 4.tgo:3:15
+    26  .  .  .  .  .  .  .  .  Name: "string"
+    27  .  .  .  .  .  .  .  }
+    28  .  .  .  .  .  .  }
+    29  .  .  .  .  .  }
+    30  .  .  .  .  .  Closing: 4.tgo:3:21
+    31  .  .  .  .  }
+    32  .  .  .  }
+    33  .  .  .  Body: *ast.BlockStmt {
+    34  .  .  .  .  Lbrace: 4.tgo:3:23
+    35  .  .  .  .  List: []ast.Stmt (len = 3) {
+    36  .  .  .  .  .  0: *ast.OpenTagStmt {
+    37  .  .  .  .  .  .  OpenPos: 4.tgo:4:2
+    38  .  .  .  .  .  .  Name: *ast.Ident {
+    39  .  .  .  .  .  .  .  NamePos: 4.tgo:4:3
+    40  .  .  .  .  .  .  .  Name: "div"
+    41  .  .  .  .  .  .  }
+    42  .  .  .  .  .  .  ClosePos: 4.tgo:4:6
+    43  .  .  .  .  .  }
+    44  .  .  .  .  .  1: *ast.ExprStmt {
+    45  .  .  .  .  .  .  X: *ast.TemplateLiteralExpr {
+    46  .  .  .  .  .  .  .  OpenPos: 4.tgo:5:3
+    47  .  .  .  .  .  .  .  Strings: []string (len = 2) {
+    48  .  .  .  .  .  .  .  .  0: "\"test "
+    49  .  .  .  .  .  .  .  .  1: "\""
+    50  .  .  .  .  .  .  .  }
+    51  .  .  .  .  .  .  .  Parts: []ast.Expr (len = 1) {
+    52  .  .  .  .  .  .  .  .  0: *ast.FuncLit {
+    53  .  .  .  .  .  .  .  .  .  Type: *ast.FuncType {
+    54  .  .  .  .  .  .  .  .  .  .  Func: 4.tgo:5:11
+    55  .  .  .  .  .  .  .  .  .  .  Params: *ast.FieldList {
+    56  .  .  .  .  .  .  .  .  .  .  .  Opening: 4.tgo:5:15
+    57  .  .  .  .  .  .  .  .  .  .  .  Closing: 4.tgo:5:16
+    58  .  .  .  .  .  .  .  .  .  .  }
+    59  .  .  .  .  .  .  .  .  .  .  Results: *ast.FieldList {
+    60  .  .  .  .  .  .  .  .  .  .  .  Opening: -
+    61  .  .  .  .  .  .  .  .  .  .  .  List: []*ast.Field (len = 1) {
+    62  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Field {
+    63  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
+    64  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: 4.tgo:5:18
+    65  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "string"
+    66  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+    67  .  .  .  .  .  .  .  .  .  .  .  .  }
+    68  .  .  .  .  .  .  .  .  .  .  .  }
+    69  .  .  .  .  .  .  .  .  .  .  .  Closing: -
+    70  .  .  .  .  .  .  .  .  .  .  }
+    71  .  .  .  .  .  .  .  .  .  }
+    72  .  .  .  .  .  .  .  .  .  Body: *ast.BlockStmt {
+    73  .  .  .  .  .  .  .  .  .  .  Lbrace: 4.tgo:5:25
+    74  .  .  .  .  .  .  .  .  .  .  List: []ast.Stmt (len = 2) {
+    75  .  .  .  .  .  .  .  .  .  .  .  0: *ast.ExprStmt {
+    76  .  .  .  .  .  .  .  .  .  .  .  .  X: *ast.TemplateLiteralExpr {
+    77  .  .  .  .  .  .  .  .  .  .  .  .  .  OpenPos: 4.tgo:6:4
+    78  .  .  .  .  .  .  .  .  .  .  .  .  .  Strings: []string (len = 2) {
+    79  .  .  .  .  .  .  .  .  .  .  .  .  .  .  0: "\"test "
+    80  .  .  .  .  .  .  .  .  .  .  .  .  .  .  1: "\""
+    81  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+    82  .  .  .  .  .  .  .  .  .  .  .  .  .  Parts: []ast.Expr (len = 1) {
+    83  .  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+    84  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: 4.tgo:6:12
+    85  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "sth"
+    86  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+    87  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+    88  .  .  .  .  .  .  .  .  .  .  .  .  .  ClosePos: 4.tgo:6:16
+    89  .  .  .  .  .  .  .  .  .  .  .  .  }
+    90  .  .  .  .  .  .  .  .  .  .  .  }
+    91  .  .  .  .  .  .  .  .  .  .  .  1: *ast.ReturnStmt {
+    92  .  .  .  .  .  .  .  .  .  .  .  .  Return: 4.tgo:7:4
+    93  .  .  .  .  .  .  .  .  .  .  .  .  Results: []ast.Expr (len = 1) {
+    94  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+    95  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ValuePos: 4.tgo:7:11
+    96  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Kind: STRING
+    97  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Value: "test\""
+    98  .  .  .  .  .  .  .  .  .  .  .  .  .  }
+    99  .  .  .  .  .  .  .  .  .  .  .  .  }
+   100  .  .  .  .  .  .  .  .  .  .  .  }
+   101  .  .  .  .  .  .  .  .  .  .  }
+   102  .  .  .  .  .  .  .  .  .  .  Rbrace: 4.tgo:8:3
+   103  .  .  .  .  .  .  .  .  .  }
+   104  .  .  .  .  .  .  .  .  }
+   105  .  .  .  .  .  .  .  }
+   106  .  .  .  .  .  .  .  ClosePos: 4.tgo:8:5
+   107  .  .  .  .  .  .  }
+   108  .  .  .  .  .  }
+   109  .  .  .  .  .  2: *ast.EndTagStmt {
+   110  .  .  .  .  .  .  OpenPos: 4.tgo:9:2
+   111  .  .  .  .  .  .  Name: *ast.Ident {
+   112  .  .  .  .  .  .  .  NamePos: 4.tgo:9:4
+   113  .  .  .  .  .  .  .  Name: "div"
+   114  .  .  .  .  .  .  }
+   115  .  .  .  .  .  .  ClosePos: 4.tgo:9:7
+   116  .  .  .  .  .  }
+   117  .  .  .  .  }
+   118  .  .  .  .  Rbrace: 4.tgo:10:1
+   119  .  .  .  }
+   120  .  .  }
+   121  .  }
+   122  .  FileStart: 4.tgo:1:1
+   123  .  FileEnd: 4.tgo:10:3
+   124  .  GoVersion: ""
+   125  }

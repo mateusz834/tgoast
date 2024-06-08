@@ -17,11 +17,12 @@ package format
 import (
 	"bytes"
 	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/printer"
-	"go/token"
 	"io"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/printer"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // Keep these in sync with cmd/gofmt/gofmt.go.

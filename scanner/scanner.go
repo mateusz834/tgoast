@@ -10,11 +10,12 @@ package scanner
 import (
 	"bytes"
 	"fmt"
-	"go/token"
 	"path/filepath"
 	"strconv"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // An ErrorHandler may be provided to [Scanner.Init]. If a syntax error is
@@ -41,6 +42,8 @@ type Scanner struct {
 	lineOffset int       // current line offset
 	insertSemi bool      // insert a semicolon before next newline
 	nlPos      token.Pos // position of newline in preceding comment
+
+	templateLiteralContinue bool
 
 	// public state - ok to modify
 	ErrorCount int // number of errors encountered
@@ -642,9 +645,12 @@ func (s *Scanner) scanRune() string {
 	return string(s.src[offs:s.offset])
 }
 
-func (s *Scanner) scanString() string {
+func (s *Scanner) scanString() (token.Token, string) {
 	// '"' opening already consumed
-	offs := s.offset - 1
+	offs := s.offset
+	if !s.templateLiteralContinue {
+		offs -= 1
+	}
 
 	for {
 		ch := s.ch
@@ -657,11 +663,15 @@ func (s *Scanner) scanString() string {
 			break
 		}
 		if ch == '\\' {
+			if s.ch == '{' {
+				s.next()
+				return token.STRING_TEMPLATE, string(s.src[offs : s.offset-2])
+			}
 			s.scanEscape('"')
 		}
 	}
 
-	return string(s.src[offs:s.offset])
+	return token.STRING, string(s.src[offs:s.offset])
 }
 
 func stripCR(b []byte, comment bool) []byte {
@@ -838,8 +848,7 @@ scanAgain:
 			return pos, token.SEMICOLON, "\n"
 		case '"':
 			insertSemi = true
-			tok = token.STRING
-			lit = s.scanString()
+			tok, lit = s.scanString()
 		case '\'':
 			insertSemi = true
 			tok = token.CHAR
@@ -920,6 +929,9 @@ scanAgain:
 			if s.ch == '-' {
 				s.next()
 				tok = token.ARROW
+			} else if s.ch == '/' && s.peek() != '/' {
+				s.next()
+				tok = token.END_TAG
 			} else {
 				tok = s.switch4(token.LSS, token.LEQ, '<', token.SHL, token.SHL_ASSIGN)
 			}
@@ -940,6 +952,8 @@ scanAgain:
 			tok = s.switch3(token.OR, token.OR_ASSIGN, '|', token.LOR)
 		case '~':
 			tok = token.TILDE
+		case '@':
+			tok = token.AT
 		default:
 			// next reports unexpected BOMs - don't repeat
 			if ch != bom {
@@ -960,5 +974,12 @@ scanAgain:
 		s.insertSemi = insertSemi
 	}
 
+	return
+}
+
+func (s *Scanner) TemplateLiteralContinue() (pos token.Pos, tok token.Token, lit string) {
+	s.templateLiteralContinue = true
+	pos = s.file.Pos(s.offset)
+	tok, lit = s.scanString()
 	return
 }

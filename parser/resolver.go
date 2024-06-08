@@ -6,9 +6,10 @@ package parser
 
 import (
 	"fmt"
-	"go/ast"
-	"go/token"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 const debugResolve = false

@@ -17,12 +17,13 @@ package parser
 
 import (
 	"fmt"
-	"go/ast"
 	"go/build/constraint"
-	"go/internal/typeparams"
-	"go/scanner"
-	"go/token"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/internal/typeparams"
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // The parser structure holds the parser's internal state.
@@ -64,6 +65,8 @@ type parser struct {
 	// nestLev is used to track and limit the recursion depth
 	// during parsing.
 	nestLev int
+
+	templateLit []*ast.TemplateLiteralExpr
 }
 
 func (p *parser) init(fset *token.FileSet, filename string, src []byte, mode Mode) {
@@ -160,6 +163,8 @@ func (p *parser) next0() {
 		}
 		break
 	}
+
+	p.nextTgoTemplate()
 }
 
 // Consume a comment and return it and the line on which it ends.
@@ -332,8 +337,8 @@ func (p *parser) expectClosing(tok token.Token, context string) token.Pos {
 
 // expectSemi consumes a semicolon and returns the applicable line comment.
 func (p *parser) expectSemi() (comment *ast.CommentGroup) {
-	// semicolon is optional before a closing ')' or '}'
-	if p.tok != token.RPAREN && p.tok != token.RBRACE {
+	// semicolon is optional before a closing ')' or '}' or '</'
+	if p.tok != token.RPAREN && p.tok != token.RBRACE && p.tok != token.END_TAG {
 		switch p.tok {
 		case token.COMMA:
 			// permit a ',' instead of a ';' but complain
@@ -2420,6 +2425,10 @@ func (p *parser) parseStmt() (s ast.Stmt) {
 
 	if p.trace {
 		defer un(trace(p, "Statement"))
+	}
+
+	if s := p.parseTgoStmt(); s != nil {
+		return s
 	}
 
 	switch p.tok {

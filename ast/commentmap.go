@@ -7,9 +7,10 @@ package ast
 import (
 	"bytes"
 	"fmt"
-	"go/token"
 	"sort"
 	"strings"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 type byPos []*CommentGroup

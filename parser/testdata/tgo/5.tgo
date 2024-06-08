@@ -1,0 +1,26 @@
+package templates
+
+func test(sth string) {
+	var f func()
+	<div
+		f = func() {
+			<div>"test"</div>
+		}
+		for _,v := range sth {
+			@attr="\{stirng(v)}"
+		}
+		if sth == "test" {
+			@test="test"
+		}
+		switch sth {
+		case "nottest":
+			"nottest"
+		case "hello":
+			"hello \{sth}"
+		default:
+			"test"
+		}
+	>
+		"test \{sth}"
+	</div>
+}

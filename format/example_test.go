@@ -7,10 +7,11 @@ package format_test
 import (
 	"bytes"
 	"fmt"
-	"go/format"
-	"go/parser"
-	"go/token"
 	"log"
+
+	"github.com/mateusz834/tgoast/format"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func ExampleNode() {

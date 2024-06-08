@@ -7,12 +7,13 @@
 package ast_test
 
 import (
-	"go/ast"
-	"go/format"
-	"go/parser"
-	"go/token"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/format"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 const input = `package p

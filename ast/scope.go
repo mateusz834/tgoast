@@ -8,8 +8,9 @@ package ast
 
 import (
 	"fmt"
-	"go/token"
 	"strings"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // A Scope maintains the set of named language entities declared

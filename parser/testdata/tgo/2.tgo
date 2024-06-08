@@ -1,0 +1,12 @@
+package templates
+
+func test(sth string) {
+	<div @attr="value">
+		"test \{sth}"
+		a := sth + sth
+		"test \{a + "test"}"
+	</div>
+	"test \{sth}"
+	sth = "aa" + sth
+	<span>"test \{sth}\{sth} test"</span>
+}

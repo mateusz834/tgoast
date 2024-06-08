@@ -11,9 +11,10 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"go/format"
 	"os"
 	"testing"
+
+	"github.com/mateusz834/tgoast/format"
 )
 
 var debug = flag.Bool("debug", false, "write .src files containing formatting input; for debugging")
