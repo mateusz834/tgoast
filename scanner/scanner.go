@@ -798,6 +798,10 @@ func (s *Scanner) switch4(tok0, tok1 token.Token, ch2 rune, tok2, tok3 token.Tok
 // set with Init. Token positions are relative to that file
 // and thus relative to the file set.
 func (s *Scanner) Scan() (pos token.Pos, tok token.Token, lit string) {
+	defer func() {
+		s.templateLiteralContinue = false
+	}()
+
 scanAgain:
 	if s.nlPos.IsValid() {
 		// Return artificial ';' token after /*...*/ comment

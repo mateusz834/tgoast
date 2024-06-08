@@ -102,7 +102,7 @@
    101  .  .  .  .  .  .  X: *ast.TemplateLiteralExpr {
    102  .  .  .  .  .  .  .  OpenPos: 2.tgo:7:3
    103  .  .  .  .  .  .  .  Strings: []string (len = 2) {
-   104  .  .  .  .  .  .  .  .  0: "test "
+   104  .  .  .  .  .  .  .  .  0: "\"test "
    105  .  .  .  .  .  .  .  .  1: "\""
    106  .  .  .  .  .  .  .  }
    107  .  .  .  .  .  .  .  Parts: []ast.Expr (len = 1) {
@@ -116,7 +116,7 @@
    115  .  .  .  .  .  .  .  .  .  Y: *ast.BasicLit {
    116  .  .  .  .  .  .  .  .  .  .  ValuePos: 2.tgo:7:15
    117  .  .  .  .  .  .  .  .  .  .  Kind: STRING
-   118  .  .  .  .  .  .  .  .  .  .  Value: "test\""
+   118  .  .  .  .  .  .  .  .  .  .  Value: "\"test\""
    119  .  .  .  .  .  .  .  .  .  }
    120  .  .  .  .  .  .  .  .  }
    121  .  .  .  .  .  .  .  }
@@ -135,7 +135,7 @@
    134  .  .  .  .  .  .  X: *ast.TemplateLiteralExpr {
    135  .  .  .  .  .  .  .  OpenPos: 2.tgo:9:2
    136  .  .  .  .  .  .  .  Strings: []string (len = 2) {
-   137  .  .  .  .  .  .  .  .  0: "test "
+   137  .  .  .  .  .  .  .  .  0: "\"test "
    138  .  .  .  .  .  .  .  .  1: "\""
    139  .  .  .  .  .  .  .  }
    140  .  .  .  .  .  .  .  Parts: []ast.Expr (len = 1) {
@@ -161,7 +161,7 @@
    160  .  .  .  .  .  .  .  .  X: *ast.BasicLit {
    161  .  .  .  .  .  .  .  .  .  ValuePos: 2.tgo:10:8
    162  .  .  .  .  .  .  .  .  .  Kind: STRING
-   163  .  .  .  .  .  .  .  .  .  Value: "aa\""
+   163  .  .  .  .  .  .  .  .  .  Value: "\"aa\""
    164  .  .  .  .  .  .  .  .  }
    165  .  .  .  .  .  .  .  .  OpPos: 2.tgo:10:13
    166  .  .  .  .  .  .  .  .  Op: +
@@ -184,7 +184,7 @@
    183  .  .  .  .  .  .  X: *ast.TemplateLiteralExpr {
    184  .  .  .  .  .  .  .  OpenPos: 2.tgo:11:8
    185  .  .  .  .  .  .  .  Strings: []string (len = 3) {
-   186  .  .  .  .  .  .  .  .  0: "test "
+   186  .  .  .  .  .  .  .  .  0: "\"test "
    187  .  .  .  .  .  .  .  .  1: ""
    188  .  .  .  .  .  .  .  .  2: " test\""
    189  .  .  .  .  .  .  .  }
