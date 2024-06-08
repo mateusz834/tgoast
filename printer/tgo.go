@@ -7,19 +7,7 @@ import (
 	"github.com/mateusz834/tgoast/token"
 )
 
-func (p *printer) endtag(b *ast.EndTagStmt) {
-	p.setPos(b.OpenPos)
-	p.print(token.END_TAG)
-	p.setPos(b.Name.NamePos)
-	p.print(b.Name)
-	p.print(token.GTR)
-
-	// TODO(mateusz834): void elements
-	p.indent++
-}
-
 func (p *printer) opentag(b *ast.OpenTagStmt) {
-	p.indent--
 	p.setPos(b.OpenPos)
 	p.print(token.LSS)
 	p.setPos(b.Name.NamePos)
@@ -34,6 +22,19 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	}
 
 	p.setPos(b.ClosePos)
+	p.print(token.GTR)
+
+	// TODO(mateusz834): void elements
+	p.indent++
+}
+
+func (p *printer) endtag(b *ast.EndTagStmt) {
+	p.indent--
+
+	p.setPos(b.OpenPos)
+	p.print(token.END_TAG)
+	p.setPos(b.Name.NamePos)
+	p.print(b.Name)
 	p.print(token.GTR)
 }
 
@@ -51,6 +52,7 @@ func (p *printer) attr(a *ast.AttributeStmt) {
 		p.expr(a.Value)
 	}
 }
+
 func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	p.print(x.Strings[0])
 	for i := range x.Parts {
