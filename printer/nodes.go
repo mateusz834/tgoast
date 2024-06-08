@@ -1081,7 +1081,8 @@ func (p *printer) expr1(expr ast.Expr, prec1, depth int) {
 		}
 		p.print(blank)
 		p.expr(x.Value)
-
+	case *ast.TemplateLiteralExpr:
+		p.templateLiteralExpr(x)
 	default:
 		panic("unreachable")
 	}
@@ -1195,16 +1196,33 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 	}
 	var line int
 	i := 0
+
+	var (
+		oneLineTag = p.oneLineTags(list)
+		tagNum     = 0
+	)
+
 	for _, s := range list {
 		// ignore empty statements (was issue 3466)
 		if _, isEmpty := s.(*ast.EmptyStmt); !isEmpty {
+			addNewline := !oneLineTag[tagNum]
+			if _, ok := s.(*ast.OpenTagStmt); ok {
+				// TODO(mateusz834): void elements
+				tagNum++
+			}
+
 			// nindent == 0 only for lists of switch/select case clauses;
 			// in those cases each clause is a new section
-			if len(p.output) > 0 {
+			if len(p.output) > 0 && addNewline {
 				// only print line break if we are not at the beginning of the output
 				// (i.e., we are not printing only a partial program)
 				p.linebreak(p.lineFor(s.Pos()), 1, ignore, i == 0 || nindent == 0 || p.linesFrom(line) > 0)
 			}
+
+			if _, ok := s.(*ast.EndTagStmt); ok {
+				tagNum--
+			}
+
 			p.recordLine(&line)
 			p.stmt(s, nextIsRBrace && i == len(list)-1)
 			// labeled statements put labels on a separate line, but here
@@ -1542,7 +1560,12 @@ func (p *printer) stmt(stmt ast.Stmt, nextIsRBrace bool) {
 		p.expr(stripParens(s.X))
 		p.print(blank)
 		p.block(s.Body, 1)
-
+	case *ast.OpenTagStmt:
+		p.opentag(s)
+	case *ast.EndTagStmt:
+		p.endtag(s)
+	case *ast.AttributeStmt:
+		p.attr(s)
 	default:
 		panic("unreachable")
 	}
