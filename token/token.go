@@ -130,9 +130,9 @@ const (
 	TILDE
 	additional_end
 
-	END_TAG         = 0xffffff // </
-	STRING_TEMPLATE = 0xffffff + 1
-	AT              = 0xffffff + 2 // @
+	END_TAG         Token = 0xffffff // </
+	STRING_TEMPLATE Token = 0xffffff + 1
+	AT              Token = 0xffffff + 2 // @
 )
 
 var tokens = [...]string{
