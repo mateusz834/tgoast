@@ -1,8 +1,6 @@
 package printer
 
 import (
-	"slices"
-
 	"github.com/mateusz834/tgoast/ast"
 	"github.com/mateusz834/tgoast/token"
 )
@@ -63,26 +61,34 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	}
 }
 
-func (p *printer) oneLineTags(list []ast.Stmt) []bool {
-	var (
-		lineNumbers []int
-		out         []bool
-	)
-
-	out = append(out, false)
-
-	for _, v := range list {
-		switch v := v.(type) {
-		case *ast.OpenTagStmt:
-			// TODO(mateusz834): void elements.
-			lineNumbers = append(lineNumbers, p.lineFor(v.OpenPos))
-		case *ast.EndTagStmt:
-			last := lineNumbers[len(lineNumbers)-1]
-			lineNumbers = lineNumbers[:len(lineNumbers)-1]
-			out = append(out, last == p.lineFor(v.ClosePos))
+func (p *printer) oneLineTag(list []ast.Stmt) bool {
+	deep := 0
+	for i, v := range list {
+		if _, ok := v.(*ast.OpenTagStmt); ok {
+			// TODO(mateusz834): void elements
+			deep++
+		}
+		if _, ok := v.(*ast.EndTagStmt); ok {
+			if deep--; deep == 0 {
+				return !p.willHaveNewLine(list[0].(*ast.OpenTagStmt), list[1:i])
+			}
 		}
 	}
 
-	slices.Reverse(out[1:])
-	return out
+	panic("unreachable")
+}
+
+func (p *printer) willHaveNewLine(o *ast.OpenTagStmt, list []ast.Stmt) bool {
+	if v, ok := p.hasNewline[o]; ok {
+		return v
+	}
+
+	cfg := Config{Mode: RawFormat}
+	var counter sizeCounter
+	if err := cfg.fprint(&counter, p.fset, list, p.nodeSizes, p.hasNewline); err != nil {
+		return true
+	}
+
+	p.hasNewline[o] = counter.hasNewline
+	return counter.hasNewline
 }

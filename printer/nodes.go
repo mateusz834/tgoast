@@ -1197,30 +1197,28 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 	var line int
 	i := 0
 
-	var (
-		oneLineTag = p.oneLineTags(list)
-		tagNum     = 0
-	)
-
-	for _, s := range list {
+	curOneLineTag := false
+	forceNextNewline := false
+	for j, s := range list {
 		// ignore empty statements (was issue 3466)
 		if _, isEmpty := s.(*ast.EmptyStmt); !isEmpty {
-			addNewline := !oneLineTag[tagNum]
-			if _, ok := s.(*ast.OpenTagStmt); ok {
-				// TODO(mateusz834): void elements
-				tagNum++
-			}
-
 			// nindent == 0 only for lists of switch/select case clauses;
 			// in those cases each clause is a new section
-			if len(p.output) > 0 && addNewline {
+			if len(p.output) > 0 && (!curOneLineTag || forceNextNewline) {
 				// only print line break if we are not at the beginning of the output
 				// (i.e., we are not printing only a partial program)
 				p.linebreak(p.lineFor(s.Pos()), 1, ignore, i == 0 || nindent == 0 || p.linesFrom(line) > 0)
 			}
 
-			if _, ok := s.(*ast.EndTagStmt); ok {
-				tagNum--
+			if _, ok := s.(*ast.EndTagStmt); ok && j+1 != len(list) {
+				if _, ok := list[j+1].(*ast.EndTagStmt); !ok {
+					forceNextNewline = true
+				}
+			}
+
+			if _, ok := s.(*ast.OpenTagStmt); ok {
+				forceNextNewline = false
+				curOneLineTag = p.oneLineTag(list[j:])
 			}
 
 			p.recordLine(&line)
@@ -1843,7 +1841,7 @@ func (p *printer) nodeSize(n ast.Node, maxSize int) (size int) {
 	// in RawFormat
 	cfg := Config{Mode: RawFormat}
 	var counter sizeCounter
-	if err := cfg.fprint(&counter, p.fset, n, p.nodeSizes); err != nil {
+	if err := cfg.fprint(&counter, p.fset, n, p.nodeSizes, p.hasNewline); err != nil {
 		return
 	}
 	if counter.size <= maxSize && !counter.hasNewline {
