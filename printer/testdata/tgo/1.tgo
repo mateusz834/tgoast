@@ -1,0 +1,62 @@
+package templates
+
+func test(sth string) {
+	<div>"test"</div>
+	<div>"test \{sth}"</div>
+	<div>
+		"test"
+	</div>
+	<div
+		@attr="value"
+	>
+		"test"
+	</div>
+	<div
+		@attr="value"
+	>
+		"test \{sth}"
+		<span>"test"</span>
+		<span
+			@attr="value \{sth}"
+		>
+			"test \{sth}"
+			<span>"test"</span>
+		</span>
+	</div>
+
+	<div>
+		"test"
+	</div>
+
+	{
+		<div>"test"</div>
+		<div>"test \{sth}"</div>
+		<div
+			@attr="value"
+			@attr="test \{" " + sth}"
+		>
+			"\{sth}"
+			<span>"\{sth + sth} test"</span>
+		</div>
+	}
+
+	for _, v := range sth {
+		<span>"test"</span>
+		<span>"test \{string(v)}"</span>
+		<div
+			@attr="value"
+		>
+			for i := range v {
+				"test \{i}"
+				<span>"test \{i}"</span>
+				<span
+					@attr="value"
+					@attr2="\{i}"
+				>
+					"test \{i}"
+				</span>
+			}
+			"test \{string(v)}"
+		</div>
+	}
+}

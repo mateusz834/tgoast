@@ -1212,12 +1212,8 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 			}
 
 			if _, ok := s.(*ast.EndTagStmt); ok && j+1 != len(list) {
-				if _, ok := list[j+1].(*ast.EndTagStmt); !ok {
-					forceNextNewline = true
-				}
-			}
-
-			if _, ok := s.(*ast.OpenTagStmt); ok {
+				forceNextNewline = true
+			} else if _, ok := s.(*ast.OpenTagStmt); ok {
 				forceNextNewline = false
 				curOneLineTag = p.oneLineTag(list[j:])
 			}

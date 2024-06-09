@@ -63,14 +63,17 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 
 func (p *printer) oneLineTag(list []ast.Stmt) bool {
 	deep := 0
+	startPos := token.NoPos
 	for i, v := range list {
 		if _, ok := v.(*ast.OpenTagStmt); ok {
 			// TODO(mateusz834): void elements
 			deep++
+			startPos = v.Pos()
 		}
 		if _, ok := v.(*ast.EndTagStmt); ok {
 			if deep--; deep == 0 {
-				return !p.willHaveNewLine(list[0].(*ast.OpenTagStmt), list[1:i])
+				return p.lineFor(startPos) == p.lineFor(v.End()) &&
+					!p.willHaveNewLine(list[0].(*ast.OpenTagStmt), list[1:i])
 			}
 		}
 	}
@@ -89,6 +92,11 @@ func (p *printer) willHaveNewLine(o *ast.OpenTagStmt, list []ast.Stmt) bool {
 		return true
 	}
 
-	p.hasNewline[o] = counter.hasNewline
-	return counter.hasNewline
+	var counter2 sizeCounter
+	if err := cfg.fprint(&counter2, p.fset, o, p.nodeSizes, p.hasNewline); err != nil {
+		return true
+	}
+
+	p.hasNewline[o] = counter.hasNewline || counter2.hasNewline
+	return counter.hasNewline || counter2.hasNewline
 }
