@@ -59,4 +59,32 @@ func test(sth string) {
 			"test \{string(v)}"
 		</div>
 	}
+
+	if sth == "test" {
+		<div>"test div"</div>
+		<div>
+			"test div"
+		</div>
+		<div
+			@attr="test \{sth}"
+		>
+			<span>"test div \{sth}"</span>
+			<div>
+				"test"
+				"\{sth}"
+				"test"
+			</div>
+		</div>
+	} else if sth == "testing" {
+		<div>"testing"</div>
+	} else {
+		<div>"testing \{sth}"</div>
+	}
+
+	switch sth {
+	case "test":
+		<div>"test"</div>
+	default:
+		<span>"test"</span>
+	}
 }
