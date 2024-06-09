@@ -10,6 +10,7 @@ package printer
 
 import (
 	"math"
+	"slices"
 	"strconv"
 	"strings"
 	"unicode"
@@ -1904,8 +1905,13 @@ func (p *printer) funcBody(headerSize int, sep whiteSpace, b *ast.BlockStmt) {
 	}(p.level)
 	p.level = 0
 
+	hasTag := slices.ContainsFunc(b.List, func(e ast.Stmt) bool {
+		_, ok := e.(*ast.OpenTagStmt)
+		return ok
+	})
+
 	const maxSize = 100
-	if headerSize+p.bodySize(b, maxSize) <= maxSize {
+	if !hasTag && headerSize+p.bodySize(b, maxSize) <= maxSize {
 		p.print(sep)
 		p.setPos(b.Lbrace)
 		p.print(token.LBRACE)
