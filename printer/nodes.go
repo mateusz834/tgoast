@@ -1198,24 +1198,29 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 	var line int
 	i := 0
 
-	curOneLineTag := false
-	forceNextNewline := false
+	var (
+		forceNextNewline = false
+		tagOneLine       = make([]bool, 1, 16)
+	)
+
 	for j, s := range list {
 		// ignore empty statements (was issue 3466)
 		if _, isEmpty := s.(*ast.EmptyStmt); !isEmpty {
 			// nindent == 0 only for lists of switch/select case clauses;
 			// in those cases each clause is a new section
-			if len(p.output) > 0 && (!curOneLineTag || forceNextNewline) {
+			if len(p.output) > 0 && (!tagOneLine[len(tagOneLine)-1] || forceNextNewline) {
 				// only print line break if we are not at the beginning of the output
 				// (i.e., we are not printing only a partial program)
 				p.linebreak(p.lineFor(s.Pos()), 1, ignore, i == 0 || nindent == 0 || p.linesFrom(line) > 0)
 			}
 
-			if _, ok := s.(*ast.EndTagStmt); ok && j+1 != len(list) {
-				forceNextNewline = true
+			if _, ok := s.(*ast.EndTagStmt); ok {
+				forceNextNewline = !tagOneLine[len(tagOneLine)-1]
+				tagOneLine = tagOneLine[:len(tagOneLine)-1]
 			} else if _, ok := s.(*ast.OpenTagStmt); ok {
 				forceNextNewline = false
-				curOneLineTag = p.oneLineTag(list[j:])
+				// TODO(mateusz834): void elements
+				tagOneLine = append(tagOneLine, p.oneLineTag(list[j:]))
 			}
 
 			p.recordLine(&line)

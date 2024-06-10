@@ -87,4 +87,12 @@ func test(sth string) {
 	default:
 		<span>"test"</span>
 	}
+
+	<div><span>"test"</span></div>
+	<div><span>"test"</span></div>
+	<article><div><span>"test \{sth}"</span></div></article>
+
+	<div>
+		<article><span>"test"</span></article>
+	</div>
 }
