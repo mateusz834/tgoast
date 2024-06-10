@@ -1,0 +1,77 @@
+     0  *ast.File {
+     1  .  Package: multiple_template_literals.tgo:1:1
+     2  .  Name: *ast.Ident {
+     3  .  .  NamePos: multiple_template_literals.tgo:1:9
+     4  .  .  Name: "templates"
+     5  .  }
+     6  .  Decls: []ast.Decl (len = 1) {
+     7  .  .  0: *ast.FuncDecl {
+     8  .  .  .  Name: *ast.Ident {
+     9  .  .  .  .  NamePos: multiple_template_literals.tgo:3:6
+    10  .  .  .  .  Name: "test"
+    11  .  .  .  }
+    12  .  .  .  Type: *ast.FuncType {
+    13  .  .  .  .  Func: multiple_template_literals.tgo:3:1
+    14  .  .  .  .  Params: *ast.FieldList {
+    15  .  .  .  .  .  Opening: multiple_template_literals.tgo:3:10
+    16  .  .  .  .  .  List: []*ast.Field (len = 1) {
+    17  .  .  .  .  .  .  0: *ast.Field {
+    18  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
+    19  .  .  .  .  .  .  .  .  0: *ast.Ident {
+    20  .  .  .  .  .  .  .  .  .  NamePos: multiple_template_literals.tgo:3:11
+    21  .  .  .  .  .  .  .  .  .  Name: "sth"
+    22  .  .  .  .  .  .  .  .  }
+    23  .  .  .  .  .  .  .  }
+    24  .  .  .  .  .  .  .  Type: *ast.Ident {
+    25  .  .  .  .  .  .  .  .  NamePos: multiple_template_literals.tgo:3:15
+    26  .  .  .  .  .  .  .  .  Name: "string"
+    27  .  .  .  .  .  .  .  }
+    28  .  .  .  .  .  .  }
+    29  .  .  .  .  .  }
+    30  .  .  .  .  .  Closing: multiple_template_literals.tgo:3:21
+    31  .  .  .  .  }
+    32  .  .  .  }
+    33  .  .  .  Body: *ast.BlockStmt {
+    34  .  .  .  .  Lbrace: multiple_template_literals.tgo:3:23
+    35  .  .  .  .  List: []ast.Stmt (len = 2) {
+    36  .  .  .  .  .  0: *ast.ExprStmt {
+    37  .  .  .  .  .  .  X: *ast.TemplateLiteralExpr {
+    38  .  .  .  .  .  .  .  OpenPos: multiple_template_literals.tgo:4:2
+    39  .  .  .  .  .  .  .  Strings: []string (len = 2) {
+    40  .  .  .  .  .  .  .  .  0: "\"test "
+    41  .  .  .  .  .  .  .  .  1: "\""
+    42  .  .  .  .  .  .  .  }
+    43  .  .  .  .  .  .  .  Parts: []ast.Expr (len = 1) {
+    44  .  .  .  .  .  .  .  .  0: *ast.Ident {
+    45  .  .  .  .  .  .  .  .  .  NamePos: multiple_template_literals.tgo:4:10
+    46  .  .  .  .  .  .  .  .  .  Name: "sth"
+    47  .  .  .  .  .  .  .  .  }
+    48  .  .  .  .  .  .  .  }
+    49  .  .  .  .  .  .  .  ClosePos: multiple_template_literals.tgo:4:14
+    50  .  .  .  .  .  .  }
+    51  .  .  .  .  .  }
+    52  .  .  .  .  .  1: *ast.ExprStmt {
+    53  .  .  .  .  .  .  X: *ast.TemplateLiteralExpr {
+    54  .  .  .  .  .  .  .  OpenPos: multiple_template_literals.tgo:5:2
+    55  .  .  .  .  .  .  .  Strings: []string (len = 2) {
+    56  .  .  .  .  .  .  .  .  0: "\"test "
+    57  .  .  .  .  .  .  .  .  1: "\""
+    58  .  .  .  .  .  .  .  }
+    59  .  .  .  .  .  .  .  Parts: []ast.Expr (len = 1) {
+    60  .  .  .  .  .  .  .  .  0: *ast.Ident {
+    61  .  .  .  .  .  .  .  .  .  NamePos: multiple_template_literals.tgo:5:10
+    62  .  .  .  .  .  .  .  .  .  Name: "sth"
+    63  .  .  .  .  .  .  .  .  }
+    64  .  .  .  .  .  .  .  }
+    65  .  .  .  .  .  .  .  ClosePos: multiple_template_literals.tgo:5:14
+    66  .  .  .  .  .  .  }
+    67  .  .  .  .  .  }
+    68  .  .  .  .  }
+    69  .  .  .  .  Rbrace: multiple_template_literals.tgo:6:1
+    70  .  .  .  }
+    71  .  .  }
+    72  .  }
+    73  .  FileStart: multiple_template_literals.tgo:1:1
+    74  .  FileEnd: multiple_template_literals.tgo:6:3
+    75  .  GoVersion: ""
+    76  }

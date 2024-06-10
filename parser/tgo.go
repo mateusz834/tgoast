@@ -20,14 +20,14 @@ func (p *parser) nextTgoTemplate() {
 func (p *parser) parseTgoStmt() (s ast.Stmt) {
 	switch p.tok {
 	case token.STRING_TEMPLATE:
-		p.next()
-		p.expectSemi()
 		lit := p.templateLit[len(p.templateLit)-1]
 		p.templateLit = p.templateLit[:len(p.templateLit)-1]
 		if lit == nil {
 			// TODO: figure out if this can happen
 			panic("unreachable")
 		}
+		p.next()
+		p.expectSemi()
 		return &ast.ExprStmt{X: lit}
 	case token.LSS, token.END_TAG:
 		openPos := p.pos

@@ -1,0 +1,6 @@
+package templates
+
+func test(sth string) {
+	"test \{sth}"
+	"test \{sth}"
+}
