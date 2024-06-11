@@ -163,8 +163,6 @@ func (p *parser) next0() {
 		}
 		break
 	}
-
-	p.nextTgoTemplate()
 }
 
 // Consume a comment and return it and the line on which it ends.
@@ -222,6 +220,11 @@ func (p *parser) consumeCommentGroup(n int) (comments *ast.CommentGroup, endline
 // Lead and line comments may be considered documentation that is
 // stored in the AST.
 func (p *parser) next() {
+	p.nextToken()
+	p.nextTgoTemplate()
+}
+
+func (p *parser) nextToken() {
 	p.leadComment = nil
 	p.lineComment = nil
 	prev := p.pos
