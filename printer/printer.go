@@ -96,7 +96,10 @@ type printer struct {
 	cachedPos  token.Pos
 	cachedLine int // line corresponding to cachedPos
 
-	hasNewline map[ast.Node]bool
+	hasNewline      map[ast.Node]bool
+	inEndTag        bool
+	endTagStartLine int
+	endTagEndLine   int
 }
 
 func (p *printer) internalError(msg ...any) {
@@ -147,7 +150,7 @@ func (p *printer) nextComment() {
 // before the next position in the source code and printing it does
 // not introduce implicit semicolons.
 func (p *printer) commentBefore(next token.Position) bool {
-	return p.commentOffset < next.Offset && (!p.impliedSemi || !p.commentNewline)
+	return p.commentOffset < next.Offset && (!p.impliedSemi || !p.commentNewline || p.inEndTag)
 }
 
 // commentSizeBefore returns the estimated size of the
@@ -415,6 +418,10 @@ func (p *printer) writeCommentPrefix(pos, next token.Position, prev *ast.Comment
 				// apply pending indentation
 				continue
 			case unindent:
+				if p.inEndTag && tok == token.GTR {
+					break
+				}
+
 				// if this is not the last unindent, apply it
 				// as it is (likely) belonging to the last
 				// construct (e.g., a multi-line expression list)
@@ -807,6 +814,18 @@ func (p *printer) intersperseComments(next token.Position, tok token.Token) (wro
 			tok == token.RBRACE && p.mode&noExtraLinebreak == 0 {
 			needsLinebreak = true
 		}
+
+		if p.inEndTag {
+			isOneLine := p.endTagStartLine == p.endTagEndLine
+			lastCommentSameLine := p.endTagStartLine == p.lineFor(last.End()-1)
+			if !lastCommentSameLine && !isOneLine {
+				needsLinebreak = true
+			}
+			if lastCommentSameLine && p.output[len(p.output)-1] != ' ' {
+				p.writeByte(' ', 1)
+			}
+		}
+
 		return p.writeCommentSuffix(needsLinebreak)
 	}
 

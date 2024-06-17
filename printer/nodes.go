@@ -1217,6 +1217,10 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 			if _, ok := s.(*ast.EndTagStmt); ok {
 				forceNextNewline = !tagOneLine[len(tagOneLine)-1]
 				tagOneLine = tagOneLine[:len(tagOneLine)-1]
+				p.print(unindent)
+				if forceNextNewline && p.commentBefore(p.posFor(s.Pos())) {
+					p.linebreak(p.lineFor(s.Pos()), 0, ignore, false)
+				}
 			} else if _, ok := s.(*ast.OpenTagStmt); ok {
 				forceNextNewline = false
 				// TODO(mateusz834): void elements

@@ -1,0 +1,50 @@
+package templates
+
+func test(sth, sth2 string) {
+	sth = " " + sth
+	<div>
+		"test \{sth}"
+	</div>
+	<div>"test \{sth}"</div>
+
+	<div
+		sth2 := "hello" + sth
+		@attr="value \{sth2}"
+		if sth2 == "hello" {
+			@attr="empty sth \{sth2}"
+		}
+	>
+		sth = "testing"
+		"test \{sth}"
+	</div>
+
+	for i, v := range sth {
+		if i != 0 {
+			<span>"> 0 \{string(v)}"</span>
+		} else {
+			<span>"0"</span>
+		}
+	}
+
+	defer func() {
+		sth = "val"
+	}()
+
+	val := fmt.Sprintf("%v %v", sth, 99)
+	if val != " 99" {
+		<span>"\{val}"</div>
+	}
+
+	<article>
+		if sth2 == "value" {
+			<span>"value"</span>
+		} else {
+			<span>"value \{sth}"</span>
+		}
+	</article>
+
+	tmp := val + "123"
+	<div><span>"test \{tmp}"</span></div>
+	tmp = val + "1234"
+	<article><div><span>"test \{tmp}"</span></div></article>
+}

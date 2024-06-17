@@ -1,0 +1,150 @@
+package templates
+
+func test(sth string) {
+	< /*comment*/ div></div>
+	<div /*comment*/ ></div>
+	<div> /*comment*/ </div>
+	<div></ /*comment*/ div>
+	<div></div /*comment*/ >
+	<div></div> /*comment*/
+	<div></div> // comment
+
+	< /*comment*/ /*c*/ div></div>
+	<div /*comment*/ /*c*/ ></div>
+	<div> /*comment*/ /*c*/ </div>
+	<div></ /*comment*/ /*c*/ div>
+	<div></div /*comment*/ /*c*/ >
+	<div></div> /*comment*/ /*c*/
+	<div></div> /*comment*/ // c
+
+	< /*c*/ div /*c*/ > /*c*/ </ /*c*/ div /*c*/ >
+	< /*c*/ div /*c*/ > /*c*/ </ /*c*/ div /*c*/ > // comment
+	/*c*/ < /*c*/ div /*c*/ > /*c*/ </ /*c*/ div /*c*/ > /*c*/
+	/*c*/ /*c*/ < /*c*/ div /*c*/ > /*c*/ </ /*c*/ div /*c*/ > /*c*/ // comment
+
+	< /*c*/ article /*c*/ > /*c*/ < /*c*/ div /*c*/ > /*c*/ </ /*c*/ div /*c*/ > /*c*/ </ /*c*/ article /*c*/ >
+
+	//<div
+	//	/*comment*/
+	//>
+	//	"test"
+	//</div>
+
+	< /*comment*/ div>
+		"test"
+	</div>
+
+	<div>
+		"test"
+	</div
+		/*comment*/
+	>
+
+	<div>
+		"test"
+	</ /*comment*/ div>
+
+	<div
+		@attr="val"
+		/*comment*/
+	>
+		"test"
+	</div>
+
+	<div
+		/*comment*/
+		@attr="val"
+	>
+		"test"
+	</div>
+
+	<div
+		// comment
+		@attr="val"
+	>
+		"test"
+	</div>
+
+	<div
+		@attr="val"
+		// comment
+	>
+		"test"
+	</div>
+
+	<div /*comment*/
+		@attr="val"
+	>
+		"test"
+	</div>
+
+	<div // comment
+		@attr="val" // comment
+	> // comment
+		"test" // comment
+	</div> // comment
+
+	<div /* comment */
+		@attr="val" /* comment */
+	> /* comment */
+		"test" /* comment */
+	</div> /* comment */
+
+	<div
+		@attr="val"
+	>
+		"test"
+	</ /*c*/ div /*c*/ >
+
+	/*c*/
+	<div
+		@attr="val"
+	>
+		"test"
+		/*c*/
+	</div>
+
+	<div
+		@attr="val"
+	>
+		// comment
+		"test"
+		// comment
+	</div>
+
+	<div
+		@attr="val"
+	>
+		/* comment */
+		"test"
+		/* comment */
+	</div>
+
+	<article>
+		<div>
+			/* comment */
+			<span> /*comment*/ "test"</span>
+			/* comment */
+		</div>
+	</article>
+
+	"test" /*test*/
+
+	"test\{sth}" /*test*/
+
+	"test \{ /*comment*/ test}"
+	"test \{test /*c*/ }"
+	"test \{ /*c*/ test /*c*/ }"
+
+	"test" /*test*/
+
+	"test \{ /*comment*/ test}" /*test*/
+
+	"test \{test /*c*/ }" /*test*/
+
+	"test \{ /*c*/ test /*c*/ }" /*test*/
+
+	"hello \{ /*c*/ sth}"
+	/*test*/ "hello \{ /*c*/ sth}"
+	/*test*/ "hello \{ /*c*/ sth}"
+}

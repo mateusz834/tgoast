@@ -96,3 +96,37 @@ func test(sth string) {
 		<article><span>"test"</span></article>
 	</div>
 }
+
+func test2(s string) {
+	<div>"test"</div>
+}
+
+func test3(s string) {
+	<div>"test \{s}"</div>
+}
+
+func test3(s string) {
+	<div>
+		"test \{s}"
+	</div>
+}
+
+func test4(s string) {
+	f := func(s string) {
+		<div>"test"</div>
+	}
+}
+
+func test5(s string) {
+	f := func(s string) {
+		<div>"test \{sth}"</div>
+	}
+}
+
+func test6(s string) {
+	f := func(s string) {
+		<div>
+			"test \{sth}"
+		</div>
+	}
+}

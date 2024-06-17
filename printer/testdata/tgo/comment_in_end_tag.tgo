@@ -1,0 +1,237 @@
+package template
+
+func test() {
+	<div></div  /*test*/>
+	<div></div/*test*/>
+	<div></div/*test*/  >
+	<div></div  /*test*/  >
+
+	<div>
+	</div /*test*/
+	>
+
+	<div>
+	</div /*test*/
+	>
+
+	<div>
+	</div
+	/*test*/>
+
+	<div>
+	</div
+		/*test*/
+	>
+
+	<div>
+	</div
+			/*test*/
+	>
+
+	<div>
+	</div /*comment*/
+		>
+	<div>
+	</div /*comment*/>
+
+	<span>
+		<div>"hello"
+		</div
+		// hello
+		/*end tag*/ >
+	</span>
+
+	<div>
+	</div
+
+			/*test*/
+	>
+
+	<div>
+	</div
+			/*test*/
+
+	>
+
+	<div>
+	</div
+
+
+
+			/*test*/
+
+	>
+
+	<div>
+	</div
+		// test
+	>
+
+	<div>
+	</div
+	// test
+	>
+
+	<div>
+	</div // test
+	>
+
+	<div>
+	</div // test
+		// test
+	>
+
+	<div>
+	</div // test
+	// test
+	>
+
+	<div>
+	</div // test
+			// test
+	>
+
+	<div>
+	</div // test
+	/*test*/ >
+
+	<div>
+	</div // test
+				/*test*/ >
+
+
+	<div>
+	</div /*test*/
+	/*test*/ >
+
+	<div>
+	</div /*test*/
+	/*test*/
+	>
+
+	<div>
+	</
+	div /*test*/ >
+
+	<div></ /*test*/ div>
+	<div></ /*test*/div>
+	<div></   /*test*/div>
+	<div></  /*test*/    div>
+
+	<div>
+	</ /*test*/ div>
+
+	<div>
+	</  /*test*/  /*test2*/   div>
+
+	<div>
+	</ // test
+	div>
+
+	<div>
+	</
+	// test
+	div>
+
+	<div>
+	</
+			// test
+	div>
+
+	<div>
+	</ /* test*/
+	div>
+
+	<div>
+	</ /* test*/
+	/* test */
+	div>
+
+	<div>
+	</					/* test*/
+				/* test */
+	div>
+
+	<div>
+	</ // test
+	div /*test*/ >
+
+	<div>
+	</
+	/*test*/ div>
+
+	<div>
+	</
+	/*test*/ div /*test*/ >
+
+	<div>
+	</
+	/*test*/
+	div /*test*/ >
+
+	<div>
+	</div /*test*/ // test
+	>
+
+	<div>
+	</ /*test*/ div /*test*/
+	>
+
+	<div>
+	</ /*test*/ div // test
+	>
+
+	<div>
+	</ /*test*/ div /*test*/ // test
+	>
+
+	<div>
+	</
+		div /*test*/
+	>
+
+	<div>
+	</
+		div // test
+	>
+
+	<div>
+	</
+		div // test
+		/*test*/
+	>
+
+	<div>
+	</
+		div // test
+		// test
+	>
+
+	<div>
+	</
+		div /*test*/
+		/*test*/
+	>
+
+	<div>
+	</
+
+		div /*test*/
+		/*test*/
+	>
+
+	<div>
+	</
+		div /*test*/
+		/*test*/
+
+	>
+
+	<div>
+	</
+		div /*test*/
+		/*test*/
+
+
+	>
+}
