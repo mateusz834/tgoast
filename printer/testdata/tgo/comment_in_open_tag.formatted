@@ -247,4 +247,49 @@ func test() {
 		// test
 	>
 	</div>
+
+	< /*test*/
+		aa //test
+		/*test*/ @attr="test" /*test*/
+		/*test*/
+		// test
+	>
+	</div>
+
+	< /*test*/
+		aa //test
+
+		/*test*/
+		@attr="test" /*test*/
+		/*test*/
+		// test
+	>
+	</div>
+
+	< /*test*/
+		aa //test
+		/*test*/ @attr="test" /*test*/
+		/*test*/
+		// test
+	>
+	</div>
+
+	< /*test*/
+		aa //test
+		_ = test()
+		/*test*/ @attr="test" /*test*/
+		/*test*/
+		// test
+	>
+	</div>
+
+	< /*test*/
+		aa //test
+		/*test*/
+		@attr="test" /*test*/
+		/*test*/ @attr="test" /*test*/
+		/*test*/
+		// test
+	>
+	</div>
 }
