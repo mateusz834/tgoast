@@ -195,4 +195,56 @@ func test() {
 		// test
 	>
 	</div>
+
+	<
+		aa
+		// df
+		@attr
+		// test
+	>
+	</div>
+
+	<
+		aa
+		// df
+		@attr
+		// test
+	>
+	</div>
+
+	<
+		aa
+		// df
+		@attr
+		// test
+	>
+	</div>
+
+	<
+		aa
+		@attr
+		// test
+	>
+	</div>
+
+	<
+		aa
+		@attr
+		// test
+	>
+	</div>
+
+	<
+		aa
+		@attr
+		// test
+	>
+	</div>
+
+	<
+		aa
+		@attr
+		// test
+	>
+	</div>
 }

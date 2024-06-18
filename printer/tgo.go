@@ -42,7 +42,9 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	p.print(b.Name)
 	if forceNewline {
 		p.print(unindent)
-		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, false)
+		if len(b.Body) == 0 {
+			p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
+		}
 	}
 
 	beforeStmtsLine := p.out.Line
