@@ -419,7 +419,7 @@ func (p *printer) writeCommentPrefix(pos, next token.Position, prev *ast.Comment
 				// apply pending indentation
 				continue
 			case unindent:
-				if p.inEndTag && tok == token.GTR {
+				if (p.inEndTag || p.inStartTag) && tok == token.GTR {
 					break
 				}
 
