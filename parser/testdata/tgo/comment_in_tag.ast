@@ -1,0 +1,125 @@
+     0  *ast.File {
+     1  .  Package: comment_in_tag.tgo:1:1
+     2  .  Name: *ast.Ident {
+     3  .  .  NamePos: comment_in_tag.tgo:1:9
+     4  .  .  Name: "templates"
+     5  .  }
+     6  .  Decls: []ast.Decl (len = 1) {
+     7  .  .  0: *ast.FuncDecl {
+     8  .  .  .  Name: *ast.Ident {
+     9  .  .  .  .  NamePos: comment_in_tag.tgo:3:6
+    10  .  .  .  .  Name: "test"
+    11  .  .  .  }
+    12  .  .  .  Type: *ast.FuncType {
+    13  .  .  .  .  Func: comment_in_tag.tgo:3:1
+    14  .  .  .  .  Params: *ast.FieldList {
+    15  .  .  .  .  .  Opening: comment_in_tag.tgo:3:10
+    16  .  .  .  .  .  Closing: comment_in_tag.tgo:3:11
+    17  .  .  .  .  }
+    18  .  .  .  }
+    19  .  .  .  Body: *ast.BlockStmt {
+    20  .  .  .  .  Lbrace: comment_in_tag.tgo:3:13
+    21  .  .  .  .  List: []ast.Stmt (len = 4) {
+    22  .  .  .  .  .  0: *ast.OpenTagStmt {
+    23  .  .  .  .  .  .  OpenPos: comment_in_tag.tgo:4:2
+    24  .  .  .  .  .  .  Name: *ast.Ident {
+    25  .  .  .  .  .  .  .  NamePos: comment_in_tag.tgo:4:11
+    26  .  .  .  .  .  .  .  Name: "div"
+    27  .  .  .  .  .  .  }
+    28  .  .  .  .  .  .  ClosePos: comment_in_tag.tgo:4:14
+    29  .  .  .  .  .  }
+    30  .  .  .  .  .  1: *ast.EndTagStmt {
+    31  .  .  .  .  .  .  OpenPos: comment_in_tag.tgo:4:15
+    32  .  .  .  .  .  .  Name: *ast.Ident {
+    33  .  .  .  .  .  .  .  NamePos: comment_in_tag.tgo:4:17
+    34  .  .  .  .  .  .  .  Name: "div"
+    35  .  .  .  .  .  .  }
+    36  .  .  .  .  .  .  ClosePos: comment_in_tag.tgo:4:20
+    37  .  .  .  .  .  }
+    38  .  .  .  .  .  2: *ast.AssignStmt {
+    39  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+    40  .  .  .  .  .  .  .  0: *ast.Ident {
+    41  .  .  .  .  .  .  .  .  NamePos: comment_in_tag.tgo:6:2
+    42  .  .  .  .  .  .  .  .  Name: "a"
+    43  .  .  .  .  .  .  .  }
+    44  .  .  .  .  .  .  }
+    45  .  .  .  .  .  .  TokPos: comment_in_tag.tgo:6:4
+    46  .  .  .  .  .  .  Tok: :=
+    47  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+    48  .  .  .  .  .  .  .  0: *ast.BinaryExpr {
+    49  .  .  .  .  .  .  .  .  X: *ast.BasicLit {
+    50  .  .  .  .  .  .  .  .  .  ValuePos: comment_in_tag.tgo:6:7
+    51  .  .  .  .  .  .  .  .  .  Kind: INT
+    52  .  .  .  .  .  .  .  .  .  Value: "1"
+    53  .  .  .  .  .  .  .  .  }
+    54  .  .  .  .  .  .  .  .  OpPos: comment_in_tag.tgo:6:9
+    55  .  .  .  .  .  .  .  .  Op: <
+    56  .  .  .  .  .  .  .  .  Y: *ast.BasicLit {
+    57  .  .  .  .  .  .  .  .  .  ValuePos: comment_in_tag.tgo:6:19
+    58  .  .  .  .  .  .  .  .  .  Kind: INT
+    59  .  .  .  .  .  .  .  .  .  Value: "2"
+    60  .  .  .  .  .  .  .  .  }
+    61  .  .  .  .  .  .  .  }
+    62  .  .  .  .  .  .  }
+    63  .  .  .  .  .  }
+    64  .  .  .  .  .  3: *ast.AssignStmt {
+    65  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+    66  .  .  .  .  .  .  .  0: *ast.Ident {
+    67  .  .  .  .  .  .  .  .  NamePos: comment_in_tag.tgo:8:2
+    68  .  .  .  .  .  .  .  .  Name: "a"
+    69  .  .  .  .  .  .  .  }
+    70  .  .  .  .  .  .  }
+    71  .  .  .  .  .  .  TokPos: comment_in_tag.tgo:8:4
+    72  .  .  .  .  .  .  Tok: :=
+    73  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+    74  .  .  .  .  .  .  .  0: *ast.BinaryExpr {
+    75  .  .  .  .  .  .  .  .  X: *ast.BasicLit {
+    76  .  .  .  .  .  .  .  .  .  ValuePos: comment_in_tag.tgo:8:7
+    77  .  .  .  .  .  .  .  .  .  Kind: INT
+    78  .  .  .  .  .  .  .  .  .  Value: "1"
+    79  .  .  .  .  .  .  .  .  }
+    80  .  .  .  .  .  .  .  .  OpPos: comment_in_tag.tgo:8:9
+    81  .  .  .  .  .  .  .  .  Op: <
+    82  .  .  .  .  .  .  .  .  Y: *ast.BasicLit {
+    83  .  .  .  .  .  .  .  .  .  ValuePos: comment_in_tag.tgo:9:3
+    84  .  .  .  .  .  .  .  .  .  Kind: INT
+    85  .  .  .  .  .  .  .  .  .  Value: "2"
+    86  .  .  .  .  .  .  .  .  }
+    87  .  .  .  .  .  .  .  }
+    88  .  .  .  .  .  .  }
+    89  .  .  .  .  .  }
+    90  .  .  .  .  }
+    91  .  .  .  .  Rbrace: comment_in_tag.tgo:10:1
+    92  .  .  .  }
+    93  .  .  }
+    94  .  }
+    95  .  FileStart: comment_in_tag.tgo:1:1
+    96  .  FileEnd: comment_in_tag.tgo:10:3
+    97  .  Comments: []*ast.CommentGroup (len = 3) {
+    98  .  .  0: *ast.CommentGroup {
+    99  .  .  .  List: []*ast.Comment (len = 1) {
+   100  .  .  .  .  0: *ast.Comment {
+   101  .  .  .  .  .  Slash: comment_in_tag.tgo:4:3
+   102  .  .  .  .  .  Text: "/*test*/"
+   103  .  .  .  .  }
+   104  .  .  .  }
+   105  .  .  }
+   106  .  .  1: *ast.CommentGroup {
+   107  .  .  .  List: []*ast.Comment (len = 1) {
+   108  .  .  .  .  0: *ast.Comment {
+   109  .  .  .  .  .  Slash: comment_in_tag.tgo:6:10
+   110  .  .  .  .  .  Text: "/*test*/"
+   111  .  .  .  .  }
+   112  .  .  .  }
+   113  .  .  }
+   114  .  .  2: *ast.CommentGroup {
+   115  .  .  .  List: []*ast.Comment (len = 1) {
+   116  .  .  .  .  0: *ast.Comment {
+   117  .  .  .  .  .  Slash: comment_in_tag.tgo:8:10
+   118  .  .  .  .  .  Text: "//test"
+   119  .  .  .  .  }
+   120  .  .  .  }
+   121  .  .  }
+   122  .  }
+   123  .  GoVersion: ""
+   124  }

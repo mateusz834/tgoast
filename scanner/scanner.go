@@ -933,7 +933,7 @@ scanAgain:
 			if s.ch == '-' {
 				s.next()
 				tok = token.ARROW
-			} else if s.ch == '/' && s.peek() != '/' {
+			} else if s.ch == '/' && s.peek() != '/' && s.peek() != '*' {
 				s.next()
 				tok = token.END_TAG
 			} else {

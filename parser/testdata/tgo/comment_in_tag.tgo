@@ -1,0 +1,10 @@
+package templates
+
+func test() {
+	</*test*/div></div>
+
+	a := 1 </*test*/ 2
+
+	a := 1 <//test
+		2
+}
