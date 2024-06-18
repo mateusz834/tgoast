@@ -5,15 +5,20 @@ import (
 	"github.com/mateusz834/tgoast/token"
 )
 
+func commentGroupBetween(c *ast.CommentGroup, start, end token.Pos) bool {
+	return c.Pos() > start && c.End()-1 < end
+}
+
 func (p *printer) opentag(b *ast.OpenTagStmt) {
+	// TODO: start tag inside of start tag.
 	p.inStartTag = true
 	defer func() {
 		p.inStartTag = false
 	}()
 
 	p.setPos(b.OpenPos)
-	p.endTagStartLine = p.lineFor(b.OpenPos)
-	p.endTagEndLine = p.lineFor(b.ClosePos)
+	p.tagStartLine = p.lineFor(b.OpenPos)
+	p.tagEndLine = p.lineFor(b.ClosePos)
 
 	p.print(token.LSS)
 
@@ -54,7 +59,7 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	p.stmtList(b.Body, 1, true)
 
 	if beforeStmtsLine != p.out.Line {
-		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, true)
+		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, false)
 	}
 
 	p.setPos(b.ClosePos)
@@ -64,10 +69,6 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	p.print(indent)
 }
 
-func commentGroupBetween(c *ast.CommentGroup, start, end token.Pos) bool {
-	return c.Pos() > start && c.End()-1 < end
-}
-
 func (p *printer) endtag(b *ast.EndTagStmt) {
 	p.inEndTag = true
 	defer func() {
@@ -75,8 +76,8 @@ func (p *printer) endtag(b *ast.EndTagStmt) {
 	}()
 
 	p.setPos(b.OpenPos)
-	p.endTagStartLine = p.lineFor(b.OpenPos)
-	p.endTagEndLine = p.lineFor(b.ClosePos)
+	p.tagStartLine = p.lineFor(b.OpenPos)
+	p.tagEndLine = p.lineFor(b.ClosePos)
 
 	p.print(token.END_TAG)
 

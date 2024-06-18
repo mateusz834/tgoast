@@ -96,11 +96,11 @@ type printer struct {
 	cachedPos  token.Pos
 	cachedLine int // line corresponding to cachedPos
 
-	hasNewline      map[ast.Node]bool
-	inStartTag      bool
-	inEndTag        bool
-	endTagStartLine int
-	endTagEndLine   int
+	hasNewline   map[ast.Node]bool
+	inStartTag   bool
+	inEndTag     bool
+	tagStartLine int
+	tagEndLine   int
 }
 
 func (p *printer) internalError(msg ...any) {
@@ -817,8 +817,8 @@ func (p *printer) intersperseComments(next token.Position, tok token.Token) (wro
 		}
 
 		if p.inEndTag || p.inStartTag {
-			isOneLine := p.endTagStartLine == p.endTagEndLine
-			lastCommentSameLine := p.endTagStartLine == p.lineFor(last.End()-1)
+			isOneLine := p.tagStartLine == p.tagEndLine
+			lastCommentSameLine := p.tagStartLine == p.lineFor(last.End()-1)
 			if !lastCommentSameLine && !isOneLine {
 				needsLinebreak = true
 			}
