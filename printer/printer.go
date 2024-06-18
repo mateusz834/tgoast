@@ -97,6 +97,7 @@ type printer struct {
 	cachedLine int // line corresponding to cachedPos
 
 	hasNewline      map[ast.Node]bool
+	inStartTag      bool
 	inEndTag        bool
 	endTagStartLine int
 	endTagEndLine   int
@@ -150,7 +151,7 @@ func (p *printer) nextComment() {
 // before the next position in the source code and printing it does
 // not introduce implicit semicolons.
 func (p *printer) commentBefore(next token.Position) bool {
-	return p.commentOffset < next.Offset && (!p.impliedSemi || !p.commentNewline || p.inEndTag)
+	return p.commentOffset < next.Offset && (!p.impliedSemi || !p.commentNewline || p.inEndTag || p.inStartTag)
 }
 
 // commentSizeBefore returns the estimated size of the
@@ -815,7 +816,7 @@ func (p *printer) intersperseComments(next token.Position, tok token.Token) (wro
 			needsLinebreak = true
 		}
 
-		if p.inEndTag {
+		if p.inEndTag || p.inStartTag {
 			isOneLine := p.endTagStartLine == p.endTagEndLine
 			lastCommentSameLine := p.endTagStartLine == p.lineFor(last.End()-1)
 			if !lastCommentSameLine && !isOneLine {

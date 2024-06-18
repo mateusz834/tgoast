@@ -247,4 +247,16 @@ func test() {
 		/*test*/
 
 	>
+
+	<div>
+	</
+		div
+		// test
+	>
+
+	<div>
+	</
+		div
+		/*test*/
+	>
 }

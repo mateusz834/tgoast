@@ -6,10 +6,48 @@ import (
 )
 
 func (p *printer) opentag(b *ast.OpenTagStmt) {
+	p.inStartTag = true
+	defer func() {
+		p.inStartTag = false
+	}()
+
 	p.setPos(b.OpenPos)
+	p.endTagStartLine = p.lineFor(b.OpenPos)
+	p.endTagEndLine = p.lineFor(b.ClosePos)
+
 	p.print(token.LSS)
+
+	forceNewline := p.lineFor(b.OpenPos) != p.lineFor(b.Name.NamePos)
+	if c := p.comment; c != nil && !forceNewline {
+		var (
+			start, end = b.Name.End() - 1, b.ClosePos
+			off        = 0
+		)
+		if !commentGroupBetween(c, start, end) && p.cindex < len(p.comments) {
+			c = p.comments[p.cindex]
+			off = 1
+		}
+		if commentGroupBetween(c, start, end) {
+			hasNext := false
+			if p.cindex+off < len(p.comments) {
+				hasNext = commentGroupBetween(p.comments[p.cindex+off], start, end)
+			}
+			if !hasNext && p.lineFor(c.Pos()) == p.lineFor(b.Name.Pos()) && p.commentsHaveNewline(c.List) {
+				forceNewline = true
+			}
+		}
+	}
+
+	if forceNewline {
+		p.print(indent)
+		p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
+	}
 	p.setPos(b.Name.NamePos)
 	p.print(b.Name)
+	if forceNewline {
+		p.print(unindent)
+		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, false)
+	}
 
 	beforeStmtsLine := p.out.Line
 
