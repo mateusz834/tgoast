@@ -10,16 +10,7 @@ func commentGroupBetween(c *ast.CommentGroup, start, end token.Pos) bool {
 }
 
 func (p *printer) opentag(b *ast.OpenTagStmt) {
-	// TODO: start tag inside of start tag.
-	p.inStartTag = true
-	defer func() {
-		p.inStartTag = false
-	}()
-
 	p.setPos(b.OpenPos)
-	p.tagStartLine = p.lineFor(b.OpenPos)
-	p.tagEndLine = p.lineFor(b.ClosePos)
-
 	p.print(token.LSS)
 
 	forceNewline := p.lineFor(b.OpenPos) != p.lineFor(b.Name.NamePos)
@@ -63,22 +54,19 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	}
 
 	p.setPos(b.ClosePos)
+
+	p.inStartTag = true
+	p.tagStartLine = p.lineFor(b.OpenPos)
+	p.tagEndLine = p.lineFor(b.ClosePos)
 	p.print(token.GTR)
+	p.inStartTag = false
 
 	// TODO(nmateusz834): void elements
 	p.print(indent)
 }
 
 func (p *printer) endtag(b *ast.EndTagStmt) {
-	p.inEndTag = true
-	defer func() {
-		p.inEndTag = false
-	}()
-
 	p.setPos(b.OpenPos)
-	p.tagStartLine = p.lineFor(b.OpenPos)
-	p.tagEndLine = p.lineFor(b.ClosePos)
-
 	p.print(token.END_TAG)
 
 	forceNewline := p.lineFor(b.OpenPos) != p.lineFor(b.Name.NamePos)
@@ -106,6 +94,7 @@ func (p *printer) endtag(b *ast.EndTagStmt) {
 		p.print(indent)
 		p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
 	}
+
 	p.setPos(b.Name.NamePos)
 	p.print(b.Name)
 	if forceNewline {
@@ -115,7 +104,12 @@ func (p *printer) endtag(b *ast.EndTagStmt) {
 
 	p.print(indent, unindent)
 	p.setPos(b.ClosePos)
+
+	p.inEndTag = true
+	p.tagStartLine = p.lineFor(b.OpenPos)
+	p.tagEndLine = p.lineFor(b.ClosePos)
 	p.print(token.GTR)
+	p.inEndTag = false
 }
 
 func (p *printer) attr(a *ast.AttributeStmt) {
@@ -156,6 +150,9 @@ func (p *printer) oneLineTag(list []ast.Stmt) bool {
 		}
 		if _, ok := v.(*ast.EndTagStmt); ok {
 			if deep--; deep == 0 {
+				// TODO(mateusz834): make sure that one-line end tag is never formatted
+				// into multuple lines. If this is not true, then print the end tag
+				// (or use some heuristics) to check whether it occupies multiple lines.
 				return p.lineFor(startPos) == p.lineFor(v.End()) &&
 					!p.willHaveNewLine(list[0].(*ast.OpenTagStmt), list[1:i])
 			}
