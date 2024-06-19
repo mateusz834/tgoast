@@ -9,10 +9,19 @@ func commentGroupBetween(c *ast.CommentGroup, start, end token.Pos) bool {
 	return c.Pos() > start && c.End()-1 < end
 }
 
-func (p *printer) tagForceNewline(tagOpenPos, nameStartPos, nameEndPos, tagClosePos token.Pos) bool {
+func (p *printer) tagForceNewline(tagOpenPos, nameStartPos, nameEndPos, tagClosePos token.Pos, body []ast.Stmt) bool {
 	forceNewline := p.lineFor(tagOpenPos) != p.lineFor(nameStartPos)
 	nameEndPos--
-	if c := p.comment; c != nil && !forceNewline {
+
+	hasEmptyBody := true
+	for _, v := range body {
+		if _, ok := v.(*ast.EmptyStmt); !ok {
+			hasEmptyBody = false
+			break
+		}
+	}
+
+	if c := p.comment; c != nil && !forceNewline && hasEmptyBody {
 		off := 0
 		if !commentGroupBetween(c, nameEndPos, tagClosePos) && p.cindex < len(p.comments) {
 			c = p.comments[p.cindex]
@@ -35,7 +44,7 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	p.setPos(b.OpenPos)
 	p.print(token.LSS)
 
-	forceNewline := p.tagForceNewline(b.OpenPos, b.Name.NamePos, b.Name.End(), b.ClosePos)
+	forceNewline := p.tagForceNewline(b.OpenPos, b.Name.NamePos, b.Name.End(), b.ClosePos, b.Body)
 
 	if forceNewline {
 		p.print(indent)
@@ -75,7 +84,7 @@ func (p *printer) endtag(b *ast.EndTagStmt) {
 	p.setPos(b.OpenPos)
 	p.print(token.END_TAG)
 
-	forceNewline := p.tagForceNewline(b.OpenPos, b.Name.NamePos, b.Name.End(), b.ClosePos)
+	forceNewline := p.tagForceNewline(b.OpenPos, b.Name.NamePos, b.Name.End(), b.ClosePos, nil)
 
 	if forceNewline {
 		p.print(indent)

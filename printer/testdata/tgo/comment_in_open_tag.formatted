@@ -302,4 +302,31 @@ func test() {
 		@attributre="value" /*test*/
 	>
 	</div>
+
+	<aa // test
+		@attr
+	>
+	</div>
+
+	<
+		aa // test
+		@attr
+	>
+	</div>
+
+	<aa // test
+		/*test*/
+	>
+	</div>
+
+	<
+		aa // test
+		/*test*/
+	>
+	</div>
+
+	<
+		aa // test
+	>
+	</div>
 }
