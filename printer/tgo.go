@@ -5,42 +5,13 @@ import (
 	"github.com/mateusz834/tgoast/token"
 )
 
-func (p *printer) opentag(b *ast.OpenTagStmt) {
-	p.setPos(b.OpenPos)
-	p.print(token.LSS)
-	p.setPos(b.Name.NamePos)
-	p.print(b.Name)
-
-	beforeStmtsLine := p.out.Line
-
-	p.stmtList(b.Body, 1, true)
-
-	if beforeStmtsLine != p.out.Line {
-		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, true)
-	}
-
-	p.setPos(b.ClosePos)
-	p.print(token.GTR)
-
-	// TODO(nmateusz834): void elements
-	p.print(indent)
-}
-
 func commentGroupBetween(c *ast.CommentGroup, start, end token.Pos) bool {
 	return c.Pos() > start && c.End()-1 < end
 }
 
-func (p *printer) endtag(b *ast.EndTagStmt) {
-	p.inEndTag = true
-	defer func() {
-		p.inEndTag = false
-	}()
-
+func (p *printer) opentag(b *ast.OpenTagStmt) {
 	p.setPos(b.OpenPos)
-	p.endTagStartLine = p.lineFor(b.OpenPos)
-	p.endTagEndLine = p.lineFor(b.ClosePos)
-
-	p.print(token.END_TAG)
+	p.print(token.LSS)
 
 	forceNewline := p.lineFor(b.OpenPos) != p.lineFor(b.Name.NamePos)
 	if c := p.comment; c != nil && !forceNewline {
@@ -69,6 +40,66 @@ func (p *printer) endtag(b *ast.EndTagStmt) {
 	}
 	p.setPos(b.Name.NamePos)
 	p.print(b.Name)
+	if forceNewline && len(b.Body) == 0 {
+		p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
+	}
+
+	if !forceNewline {
+		p.print(indent)
+	}
+
+	beforeStmtsLine := p.out.Line
+	p.stmtList(b.Body, -1, true)
+	if beforeStmtsLine != p.out.Line {
+		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, false)
+	}
+
+	p.print(unindent)
+
+	p.setPos(b.ClosePos)
+
+	p.inStartTag = true
+	p.tagStartLine = p.lineFor(b.OpenPos)
+	p.tagEndLine = p.lineFor(b.ClosePos)
+	p.print(token.GTR)
+	p.inStartTag = false
+
+	// TODO(nmateusz834): void elements
+	p.print(indent)
+}
+
+func (p *printer) endtag(b *ast.EndTagStmt) {
+	p.setPos(b.OpenPos)
+	p.print(token.END_TAG)
+
+	forceNewline := p.lineFor(b.OpenPos) != p.lineFor(b.Name.NamePos)
+	if c := p.comment; c != nil && !forceNewline {
+		var (
+			start, end = b.Name.End() - 1, b.ClosePos
+			off        = 0
+		)
+		if !commentGroupBetween(c, start, end) && p.cindex < len(p.comments) {
+			c = p.comments[p.cindex]
+			off = 1
+		}
+		if commentGroupBetween(c, start, end) {
+			hasNext := false
+			if p.cindex+off < len(p.comments) {
+				hasNext = commentGroupBetween(p.comments[p.cindex+off], start, end)
+			}
+			if !hasNext && p.lineFor(c.Pos()) == p.lineFor(b.Name.Pos()) && p.commentsHaveNewline(c.List) {
+				forceNewline = true
+			}
+		}
+	}
+
+	if forceNewline {
+		p.print(indent)
+		p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
+	}
+
+	p.setPos(b.Name.NamePos)
+	p.print(b.Name)
 	if forceNewline {
 		p.print(unindent)
 		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, false)
@@ -76,7 +107,12 @@ func (p *printer) endtag(b *ast.EndTagStmt) {
 
 	p.print(indent, unindent)
 	p.setPos(b.ClosePos)
+
+	p.inEndTag = true
+	p.tagStartLine = p.lineFor(b.OpenPos)
+	p.tagEndLine = p.lineFor(b.ClosePos)
 	p.print(token.GTR)
+	p.inEndTag = false
 }
 
 func (p *printer) attr(a *ast.AttributeStmt) {

@@ -1,0 +1,287 @@
+package templates
+
+func test() {
+	</*test*/div></div>
+	< /*test*/ div></div>
+	<  /*test*/  div></div>
+	<div /*test*/ ></div>
+	<div  /*test*/  ></div>
+	<div/*test*/></div>
+	</*test*/div/*test*/></div>
+	<  /*test*/  div  /*test*/  ></div>
+
+	<div /*test*/ >
+	</div>
+
+	<div /*test*/
+	>
+	</div>
+
+	<div /*test*/
+	>
+	</div>
+
+	<
+		div /*test*/
+	>
+	</div>
+
+	<div // test
+	>
+	</div>
+
+	<
+		div // test
+	>
+	</div>
+
+	< // test
+		div
+	>
+	</div>
+
+	< /*test*/
+		div
+	>
+	</div>
+
+	<
+		div
+	/*test*/>
+	</div>
+
+	<
+		div
+		// test
+	>
+	</div>
+
+	<
+		div
+		// test
+	>
+	</div>
+
+	<div
+		// test
+	>
+	</div>
+
+	<div
+		/*test*/
+	>
+	</div>
+
+	<div
+	/*test*/>
+	</div>
+
+	<  div
+			/*test*/>
+	</div>
+
+	<div /*test*/ @attr="value" >
+	</div>
+
+	<div /*test*/ @attr="value" /*test*/ >
+	</div>
+
+	<div /*test*/ @attr="value" //test
+	>
+	</div>
+
+	<div /*test*/ @attr="value" //test
+	/*test*/>
+	</div>
+
+	<div /*test*/
+	/*test*/>
+	</div>
+
+	<div /*test*/
+	//test
+	/*test*/>
+	</div>
+
+	</*test*/div>
+	</div>
+
+	<
+	/*test*/div>
+	</div>
+
+	</*test*/
+	div>
+	</div>
+
+	< // test
+	div>
+	</div>
+
+	< // test
+	// test
+	div>
+	</div>
+
+	< // test
+	/*test*/
+	div>
+	</div>
+
+	< // test
+	/*test*/
+	div /*test*/ >
+	</div>
+
+	< // test
+	/*test*/
+	div /*test*/
+	// test
+	>
+	</div>
+
+	< // test
+		/*test*/
+		div /*test*/
+		// test
+	>
+	</div>
+
+	< // test
+		/*test*/
+		div /*test*/
+	// test
+	@attr
+	>
+	</div>
+
+	< // test
+		/*test*/
+		div /*test*/
+	// test
+		@attr
+	>
+	</div>
+
+	< // test
+		/*test*/
+		div /*test*/
+		@attr
+				// test
+	>
+	</div>
+
+	< // test
+		/*test*/
+		div /*test*/
+		@attr
+	// test
+	>
+	</div>
+
+	<
+		aa
+		// df
+		@attr
+		// test
+	>
+	</div>
+
+	<
+		aa
+	// df
+		@attr
+	// test
+	>
+	</div>
+
+	<
+		aa
+			// df
+		@attr
+			// test
+	>
+	</div>
+
+	<
+		aa
+		@attr
+		// test
+	>
+	</div>
+
+	<
+	aa
+	@attr
+	// test
+	>
+	</div>
+
+	<
+		aa
+	@attr
+	// test
+	>
+	</div>
+
+	<
+		aa
+		@attr
+	// test
+	>
+	</div>
+
+	< /*test*/
+		aa//test
+		/*test*/@attr="test"/*test*/
+		/*test*/
+		// test
+	>
+	</div>
+
+	< /*test*/
+		aa//test
+
+		/*test*/@attr="test"/*test*/
+		/*test*/
+		// test
+	>
+	</div>
+
+	< /*test*/
+	aa//test
+	/*test*/@attr="test"/*test*/
+	/*test*/
+	// test
+	>
+	</div>
+
+	< /*test*/
+	aa//test
+	_ = test()
+	/*test*/@attr="test"/*test*/
+	/*test*/
+	// test
+	>
+	</div>
+
+	< /*test*/
+	aa//test
+	/*test*/@attr="test"/*test*/
+	/*test*/@attr="test"/*test*/
+	/*test*/
+	// test
+	>
+	</div>
+
+	<aa
+	/*test*/@attr="test"/*test*/
+	>
+	</div>
+
+	<aa
+	@attr="test"/*test*/
+	@attributre="value" /*test*/
+	>
+	</div>
+}
