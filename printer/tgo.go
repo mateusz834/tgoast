@@ -9,30 +9,33 @@ func commentGroupBetween(c *ast.CommentGroup, start, end token.Pos) bool {
 	return c.Pos() > start && c.End()-1 < end
 }
 
-func (p *printer) opentag(b *ast.OpenTagStmt) {
-	p.setPos(b.OpenPos)
-	p.print(token.LSS)
-
-	forceNewline := p.lineFor(b.OpenPos) != p.lineFor(b.Name.NamePos)
+func (p *printer) tagForceNewline(tagOpenPos, nameStartPos, nameEndPos, tagClosePos token.Pos) bool {
+	forceNewline := p.lineFor(tagOpenPos) != p.lineFor(nameStartPos)
+	nameEndPos--
 	if c := p.comment; c != nil && !forceNewline {
-		var (
-			start, end = b.Name.End() - 1, b.ClosePos
-			off        = 0
-		)
-		if !commentGroupBetween(c, start, end) && p.cindex < len(p.comments) {
+		off := 0
+		if !commentGroupBetween(c, nameEndPos, tagClosePos) && p.cindex < len(p.comments) {
 			c = p.comments[p.cindex]
 			off = 1
 		}
-		if commentGroupBetween(c, start, end) {
+		if commentGroupBetween(c, nameEndPos, tagClosePos) {
 			hasNext := false
 			if p.cindex+off < len(p.comments) {
-				hasNext = commentGroupBetween(p.comments[p.cindex+off], start, end)
+				hasNext = commentGroupBetween(p.comments[p.cindex+off], nameEndPos, tagClosePos)
 			}
-			if !hasNext && p.lineFor(c.Pos()) == p.lineFor(b.Name.Pos()) && p.commentsHaveNewline(c.List) {
+			if !hasNext && p.lineFor(c.Pos()) == p.lineFor(nameStartPos) && p.commentsHaveNewline(c.List) {
 				forceNewline = true
 			}
 		}
 	}
+	return forceNewline
+}
+
+func (p *printer) opentag(b *ast.OpenTagStmt) {
+	p.setPos(b.OpenPos)
+	p.print(token.LSS)
+
+	forceNewline := p.tagForceNewline(b.OpenPos, b.Name.NamePos, b.Name.End(), b.ClosePos)
 
 	if forceNewline {
 		p.print(indent)
@@ -72,26 +75,7 @@ func (p *printer) endtag(b *ast.EndTagStmt) {
 	p.setPos(b.OpenPos)
 	p.print(token.END_TAG)
 
-	forceNewline := p.lineFor(b.OpenPos) != p.lineFor(b.Name.NamePos)
-	if c := p.comment; c != nil && !forceNewline {
-		var (
-			start, end = b.Name.End() - 1, b.ClosePos
-			off        = 0
-		)
-		if !commentGroupBetween(c, start, end) && p.cindex < len(p.comments) {
-			c = p.comments[p.cindex]
-			off = 1
-		}
-		if commentGroupBetween(c, start, end) {
-			hasNext := false
-			if p.cindex+off < len(p.comments) {
-				hasNext = commentGroupBetween(p.comments[p.cindex+off], start, end)
-			}
-			if !hasNext && p.lineFor(c.Pos()) == p.lineFor(b.Name.Pos()) && p.commentsHaveNewline(c.List) {
-				forceNewline = true
-			}
-		}
-	}
+	forceNewline := p.tagForceNewline(b.OpenPos, b.Name.NamePos, b.Name.End(), b.ClosePos)
 
 	if forceNewline {
 		p.print(indent)
