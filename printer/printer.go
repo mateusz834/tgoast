@@ -419,10 +419,6 @@ func (p *printer) writeCommentPrefix(pos, next token.Position, prev *ast.Comment
 				// apply pending indentation
 				continue
 			case unindent:
-				if (p.inEndTag || p.inStartTag) && tok == token.GTR {
-					break
-				}
-
 				// if this is not the last unindent, apply it
 				// as it is (likely) belonging to the last
 				// construct (e.g., a multi-line expression list)
@@ -430,6 +426,11 @@ func (p *printer) writeCommentPrefix(pos, next token.Position, prev *ast.Comment
 				if i+1 < len(p.wsbuf) && p.wsbuf[i+1] == unindent {
 					continue
 				}
+
+				if (p.inEndTag || p.inStartTag) && tok == token.GTR {
+					break
+				}
+
 				// if the next token is not a closing }, apply the unindent
 				// if it appears that the comment is aligned with the
 				// token; otherwise assume the unindent is part of a

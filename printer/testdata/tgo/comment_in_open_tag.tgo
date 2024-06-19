@@ -273,4 +273,9 @@ func test() {
 	// test
 	>
 	</div>
+
+	<aa
+	/*test*/@attr="test"/*test*/
+	>
+	</div>
 }

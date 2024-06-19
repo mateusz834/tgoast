@@ -285,11 +285,15 @@ func test() {
 
 	< /*test*/
 		aa //test
-		/*test*/
-		@attr="test" /*test*/
+		/*test*/ @attr="test" /*test*/
 		/*test*/ @attr="test" /*test*/
 		/*test*/
 		// test
+	>
+	</div>
+
+	<aa
+		/*test*/ @attr="test" /*test*/
 	>
 	</div>
 }

@@ -48,9 +48,7 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	}
 
 	beforeStmtsLine := p.out.Line
-
 	p.stmtList(b.Body, 1, true)
-
 	if beforeStmtsLine != p.out.Line {
 		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, false)
 	}
