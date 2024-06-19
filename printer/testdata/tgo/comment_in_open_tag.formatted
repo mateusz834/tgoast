@@ -296,4 +296,10 @@ func test() {
 		/*test*/ @attr="test" /*test*/
 	>
 	</div>
+
+	<aa
+		@attr="test"        /*test*/
+		@attributre="value" /*test*/
+	>
+	</div>
 }

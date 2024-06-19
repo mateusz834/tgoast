@@ -40,18 +40,21 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	}
 	p.setPos(b.Name.NamePos)
 	p.print(b.Name)
-	if forceNewline {
-		p.print(unindent)
-		if len(b.Body) == 0 {
-			p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
-		}
+	if forceNewline && len(b.Body) == 0 {
+		p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
+	}
+
+	if !forceNewline {
+		p.print(indent)
 	}
 
 	beforeStmtsLine := p.out.Line
-	p.stmtList(b.Body, 1, true)
+	p.stmtList(b.Body, -1, true)
 	if beforeStmtsLine != p.out.Line {
 		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, false)
 	}
+
+	p.print(unindent)
 
 	p.setPos(b.ClosePos)
 
