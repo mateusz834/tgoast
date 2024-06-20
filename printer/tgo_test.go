@@ -104,3 +104,52 @@ func gitDiff(tmpDir string, got, expect string) (string, error) {
 	}
 	return out.String(), nil
 }
+
+func TestTgoFormattedIdempotent(t *testing.T) {
+	const testdata = "./testdata/tgo"
+	files, err := os.ReadDir(testdata)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, v := range files {
+		ext := filepath.Ext(v.Name())
+		if ext == ".formatted" {
+			testFile := filepath.Join(testdata, v.Name())
+			content, err := os.ReadFile(testFile)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			fs := token.NewFileSet()
+			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments)
+			if err != nil {
+				if v, ok := err.(scanner.ErrorList); ok {
+					for _, err := range v {
+						t.Errorf("%v", err)
+					}
+				}
+				t.Errorf("Error while parsing file %v: %v", testFile, err)
+				continue
+			}
+
+			var b strings.Builder
+			var config = Config{
+				Mode:     UseSpaces | TabIndent | Mode(normalizeNumbers),
+				Tabwidth: 8,
+			}
+			if err := config.Fprint(&b, fs, f); err != nil {
+				t.Fatal(err)
+			}
+
+			got := b.String()
+			if string(content) != got {
+				t.Errorf("unexpected in %v", testFile)
+				d, err := gitDiff(t.TempDir(), string(content), got)
+				if err == nil {
+					t.Logf("\n%v", d)
+				}
+			}
+		}
+	}
+}
