@@ -197,7 +197,7 @@ func test() {
 	</div>
 
 	<
-		aa
+		div
 		// df
 		@attr
 		// test
@@ -205,7 +205,7 @@ func test() {
 	</div>
 
 	<
-		aa
+		div
 		// df
 		@attr
 		// test
@@ -213,7 +213,7 @@ func test() {
 	</div>
 
 	<
-		aa
+		div
 		// df
 		@attr
 		// test
@@ -221,35 +221,35 @@ func test() {
 	</div>
 
 	<
-		aa
+		div
 		@attr
 		// test
 	>
 	</div>
 
 	<
-		aa
+		div
 		@attr
 		// test
 	>
 	</div>
 
 	<
-		aa
+		div
 		@attr
 		// test
 	>
 	</div>
 
 	<
-		aa
+		div
 		@attr
 		// test
 	>
 	</div>
 
 	< /*test*/
-		aa //test
+		div //test
 		/*test*/ @attr="test" /*test*/
 		/*test*/
 		// test
@@ -257,7 +257,7 @@ func test() {
 	</div>
 
 	< /*test*/
-		aa //test
+		div //test
 
 		/*test*/
 		@attr="test" /*test*/
@@ -267,7 +267,7 @@ func test() {
 	</div>
 
 	< /*test*/
-		aa //test
+		div //test
 		/*test*/ @attr="test" /*test*/
 		/*test*/
 		// test
@@ -275,7 +275,7 @@ func test() {
 	</div>
 
 	< /*test*/
-		aa //test
+		div //test
 		_ = test()
 		/*test*/ @attr="test" /*test*/
 		/*test*/
@@ -284,7 +284,7 @@ func test() {
 	</div>
 
 	< /*test*/
-		aa //test
+		div //test
 		/*test*/ @attr="test" /*test*/
 		/*test*/ @attr="test" /*test*/
 		/*test*/
@@ -292,41 +292,41 @@ func test() {
 	>
 	</div>
 
-	<aa
+	<div
 		/*test*/ @attr="test" /*test*/
 	>
 	</div>
 
-	<aa
+	<div
 		@attr="test"        /*test*/
 		@attributre="value" /*test*/
 	>
 	</div>
 
-	<aa // test
+	<div // test
 		@attr
 	>
 	</div>
 
 	<
-		aa // test
+		div // test
 		@attr
 	>
 	</div>
 
-	<aa // test
+	<div // test
 		/*test*/
 	>
 	</div>
 
 	<
-		aa // test
+		div // test
 		/*test*/
 	>
 	</div>
 
 	<
-		aa // test
+		div // test
 	>
 	</div>
 }

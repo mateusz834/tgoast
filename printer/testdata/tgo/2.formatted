@@ -32,7 +32,7 @@ func test(sth, sth2 string) {
 
 	val := fmt.Sprintf("%v %v", sth, 99)
 	if val != " 99" {
-		<span>"\{val}"</div>
+		<span>"\{val}"</span>
 	}
 
 	<article>
