@@ -1,0 +1,39 @@
+package templates
+
+func test(sth string) {
+	<
+		div
+	>
+	</div>
+
+	<
+		div
+	>
+	</div>
+
+	<div>
+	</div>
+
+	<div>
+	</div>
+
+	<div /* test */ >
+	</div>
+
+	<div
+		/*test*/
+	>
+	</div>
+
+	<
+		div // test
+
+	>
+	</div>
+
+	<
+		div // test
+
+	>
+	</div>
+}

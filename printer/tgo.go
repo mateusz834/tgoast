@@ -9,19 +9,22 @@ func commentGroupBetween(c *ast.CommentGroup, start, end token.Pos) bool {
 	return c.Pos() > start && c.End()-1 < end
 }
 
+func isEmptyBody(body []ast.Stmt) bool {
+	emptyBody := true
+	for _, v := range body {
+		if _, ok := v.(*ast.EmptyStmt); !ok {
+			emptyBody = false
+			break
+		}
+	}
+	return emptyBody
+}
+
 func (p *printer) tagForceNewline(tagOpenPos, nameStartPos, nameEndPos, tagClosePos token.Pos, body []ast.Stmt) bool {
 	forceNewline := p.lineFor(tagOpenPos) != p.lineFor(nameStartPos)
 	nameEndPos--
 
-	hasEmptyBody := true
-	for _, v := range body {
-		if _, ok := v.(*ast.EmptyStmt); !ok {
-			hasEmptyBody = false
-			break
-		}
-	}
-
-	if c := p.comment; c != nil && !forceNewline && hasEmptyBody {
+	if c := p.comment; c != nil && !forceNewline && isEmptyBody(body) {
 		off := 0
 		if !commentGroupBetween(c, nameEndPos, tagClosePos) && p.cindex < len(p.comments) {
 			c = p.comments[p.cindex]
@@ -52,7 +55,7 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	}
 	p.setPos(b.Name.NamePos)
 	p.print(b.Name)
-	if forceNewline && len(b.Body) == 0 {
+	if forceNewline && isEmptyBody(b.Body) {
 		p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
 	}
 
