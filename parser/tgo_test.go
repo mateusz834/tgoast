@@ -169,6 +169,34 @@ func TestTgoBasicSyntax(t *testing.T) {
 			},
 		},
 		{
+			in: `@attr="test \{sth}t"`,
+			out: []ast.Stmt{
+				&ast.AttributeStmt{
+					StartPos: off,
+					AttrName: &ast.Ident{
+						NamePos: off + 1,
+						Name:    "attr",
+					},
+					AssignPos: off + 5,
+					Value: &ast.TemplateLiteralExpr{
+						OpenPos: off + 6,
+						Strings: []string{
+							`"test `,
+							`t"`,
+						},
+						Parts: []ast.Expr{
+							&ast.Ident{
+								NamePos: off + 14,
+								Name:    "sth",
+							},
+						},
+						ClosePos: off + 19,
+					},
+					EndPos: off + 19,
+				},
+			},
+		},
+		{
 			in: `<div></div>`,
 			out: []ast.Stmt{
 				&ast.OpenTagStmt{
@@ -281,6 +309,9 @@ func TestTgoBasicSyntax(t *testing.T) {
 		expectList := fd.Body.List
 		if !reflect.DeepEqual(expectList, tt.out) {
 			t.Errorf("unexpected AST for:\n%v", inStr)
+			var out strings.Builder
+			ast.Fprint(&out, fs, f, nil)
+			t.Logf("\n%v", out.String())
 		}
 	}
 }

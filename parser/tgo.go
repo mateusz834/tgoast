@@ -150,7 +150,7 @@ func (p *parser) parseTemplateLiteral() *ast.TemplateLiteralExpr {
 		p.pos, p.tok, p.lit = p.scanner.TemplateLiteralContinue()
 		strings = append(strings, p.lit)
 		if p.tok == token.STRING {
-			closePos = p.pos
+			closePos = p.pos + token.Pos(len(p.lit)) - 1
 			break
 		}
 	}
