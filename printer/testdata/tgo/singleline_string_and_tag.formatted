@@ -1,0 +1,33 @@
+package templates
+
+func template() {
+	<div>"test"</div>
+
+	<div><div>"test"</div></div>
+
+	<div>
+		"test"
+		<div>"test"</div>
+	</div>
+
+	<section>
+		<div>
+			"test"
+			<div>"test"</div>
+		</div>
+	</section>
+
+	<section>
+		<div>
+			"test"
+			<div>"test"</div>
+		</div>
+	</section>
+
+	<section>
+		<div>
+			"test"
+			<div>"test"</div>
+		</div>
+	</section>
+}
