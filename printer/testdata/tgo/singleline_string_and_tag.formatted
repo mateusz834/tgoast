@@ -30,4 +30,56 @@ func template() {
 			<div>"test"</div>
 		</div>
 	</section>
+
+	<div>
+		<div>"test"</div>
+		"test"
+	</div>
+
+	<div>
+		<div>"test"</div>
+		"test"
+	</div>
+
+	<section>
+		<div>
+			<div>"test"</div>
+			"test"
+		</div>
+	</section>
+
+	<section>
+		<div>
+			<div>"test"</div>
+			"test"
+		</div>
+	</section>
+
+	<section>
+		<div>
+			<div>"test"</div>
+			"test"
+		</div>
+	</section>
+
+	<section>
+		<div>
+			<div>"test"</div>
+			"test"
+		</div>
+	</section>
+
+	<section>
+		<div>
+			<div>"test"</div>
+			"test"
+		</div>
+	</section>
+
+	<section>
+		<div>
+			<div>"test"</div>
+			"test"
+		</div>
+	</section>
 }
