@@ -1,0 +1,27 @@
+package templates
+
+func template(a, b string) {
+	"\{b}"
+
+	"a\{a}"
+
+	"\{a}a"
+
+	"aa\{a}aa"
+
+	"aa\{a}aa\{b}"
+
+	"aa\{a}aa\{b}test"
+
+	"\{a}\{b}"
+
+	"\{a}\{""}"
+
+	"\{a}\{"a"}"
+
+	"\{func (a string) {"\{a}"}}"
+
+	"\{a}test\{func(a string) {"\{a}"}}"
+
+	"\{a}test\{func(a string) {"\{a}\{""}"}}"
+}

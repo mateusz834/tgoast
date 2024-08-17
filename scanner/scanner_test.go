@@ -1125,3 +1125,41 @@ func TestNumbers(t *testing.T) {
 		}
 	}
 }
+
+func TestTempalteLitearalTwoPartsSecondString(t *testing.T) {
+	const src = `"\{a}\{""}"`
+	var s Scanner
+	fs := token.NewFileSet()
+	s.Init(fs.AddFile("test", fs.Base(), len(src)), []byte(src), nil, 0)
+
+	wantNextToken := func(templateContinue bool, wantPos token.Pos, wantTok token.Token, wantLit string) {
+		t.Helper()
+		var (
+			pos token.Pos
+			tok token.Token
+			lit string
+			f   string
+		)
+		if templateContinue {
+			pos, tok, lit = s.TemplateLiteralContinue()
+			f = "TemplateLiteralContinue"
+		} else {
+			pos, tok, lit = s.Scan()
+			f = "Scan"
+		}
+		if pos != wantPos || tok != wantTok || lit != wantLit {
+			t.Errorf(
+				"s.%v() = (%v, %v, %q); want = (%v, %v, %q)",
+				f, pos, tok, lit, wantPos, wantTok, wantLit,
+			)
+		}
+	}
+
+	wantNextToken(false, 1, token.STRING_TEMPLATE, `"`)
+	wantNextToken(false, 4, token.IDENT, `a`)
+	wantNextToken(false, 5, token.RBRACE, ``)
+	wantNextToken(true, 6, token.STRING_TEMPLATE, ``)
+	wantNextToken(false, 8, token.STRING, `""`)
+	wantNextToken(false, 10, token.RBRACE, ``)
+	wantNextToken(true, 11, token.STRING, `"`)
+}
