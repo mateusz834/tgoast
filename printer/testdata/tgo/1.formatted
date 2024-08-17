@@ -33,10 +33,10 @@ func test(sth string) {
 		<div>"test \{sth}"</div>
 		<div
 			@attr="value"
-			@attr="test \{" " + sth}"
+			@attr="test \{" "+sth}"
 		>
 			"\{sth}"
-			<span>"\{sth + sth} test"</span>
+			<span>"\{sth+sth} test"</span>
 		</div>
 	}
 
