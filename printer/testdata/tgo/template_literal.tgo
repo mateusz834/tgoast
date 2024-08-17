@@ -1,4 +1,4 @@
-pakcage templates
+package templates
 
 func template(a string) {
 	"test\{a}"
