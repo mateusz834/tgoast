@@ -12,6 +12,10 @@ import (
 	"github.com/mateusz834/tgoast/ast"
 	"github.com/mateusz834/tgoast/scanner"
 	"github.com/mateusz834/tgoast/token"
+
+	goast "go/ast"
+	goparser "go/parser"
+	gotoken "go/token"
 )
 
 func TestTgoBasicSyntax(t *testing.T) {
@@ -363,7 +367,7 @@ func TestTgoSyntax(t *testing.T) {
 			got := b.String()
 			if string(expect) != got {
 				t.Errorf("unexpected in %v", testFile)
-				d, err := diff(t.TempDir(), string(expect), got)
+				d, err := gitDiff(t.TempDir(), string(expect), got)
 				if err == nil {
 					t.Logf("\n%v", d)
 				}
@@ -373,7 +377,106 @@ func TestTgoSyntax(t *testing.T) {
 
 }
 
-func diff(tmpDir string, got, expect string) (string, error) {
+func fuzzAddDir(f *testing.F, testdata string) {
+	files, err := os.ReadDir(testdata)
+	if err != nil {
+		f.Fatal(err)
+	}
+	for _, v := range files {
+		if v.IsDir() {
+			continue
+		}
+
+		testFile := filepath.Join(testdata, v.Name())
+		content, err := os.ReadFile(testFile)
+		if err != nil {
+			f.Fatal(err)
+		}
+		f.Add(testFile, string(content))
+	}
+}
+
+func FuzzGoParsableByTgo(f *testing.F) {
+	fuzzAddDir(f, "../printer")
+	fuzzAddDir(f, "../printer/testdata")
+	fuzzAddDir(f, "../parser")
+	fuzzAddDir(f, "../parser/testdata")
+	fuzzAddDir(f, "../ast")
+	f.Fuzz(func(t *testing.T, name, src string) {
+		gfs := gotoken.NewFileSet()
+		gf, err := goparser.ParseFile(gfs, name, src, goparser.SkipObjectResolution|goparser.ParseComments)
+		if err != nil {
+			return
+		}
+
+		fs := token.NewFileSet()
+		f, err := ParseFile(fs, name, src, SkipObjectResolution|ParseComments)
+		if err != nil {
+			t.Fatalf("ParseFile() = %v; want = <nil>", err)
+		}
+
+		var (
+			goAst  strings.Builder
+			tgoAst strings.Builder
+		)
+
+		if err := goast.Fprint(&goAst, gfs, gf, nil); err != nil {
+			t.Fatalf("goast.Fprint() = %v; want = <nil>", err)
+		}
+
+		if err := ast.Fprint(&tgoAst, fs, f, nil); err != nil {
+			t.Fatalf("ast.Fprint() = %v; want = <nil>", err)
+		}
+
+		if goAst.String() != tgoAst.String() {
+			diff, err := gitDiff(t.TempDir(), goAst.String(), tgoAst.String())
+			if err != nil {
+				t.Fatalf("difference found")
+			}
+			t.Fatalf(
+				"difference found, apply following changes to make this test pass:\n%v",
+				diff,
+			)
+		}
+	})
+}
+
+func FuzzTgoNotParsableByGo(f *testing.F) {
+	fuzzAddDir(f, "../printer/testdata/tgo")
+	fuzzAddDir(f, "../parser/testdata/tgo")
+	fuzzAddDir(f, "../printer")
+	fuzzAddDir(f, "../printer/testdata")
+	fuzzAddDir(f, "../parser")
+	fuzzAddDir(f, "../parser/testdata")
+	fuzzAddDir(f, "../ast")
+	f.Fuzz(func(t *testing.T, name, src string) {
+		fs := token.NewFileSet()
+		f, err := ParseFile(fs, name, src, SkipObjectResolution|ParseComments)
+		if err != nil {
+			return
+		}
+
+		goParsable := true
+		ast.Inspect(f, func(n ast.Node) bool {
+			switch n.(type) {
+			case *ast.OpenTagStmt, *ast.EndTagStmt,
+				*ast.TemplateLiteralExpr, *ast.AttributeStmt:
+				goParsable = false
+			}
+			return true
+		})
+
+		if !goParsable {
+			gfs := gotoken.NewFileSet()
+			_, err = goparser.ParseFile(gfs, name, src, goparser.SkipObjectResolution|goparser.ParseComments)
+			if err == nil {
+				t.Fatalf("ParseFile() = <nil>; want = (not <nil>)")
+			}
+		}
+	})
+}
+
+func gitDiff(tmpDir string, got, expect string) (string, error) {
 	gotPath := filepath.Join(tmpDir, "got")
 	gotFile, err := os.Create(gotPath)
 	if err != nil {
