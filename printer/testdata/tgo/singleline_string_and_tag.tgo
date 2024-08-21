@@ -40,4 +40,33 @@ func template() {
 
 	<section>
 		<div><div>"test"</div>"test"</div></section>
+
+	<div>0</div>
+
+	<div><div>0</div></div>
+
+	<div>
+		<div>0</div>
+	</div>
+
+	<div>
+		<div>
+			0
+		</div>
+	</div>
+
+	<div><div>0.0</div></div>
+
+	<div><div>'a'</div></div>
+
+	<div><div>1i</div></div>
+
+	<div><div>"a"</div>0</div>
+
+	<div>0;<div>"a"</div></div>
+
+	<div>0;<div>"a"</div>0</div>
+
+	<div>a</div>
+	<div>a()</div>
 }

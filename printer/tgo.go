@@ -174,6 +174,24 @@ func (p *printer) willHaveNewLine(o *ast.OpenTagStmt, list []ast.Stmt) bool {
 		return true
 	}
 
-	p.hasNewline[o] = counter.hasNewline || counter2.hasNewline
-	return counter.hasNewline || counter2.hasNewline
+	forceMultiLine := false
+	for _, v := range list {
+		switch v := v.(type) {
+		case *ast.OpenTagStmt, *ast.EndTagStmt:
+			continue
+		case *ast.ExprStmt:
+			switch v := v.X.(type) {
+			case *ast.BasicLit:
+				if v.Kind == token.STRING {
+					continue
+				}
+			case *ast.TemplateLiteralExpr:
+				continue
+			}
+		}
+		forceMultiLine = true
+	}
+
+	p.hasNewline[o] = counter.hasNewline || counter2.hasNewline || forceMultiLine
+	return counter.hasNewline || counter2.hasNewline || forceMultiLine
 }
