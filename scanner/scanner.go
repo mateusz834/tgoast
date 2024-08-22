@@ -44,6 +44,8 @@ type Scanner struct {
 	nlPos      token.Pos // position of newline in preceding comment
 
 	templateLiteralContinue bool
+	allowInsertSemiAfterGTR bool
+	prevGTR                 bool
 
 	// public state - ok to modify
 	ErrorCount int // number of errors encountered
@@ -798,6 +800,11 @@ func (s *Scanner) switch4(tok0, tok1 token.Token, ch2 rune, tok2, tok3 token.Tok
 // set with Init. Token positions are relative to that file
 // and thus relative to the file set.
 func (s *Scanner) Scan() (pos token.Pos, tok token.Token, lit string) {
+	if s.allowInsertSemiAfterGTR && s.prevGTR {
+		s.insertSemi = true
+	}
+	s.allowInsertSemiAfterGTR = false
+	s.prevGTR = false
 	s.templateLiteralContinue = false
 
 scanAgain:
@@ -972,6 +979,11 @@ scanAgain:
 			lit = string(ch)
 		}
 	}
+
+	if tok == token.GTR {
+		s.prevGTR = true
+	}
+
 	if s.mode&dontInsertSemis == 0 {
 		s.insertSemi = insertSemi
 	}
@@ -980,8 +992,14 @@ scanAgain:
 }
 
 func (s *Scanner) TemplateLiteralContinue() (pos token.Pos, tok token.Token, lit string) {
+	s.allowInsertSemiAfterGTR = false
+	s.prevGTR = false
 	s.templateLiteralContinue = true
 	pos = s.file.Pos(s.offset)
 	tok, lit = s.scanString()
 	return
+}
+
+func (s *Scanner) AllowInsertSemiAfterGTR() {
+	s.allowInsertSemiAfterGTR = true
 }

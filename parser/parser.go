@@ -340,8 +340,8 @@ func (p *parser) expectClosing(tok token.Token, context string) token.Pos {
 
 // expectSemi consumes a semicolon and returns the applicable line comment.
 func (p *parser) expectSemi() (comment *ast.CommentGroup) {
-	// semicolon is optional before a closing ')' or '}' or '</'
-	if p.tok != token.RPAREN && p.tok != token.RBRACE && p.tok != token.END_TAG {
+	// semicolon is optional before a closing ')' or '}'.
+	if p.tok != token.RPAREN && p.tok != token.RBRACE {
 		switch p.tok {
 		case token.COMMA:
 			// permit a ',' instead of a ';' but complain
@@ -2447,7 +2447,16 @@ func (p *parser) parseStmt() (s ast.Stmt) {
 		// parsed by parseSimpleStmt - don't expect a semicolon after
 		// them
 		if _, isLabeledStmt := s.(*ast.LabeledStmt); !isLabeledStmt {
-			p.expectSemi()
+			allowEndTag := false
+			if n, ok := s.(*ast.ExprStmt); ok {
+				x, isBasicLit := n.X.(*ast.BasicLit)
+				allowEndTag = isBasicLit && x.Kind == token.STRING
+			}
+			if allowEndTag {
+				p.expectSemiAllowEndTag()
+			} else {
+				p.expectSemi()
+			}
 		}
 	case token.GO:
 		s = p.parseGoStmt()

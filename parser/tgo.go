@@ -27,7 +27,7 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 			panic("unreachable")
 		}
 		p.next()
-		p.expectSemi()
+		p.expectSemiAllowEndTag()
 		return &ast.ExprStmt{X: lit}
 	case token.LSS, token.END_TAG:
 		openPos := p.pos
@@ -41,7 +41,12 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 		}
 
 		if closing {
+			p.scanner.AllowInsertSemiAfterGTR()
 			closePos := p.expect2(token.GTR)
+			if p.tok != token.STRING && p.tok != token.STRING_TEMPLATE &&
+				p.tok != token.END_TAG && p.tok != token.LSS {
+				p.expectSemi()
+			}
 			return &ast.EndTagStmt{
 				OpenPos:  openPos,
 				Name:     ident,
@@ -51,7 +56,12 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 
 		// TODO: this might allow tags inside?
 		body := p.parseTagStmtList()
+		p.scanner.AllowInsertSemiAfterGTR()
 		closePos := p.expect2(token.GTR)
+		if p.tok != token.STRING && p.tok != token.STRING_TEMPLATE &&
+			p.tok != token.END_TAG && p.tok != token.LSS {
+			p.expectSemi()
+		}
 
 		return &ast.OpenTagStmt{
 			OpenPos:  openPos,
@@ -161,4 +171,11 @@ func (p *parser) parseTemplateLiteral() *ast.TemplateLiteralExpr {
 		Parts:    parts,
 		ClosePos: closePos,
 	}
+}
+
+func (p *parser) expectSemiAllowEndTag() (comment *ast.CommentGroup) {
+	if p.tok != token.END_TAG {
+		return p.expectSemi()
+	}
+	return nil
 }
