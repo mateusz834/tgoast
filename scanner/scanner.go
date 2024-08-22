@@ -980,11 +980,10 @@ scanAgain:
 		}
 	}
 
-	if tok == token.GTR {
-		s.prevGTR = true
-	}
-
 	if s.mode&dontInsertSemis == 0 {
+		if tok == token.GTR {
+			s.prevGTR = true
+		}
 		s.insertSemi = insertSemi
 	}
 
