@@ -43,8 +43,7 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 		if closing {
 			p.scanner.AllowInsertSemiAfterGTR()
 			closePos := p.expect2(token.GTR)
-			if p.tok != token.STRING && p.tok != token.STRING_TEMPLATE &&
-				p.tok != token.END_TAG && p.tok != token.LSS {
+			if p.tok != token.END_TAG && p.tok != token.LSS {
 				p.expectSemi()
 			}
 			return &ast.EndTagStmt{
