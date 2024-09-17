@@ -996,6 +996,7 @@ func (s *Scanner) TemplateLiteralContinue() (pos token.Pos, tok token.Token, lit
 	s.templateLiteralContinue = true
 	pos = s.file.Pos(s.offset)
 	tok, lit = s.scanString()
+	//s.insertSemi = tok == token.STRING
 	return
 }
 
