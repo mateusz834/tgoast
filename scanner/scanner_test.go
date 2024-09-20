@@ -1163,3 +1163,40 @@ func TestTempalteLitearalTwoPartsSecondString(t *testing.T) {
 	wantNextToken(false, 10, token.RBRACE, ``)
 	wantNextToken(true, 11, token.STRING, `"`)
 }
+
+func TestTempalteLitearalSemiInsertion(t *testing.T) {
+	const src = `"\{//test` + "\n" + `a}"` + "\n"
+	var s Scanner
+	fs := token.NewFileSet()
+	s.Init(fs.AddFile("test", fs.Base(), len(src)), []byte(src), nil, ScanComments)
+
+	wantNextToken := func(templateContinue bool, wantTok token.Token, wantLit string) {
+		t.Helper()
+		var (
+			pos token.Pos
+			tok token.Token
+			lit string
+			f   string
+		)
+		if templateContinue {
+			pos, tok, lit = s.TemplateLiteralContinue()
+			f = "TemplateLiteralContinue"
+		} else {
+			pos, tok, lit = s.Scan()
+			f = "Scan"
+		}
+		if tok != wantTok || lit != wantLit {
+			t.Errorf(
+				"s.%v() = (%v, %v, %q); want = (_, %v, %q)",
+				f, pos, tok, lit, wantTok, wantLit,
+			)
+		}
+	}
+
+	wantNextToken(false, token.STRING_TEMPLATE, `"`)
+	wantNextToken(false, token.COMMENT, `//test`)
+	wantNextToken(false, token.IDENT, `a`)
+	wantNextToken(false, token.RBRACE, ``)
+	wantNextToken(true, token.STRING, `"`)
+	wantNextToken(false, token.SEMICOLON, "\n")
+}

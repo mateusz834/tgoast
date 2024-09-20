@@ -856,8 +856,8 @@ scanAgain:
 			s.insertSemi = false // newline consumed
 			return pos, token.SEMICOLON, "\n"
 		case '"':
-			insertSemi = true
 			tok, lit = s.scanString()
+			insertSemi = tok == token.STRING
 		case '\'':
 			insertSemi = true
 			tok = token.CHAR
@@ -996,6 +996,7 @@ func (s *Scanner) TemplateLiteralContinue() (pos token.Pos, tok token.Token, lit
 	s.templateLiteralContinue = true
 	pos = s.file.Pos(s.offset)
 	tok, lit = s.scanString()
+	s.insertSemi = tok == token.STRING
 	return
 }
 
