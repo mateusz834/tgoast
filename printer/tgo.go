@@ -131,8 +131,9 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	p.print(x.Strings[0])
 	for i := range x.Parts {
 		p.print("\\{")
-		p.expr(x.Parts[i])
-		p.setPos(x.End())
+		p.setPos(x.Parts[i].Pos())
+		p.expr(stripParensAlways(x.Parts[i].X))
+		p.setPos(x.Parts[i].End())
 		p.print("}")
 		p.print(x.Strings[i+1])
 	}

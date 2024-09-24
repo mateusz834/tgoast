@@ -1,0 +1,8 @@
+package templates
+
+func test(a string) {
+	"\{(a)}"
+	"\{((a))}"
+	"\{(((a)))}"
+	"\{(((a)))} \{a} \{(a)}"
+}
