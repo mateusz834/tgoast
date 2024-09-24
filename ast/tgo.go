@@ -16,7 +16,12 @@ func walkTgo(v Visitor, node Node) bool {
 		v.Visit(n.Value)
 		return true
 	case *TemplateLiteralExpr:
-		walkExprList(v, n.Parts)
+		for _, x := range n.Parts {
+			Walk(v, x)
+		}
+		return true
+	case *TemplateLiteralPart:
+		Walk(v, n.X)
 		return true
 	default:
 		return false
@@ -61,10 +66,19 @@ func (s *AttributeStmt) stmtNode() {}
 type TemplateLiteralExpr struct {
 	OpenPos  token.Pos // positon of the oppening '"'.
 	Strings  []string
-	Parts    []Expr
+	Parts    []*TemplateLiteralPart
 	ClosePos token.Pos // position of the closing '"'
 }
 
 func (s *TemplateLiteralExpr) Pos() token.Pos { return s.OpenPos }
 func (s *TemplateLiteralExpr) End() token.Pos { return s.ClosePos + 1 }
 func (s *TemplateLiteralExpr) exprNode()      {}
+
+type TemplateLiteralPart struct {
+	LBrace token.Pos
+	X      Expr
+	RBrace token.Pos
+}
+
+func (s *TemplateLiteralPart) Pos() token.Pos { return s.LBrace }
+func (s *TemplateLiteralPart) End() token.Pos { return s.RBrace + 1 }

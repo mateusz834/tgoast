@@ -75,10 +75,14 @@ func TestTgoBasicSyntax(t *testing.T) {
 							`"test `,
 							`"`,
 						},
-						Parts: []ast.Expr{
-							&ast.Ident{
-								NamePos: off + 8,
-								Name:    "sth",
+						Parts: []*ast.TemplateLiteralPart{
+							{
+								LBrace: off + 7,
+								X: &ast.Ident{
+									NamePos: off + 8,
+									Name:    "sth",
+								},
+								RBrace: off + 11,
 							},
 						},
 						ClosePos: off + 12,
@@ -97,14 +101,22 @@ func TestTgoBasicSyntax(t *testing.T) {
 							` `,
 							`"`,
 						},
-						Parts: []ast.Expr{
-							&ast.Ident{
-								NamePos: off + 8,
-								Name:    "sth",
+						Parts: []*ast.TemplateLiteralPart{
+							{
+								LBrace: off + 7,
+								X: &ast.Ident{
+									NamePos: off + 8,
+									Name:    "sth",
+								},
+								RBrace: off + 11,
 							},
-							&ast.Ident{
-								NamePos: off + 15,
-								Name:    "sth",
+							{
+								LBrace: off + 14,
+								X: &ast.Ident{
+									NamePos: off + 15,
+									Name:    "sth",
+								},
+								RBrace: off + 18,
 							},
 						},
 						ClosePos: off + 19,
@@ -160,10 +172,14 @@ func TestTgoBasicSyntax(t *testing.T) {
 							`"test `,
 							`"`,
 						},
-						Parts: []ast.Expr{
-							&ast.Ident{
-								NamePos: off + 14,
-								Name:    "sth",
+						Parts: []*ast.TemplateLiteralPart{
+							{
+								LBrace: off + 13,
+								X: &ast.Ident{
+									NamePos: off + 14,
+									Name:    "sth",
+								},
+								RBrace: off + 17,
 							},
 						},
 						ClosePos: off + 18,
@@ -188,10 +204,14 @@ func TestTgoBasicSyntax(t *testing.T) {
 							`"test `,
 							`t"`,
 						},
-						Parts: []ast.Expr{
-							&ast.Ident{
-								NamePos: off + 14,
-								Name:    "sth",
+						Parts: []*ast.TemplateLiteralPart{
+							{
+								LBrace: off + 13,
+								X: &ast.Ident{
+									NamePos: off + 14,
+									Name:    "sth",
+								},
+								RBrace: off + 17,
 							},
 						},
 						ClosePos: off + 19,
@@ -270,10 +290,14 @@ func TestTgoBasicSyntax(t *testing.T) {
 							`"test `,
 							`"`,
 						},
-						Parts: []ast.Expr{
-							&ast.Ident{
-								NamePos: off + 13,
-								Name:    "sth",
+						Parts: []*ast.TemplateLiteralPart{
+							{
+								LBrace: off + 12,
+								X: &ast.Ident{
+									NamePos: off + 13,
+									Name:    "sth",
+								},
+								RBrace: off + 16,
 							},
 						},
 						ClosePos: off + 17,

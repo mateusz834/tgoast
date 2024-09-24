@@ -144,15 +144,22 @@ func (p *parser) parseTagStmtList() (list []ast.Stmt) {
 }
 
 func (p *parser) parseTemplateLiteral() *ast.TemplateLiteralExpr {
-	startPos := p.pos
-	strings := []string{p.lit}
-	parts := []ast.Expr{}
+	var (
+		startPos = p.pos
+		strings  = []string{p.lit}
+		parts    = []*ast.TemplateLiteralPart{}
 
-	var closePos token.Pos
+		closePos token.Pos
+	)
 
 	for {
+		lBracePos := token.Pos(int(p.pos) + len(p.lit) + 1)
 		p.next()
-		parts = append(parts, p.parseExpr())
+		parts = append(parts, &ast.TemplateLiteralPart{
+			LBrace: lBracePos,
+			X:      p.parseExpr(),
+			RBrace: p.pos,
+		})
 		if p.tok != token.RBRACE {
 			p.errorExpected(p.pos, "'"+token.RBRACE.String()+"'")
 		}
