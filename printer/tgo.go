@@ -130,11 +130,14 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	p.setPos(x.OpenPos)
 	p.print(x.Strings[0])
 	for i := range x.Parts {
-		p.print("\\{")
-		p.setPos(x.Parts[i].Pos())
+		p.print("\\", token.LBRACE)
+		p.setPos(x.Parts[i].LBrace)
 		p.expr(stripParensAlways(x.Parts[i].X))
-		p.setPos(x.Parts[i].End())
-		p.print("}")
+		p.setPos(x.Parts[i].RBrace)
+		if p.mode&noExtraLinebreak != 0 || p.mode&noExtraBlank != 0 {
+			panic("unreachable")
+		}
+		p.print(noExtraLinebreak|noExtraBlank, token.RBRACE, noExtraLinebreak|noExtraBlank)
 		p.print(x.Strings[i+1])
 	}
 }

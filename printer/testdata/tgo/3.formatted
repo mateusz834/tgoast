@@ -133,16 +133,16 @@ func test(sth string) {
 	"test\{sth}" /*test*/
 
 	"test \{ /*comment*/ test}"
-	"test \{test /*c*/ }"
-	"test \{ /*c*/ test /*c*/ }"
+	"test \{test /*c*/}"
+	"test \{ /*c*/ test /*c*/}"
 
 	"test" /*test*/
 
 	"test \{ /*comment*/ test}" /*test*/
 
-	"test \{test /*c*/ }" /*test*/
+	"test \{test /*c*/}" /*test*/
 
-	"test \{ /*c*/ test /*c*/ }" /*test*/
+	"test \{ /*c*/ test /*c*/}" /*test*/
 
 	"hello \{ /*c*/ sth}"
 	/*test*/ "hello \{ /*c*/ sth}"
