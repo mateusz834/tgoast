@@ -78,9 +78,6 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	p.tagEndLine = p.lineFor(b.ClosePos)
 	p.print(token.GTR)
 	p.inStartTag = false
-
-	// TODO(nmateusz834): void elements
-	p.print(indent)
 }
 
 func (p *printer) endtag(b *ast.EndTagStmt) {
@@ -142,24 +139,34 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	}
 }
 
-func (p *printer) oneLineTag(list []ast.Stmt) bool {
-	deep := 0
-	startPos := token.NoPos
+func (p *printer) tagIndent(list []ast.Stmt) (indent map[*ast.OpenTagStmt]struct{}, unindent map[*ast.EndTagStmt]struct{}, oneline map[*ast.OpenTagStmt]struct{}) {
+	indent = make(map[*ast.OpenTagStmt]struct{})
+	unindent = make(map[*ast.EndTagStmt]struct{})
+	oneline = make(map[*ast.OpenTagStmt]struct{})
+
+	deep := make([]int, 0, 32)
 	for i, v := range list {
-		if _, ok := v.(*ast.OpenTagStmt); ok {
-			// TODO(mateusz834): void elements
-			deep++
-			startPos = v.Pos()
-		}
-		if _, ok := v.(*ast.EndTagStmt); ok {
-			if deep--; deep == 0 {
-				return p.lineFor(startPos) == p.lineFor(v.End()) &&
-					!p.willHaveNewLine(list[0].(*ast.OpenTagStmt), list[1:i])
+		switch v := v.(type) {
+		case *ast.OpenTagStmt:
+			deep = append(deep, i)
+		case *ast.EndTagStmt:
+			for len(deep) != 0 {
+				openTagIndex := deep[len(deep)-1]
+				openTag := list[openTagIndex].(*ast.OpenTagStmt)
+				deep = deep[:len(deep)-1]
+				if openTag.Name.Name == v.Name.Name {
+					indent[openTag] = struct{}{}
+					unindent[v] = struct{}{}
+					if p.lineFor(openTag.Pos()) == p.lineFor(v.End()) && !p.willHaveNewLine(openTag, list[openTagIndex+1:i]) {
+						oneline[openTag] = struct{}{}
+					}
+					break
+				}
 			}
 		}
 	}
 
-	panic("unreachable")
+	return
 }
 
 func (p *printer) willHaveNewLine(o *ast.OpenTagStmt, list []ast.Stmt) bool {

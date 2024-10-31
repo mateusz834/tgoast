@@ -1200,10 +1200,12 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 
 	var (
 		forceNextNewline = false
-		tagOneLine       = make([]bool, 1, 16)
+		tagOneLine       = make([]bool, 1, 32)
 	)
 
-	for j, s := range list {
+	openTagIndent, endTagUnindent, oneline := p.tagIndent(list)
+
+	for _, s := range list {
 		// ignore empty statements (was issue 3466)
 		if _, isEmpty := s.(*ast.EmptyStmt); !isEmpty {
 			// nindent == 0 only for lists of switch/select case clauses;
@@ -1214,21 +1216,30 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 				p.linebreak(p.lineFor(s.Pos()), 1, ignore, i == 0 || nindent == 0 || p.linesFrom(line) > 0)
 			}
 
-			if _, ok := s.(*ast.EndTagStmt); ok {
+			if v, ok := s.(*ast.EndTagStmt); ok {
+				if _, ok := endTagUnindent[v]; ok {
+					p.print(unindent)
+				}
 				forceNextNewline = !tagOneLine[len(tagOneLine)-1]
 				tagOneLine = tagOneLine[:len(tagOneLine)-1]
-				p.print(unindent)
 				if forceNextNewline && p.commentBefore(p.posFor(s.Pos())) {
 					p.linebreak(p.lineFor(s.Pos()), 0, ignore, false)
 				}
-			} else if _, ok := s.(*ast.OpenTagStmt); ok {
+			} else if v, ok := s.(*ast.OpenTagStmt); ok {
 				forceNextNewline = false
-				// TODO(mateusz834): void elements
-				tagOneLine = append(tagOneLine, p.oneLineTag(list[j:]))
+				_, ok := oneline[v]
+				tagOneLine = append(tagOneLine, ok)
 			}
 
 			p.recordLine(&line)
 			p.stmt(s, nextIsRBrace && i == len(list)-1)
+
+			if v, ok := s.(*ast.OpenTagStmt); ok {
+				if _, ok := openTagIndent[v]; ok {
+					p.print(indent)
+				}
+			}
+
 			// labeled statements put labels on a separate line, but here
 			// we only care about the start line of the actual statement
 			// without label - correct line for each label

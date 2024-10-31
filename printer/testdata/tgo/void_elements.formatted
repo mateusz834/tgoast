@@ -1,0 +1,63 @@
+package templates
+
+func test() {
+	<div>
+		<br>
+		_ = 3
+	</div>
+}
+
+func test() {
+	<div>
+		<br>
+		<br>
+		_ = 3
+	</div>
+}
+
+func test() {
+	<div>
+		<span>
+		_ = 3
+	</div>
+}
+
+func test() {
+	<div>
+		<span>
+			_ = 3
+		</span>
+	</div>
+}
+
+func test() {
+	<div>
+	<div>
+		_ = 3
+	</div>
+}
+
+func test() {
+	<div>
+		_ = 3
+	</div>
+	</div>
+}
+
+func test() {
+	<div>
+	<div>
+		<div>
+			_ = 3
+		</div>
+	</div>
+}
+
+func test() {
+	<div>
+		<div>
+			_ = 3
+		</div>
+	</div>
+	</div>
+}
