@@ -10,6 +10,21 @@ func test() {
 func test() {
 	<div>
 		<br>
+		_ = 3
+	</div>
+	_ = 3
+}
+
+func test() {
+	<div>
+		_ = 3
+	</div>
+	_ = 3
+}
+
+func test() {
+	<div>
+		<br>
 		<br>
 		_ = 3
 	</div>
@@ -60,4 +75,23 @@ func test() {
 		</div>
 	</div>
 	</div>
+}
+
+func test() {
+a:
+	<div>
+	goto a
+}
+
+func test() {
+a:
+	</div>
+	goto a
+}
+
+func test() {
+a:
+	<div>
+	</div>
+	goto a
 }

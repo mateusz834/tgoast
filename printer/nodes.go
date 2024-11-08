@@ -1203,7 +1203,7 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 		tagOneLine       = make([]bool, 1, 32)
 	)
 
-	openTagIndent, endTagUnindent, oneline := p.tagIndent(list)
+	openPair, endPair, oneline := p.tagIndent(list)
 
 	for _, s := range list {
 		// ignore empty statements (was issue 3466)
@@ -1216,26 +1216,28 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 				p.linebreak(p.lineFor(s.Pos()), 1, ignore, i == 0 || nindent == 0 || p.linesFrom(line) > 0)
 			}
 
-			if v, ok := s.(*ast.EndTagStmt); ok {
-				if _, ok := endTagUnindent[v]; ok {
+			if v, ok := unlabel(s).(*ast.EndTagStmt); ok {
+				if _, ok := endPair[v]; ok {
 					p.print(unindent)
+					forceNextNewline = !tagOneLine[len(tagOneLine)-1]
+					tagOneLine = tagOneLine[:len(tagOneLine)-1]
+					if forceNextNewline && p.commentBefore(p.posFor(s.Pos())) {
+						p.linebreak(p.lineFor(s.Pos()), 0, ignore, false)
+					}
 				}
-				forceNextNewline = !tagOneLine[len(tagOneLine)-1]
-				tagOneLine = tagOneLine[:len(tagOneLine)-1]
-				if forceNextNewline && p.commentBefore(p.posFor(s.Pos())) {
-					p.linebreak(p.lineFor(s.Pos()), 0, ignore, false)
+			} else if v, ok := unlabel(s).(*ast.OpenTagStmt); ok {
+				if _, ok := openPair[v]; ok {
+					forceNextNewline = false
+					_, ok := oneline[v]
+					tagOneLine = append(tagOneLine, ok)
 				}
-			} else if v, ok := s.(*ast.OpenTagStmt); ok {
-				forceNextNewline = false
-				_, ok := oneline[v]
-				tagOneLine = append(tagOneLine, ok)
 			}
 
 			p.recordLine(&line)
 			p.stmt(s, nextIsRBrace && i == len(list)-1)
 
-			if v, ok := s.(*ast.OpenTagStmt); ok {
-				if _, ok := openTagIndent[v]; ok {
+			if v, ok := unlabel(s).(*ast.OpenTagStmt); ok {
+				if _, ok := openPair[v]; ok {
 					p.print(indent)
 				}
 			}

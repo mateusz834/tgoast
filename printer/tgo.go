@@ -139,24 +139,34 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	}
 }
 
-func (p *printer) tagIndent(list []ast.Stmt) (indent map[*ast.OpenTagStmt]struct{}, unindent map[*ast.EndTagStmt]struct{}, oneline map[*ast.OpenTagStmt]struct{}) {
-	indent = make(map[*ast.OpenTagStmt]struct{})
-	unindent = make(map[*ast.EndTagStmt]struct{})
+func unlabel(s ast.Stmt) ast.Stmt {
+	for {
+		if l, ok := s.(*ast.LabeledStmt); ok {
+			s = l.Stmt
+			continue
+		}
+		return s
+	}
+}
+
+func (p *printer) tagIndent(list []ast.Stmt) (openPair map[*ast.OpenTagStmt]struct{}, endPair map[*ast.EndTagStmt]struct{}, oneline map[*ast.OpenTagStmt]struct{}) {
+	openPair = make(map[*ast.OpenTagStmt]struct{})
+	endPair = make(map[*ast.EndTagStmt]struct{})
 	oneline = make(map[*ast.OpenTagStmt]struct{})
 
 	deep := make([]int, 0, 32)
 	for i, v := range list {
-		switch v := v.(type) {
+		switch v := unlabel(v).(type) {
 		case *ast.OpenTagStmt:
 			deep = append(deep, i)
 		case *ast.EndTagStmt:
 			for len(deep) != 0 {
 				openTagIndex := deep[len(deep)-1]
-				openTag := list[openTagIndex].(*ast.OpenTagStmt)
+				openTag := unlabel(list[openTagIndex]).(*ast.OpenTagStmt)
 				deep = deep[:len(deep)-1]
 				if openTag.Name.Name == v.Name.Name {
-					indent[openTag] = struct{}{}
-					unindent[v] = struct{}{}
+					openPair[openTag] = struct{}{}
+					endPair[v] = struct{}{}
 					if p.lineFor(openTag.Pos()) == p.lineFor(v.End()) && !p.willHaveNewLine(openTag, list[openTagIndex+1:i]) {
 						oneline[openTag] = struct{}{}
 					}
