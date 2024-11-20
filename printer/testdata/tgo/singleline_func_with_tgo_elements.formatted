@@ -1,0 +1,29 @@
+package templates
+
+func test() {
+	"a"
+}
+
+func test() {
+	"\{"a"}"
+}
+
+func test() {
+	<div>
+}
+
+func test() {
+	</div>
+}
+
+func test() {
+	@attr
+}
+
+func test() {
+	@attr="val"
+}
+
+func test() {
+	@attr="\{"val"}"
+}

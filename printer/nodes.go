@@ -1239,8 +1239,10 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 			// TODO: should the nextIsRBrace arg also consider somehow end tags? What is broken currently?
 			p.stmt(s, nextIsRBrace && i == len(list)-1)
 
-			if _, ok := unlabel(s).(*ast.EndTagStmt); ok && !forceNextNewline {
-				p.print(noExtraLinebreak)
+			if v, ok := unlabel(s).(*ast.EndTagStmt); ok && !forceNextNewline {
+				if _, ok := endPair[v]; ok {
+					p.print(noExtraLinebreak)
+				}
 			}
 
 			if v, ok := unlabel(s).(*ast.OpenTagStmt); ok {
@@ -1930,7 +1932,7 @@ func (p *printer) funcBody(headerSize int, sep whiteSpace, b *ast.BlockStmt) {
 	}(p.level)
 	p.level = 0
 
-	hasTag := slices.ContainsFunc(b.List, func(n ast.Stmt) bool {
+	hasTgoNode := slices.ContainsFunc(b.List, func(n ast.Stmt) bool {
 		switch n := n.(type) {
 		case *ast.OpenTagStmt, *ast.EndTagStmt, *ast.AttributeStmt:
 			return true
@@ -1943,7 +1945,7 @@ func (p *printer) funcBody(headerSize int, sep whiteSpace, b *ast.BlockStmt) {
 	})
 
 	const maxSize = 100
-	if !hasTag && headerSize+p.bodySize(b, maxSize) <= maxSize {
+	if !hasTgoNode && headerSize+p.bodySize(b, maxSize) <= maxSize {
 		p.print(sep)
 		p.setPos(b.Lbrace)
 		p.print(token.LBRACE)
