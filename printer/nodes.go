@@ -1223,6 +1223,8 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 					tagOneLine = tagOneLine[:len(tagOneLine)-1]
 					if forceNextNewline && p.commentBefore(p.posFor(s.Pos())) {
 						p.linebreak(p.lineFor(s.Pos()), 0, ignore, false)
+					} else if !forceNextNewline {
+						p.print(noExtraLinebreak)
 					}
 				}
 			} else if v, ok := unlabel(s).(*ast.OpenTagStmt); ok {
@@ -1234,7 +1236,12 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 			}
 
 			p.recordLine(&line)
+			// TODO: should the nextIsRBrace arg also consider somehow end tags? What is broken currently?
 			p.stmt(s, nextIsRBrace && i == len(list)-1)
+
+			if _, ok := unlabel(s).(*ast.EndTagStmt); ok && !forceNextNewline {
+				p.print(noExtraLinebreak)
+			}
 
 			if v, ok := unlabel(s).(*ast.OpenTagStmt); ok {
 				if _, ok := openPair[v]; ok {
@@ -1923,9 +1930,16 @@ func (p *printer) funcBody(headerSize int, sep whiteSpace, b *ast.BlockStmt) {
 	}(p.level)
 	p.level = 0
 
-	hasTag := slices.ContainsFunc(b.List, func(e ast.Stmt) bool {
-		_, ok := e.(*ast.OpenTagStmt)
-		return ok
+	hasTag := slices.ContainsFunc(b.List, func(n ast.Stmt) bool {
+		switch n := n.(type) {
+		case *ast.OpenTagStmt, *ast.EndTagStmt, *ast.AttributeStmt:
+			return true
+		case *ast.ExprStmt:
+			x, isBasicLit := n.X.(*ast.BasicLit)
+			_, isTemplate := n.X.(*ast.TemplateLiteralExpr)
+			return (isBasicLit && x.Kind == token.STRING) || isTemplate
+		}
+		return false
 	})
 
 	const maxSize = 100

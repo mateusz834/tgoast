@@ -1,0 +1,15 @@
+package templates
+
+func test() {
+	{
+	/*test*/}
+
+	{ /*test
+	test*/}
+
+	<div> /*test
+	test*/ </div>
+
+	<div>
+	/*test*/ </div>
+}

@@ -810,10 +810,11 @@ func (p *printer) intersperseComments(next token.Position, tok token.Token) (wro
 			}
 		}
 		// Ensure that there is a line break after a //-style comment,
-		// before EOF, and before a closing '}' unless explicitly disabled.
+		// before EOF, and before a closing '}' or '</' unless explicitly disabled.
 		if last.Text[1] == '/' ||
 			tok == token.EOF ||
-			tok == token.RBRACE && p.mode&noExtraLinebreak == 0 {
+			tok == token.RBRACE && p.mode&noExtraLinebreak == 0 ||
+			tok == token.END_TAG && p.mode&noExtraLinebreak == 0 {
 			needsLinebreak = true
 		}
 
