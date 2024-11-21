@@ -27,3 +27,38 @@ func test() {
 func test() {
 	@attr="\{"val"}"
 }
+
+func test() {
+a:
+	"a"
+}
+
+func test() {
+a:
+	"\{"a"}"
+}
+
+func test() {
+a:
+	<div>
+}
+
+func test() {
+a:
+	</div>
+}
+
+func test() {
+a:
+	@attr
+}
+
+func test() {
+a:
+	@attr="val"
+}
+
+func test() {
+a:
+	@attr="\{"val"}"
+}
