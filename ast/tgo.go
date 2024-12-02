@@ -4,12 +4,15 @@ import "github.com/mateusz834/tgoast/token"
 
 func walkTgo(v Visitor, node Node) bool {
 	switch n := node.(type) {
-	case *OpenTagStmt:
-		v.Visit(n.Name)
+	case *ElementBlockStmt:
+		v.Visit(n.OpenTag.Name)
+		walkStmtList(v, n.OpenTag.Body)
 		walkStmtList(v, n.Body)
+		v.Visit(n.EndTag.Name)
 		return true
-	case *EndTagStmt:
+	case *VoidElementStmt:
 		v.Visit(n.Name)
+		walkStmtList(v, n.OpenTag.Body)
 		return true
 	case *AttributeStmt:
 		v.Visit(n.AttrName)
@@ -29,14 +32,20 @@ func walkTgo(v Visitor, node Node) bool {
 }
 
 type (
-	OpenTagStmt struct {
+	ElementBlockStmt struct {
+		OpenTag *OpenTag
+		Body    []Stmt
+		EndTag  *EndTag
+	}
+
+	OpenTag struct {
 		OpenPos  token.Pos // position of the "<" sign.
 		Name     *Ident
 		Body     []Stmt
 		ClosePos token.Pos // position of the ">" sign.
 	}
 
-	EndTagStmt struct {
+	EndTag struct {
 		OpenPos  token.Pos // position of the "</" sign.
 		Name     *Ident
 		ClosePos token.Pos // position of the ">" sign.
@@ -51,17 +60,20 @@ type (
 	}
 )
 
-func (s *OpenTagStmt) Pos() token.Pos   { return s.OpenPos }
-func (s *EndTagStmt) Pos() token.Pos    { return s.OpenPos }
-func (s *AttributeStmt) Pos() token.Pos { return s.StartPos }
+func (s *OpenTag) Pos() token.Pos          { return s.OpenPos }
+func (s *EndTag) Pos() token.Pos           { return s.OpenPos }
+func (s *ElementBlockStmt) Pos() token.Pos { return s.OpenTag.OpenPos }
+func (s *AttributeStmt) Pos() token.Pos    { return s.StartPos }
 
-func (s *OpenTagStmt) End() token.Pos   { return s.ClosePos + 1 }
-func (s *EndTagStmt) End() token.Pos    { return s.ClosePos + 1 }
-func (s *AttributeStmt) End() token.Pos { return s.EndPos + 1 }
+func (s *OpenTag) End() token.Pos          { return s.ClosePos + 1 }
+func (s *EndTag) End() token.Pos           { return s.ClosePos + 1 }
+func (s *ElementBlockStmt) End() token.Pos { return s.EndTag.ClosePos + 1 }
+func (s *AttributeStmt) End() token.Pos    { return s.EndPos + 1 }
 
-func (s *OpenTagStmt) stmtNode()   {}
-func (s *EndTagStmt) stmtNode()    {}
-func (s *AttributeStmt) stmtNode() {}
+func (s *OpenTag) stmtNode()          {}
+func (s *EndTag) stmtNode()           {}
+func (s *ElementBlockStmt) stmtNode() {}
+func (s *AttributeStmt) stmtNode()    {}
 
 type TemplateLiteralExpr struct {
 	OpenPos  token.Pos // positon of the oppening '"'.

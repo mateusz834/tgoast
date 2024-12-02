@@ -17,8 +17,144 @@ func (p *parser) nextTgoTemplate() {
 	}
 }
 
+func (p *parser) parseTgoOpenTag() *ast.OpenTag {
+	if p.tok != token.LSS {
+		panic("unreachable")
+	}
+	openPos := p.pos
+	p.next()
+
+	if p.tok == token.RBRACE || p.tok == token.CASE || p.tok == token.DEFAULT ||
+		p.tok == token.END_TAG || p.tok == token.LSS {
+		p.errorExpected(p.pos, "'"+token.IDENT.String()+"'")
+		return &ast.OpenTag{OpenPos: openPos}
+	}
+
+	ident := p.parseIdent()
+
+	if p.tok != token.AT && p.tok != token.GTR {
+		p.expectSemi()
+	}
+
+	if p.tok == token.RBRACE || p.tok == token.END_TAG || p.tok == token.LSS {
+		p.errorExpected(p.pos, "'"+token.GTR.String()+"'")
+		return &ast.OpenTag{OpenPos: openPos, Name: ident}
+	}
+
+	body := p.parseTagStmtList()
+
+	p.scanner.AllowInsertSemiAfterGTR()
+
+	closePos := p.pos
+	if p.tok == token.GTR {
+		p.next()
+	} else {
+		closePos = token.NoPos
+		p.errorExpected(p.pos, "'"+token.GTR.String()+"'")
+		if p.tok != token.RBRACE {
+			p.next()
+		}
+	}
+
+	if p.tok != token.STRING && p.tok != token.STRING_TEMPLATE &&
+		p.tok != token.END_TAG && p.tok != token.LSS {
+		p.expectSemi()
+	}
+
+	return &ast.OpenTag{
+		OpenPos:  openPos,
+		Name:     ident,
+		Body:     body,
+		ClosePos: closePos,
+	}
+}
+
+func (p *parser) parseTgoCloseTag() *ast.EndTag {
+	if p.tok != token.END_TAG {
+		panic("unreachable")
+	}
+	openPos := p.pos
+	p.next()
+
+	if p.tok == token.RBRACE || p.tok == token.CASE || p.tok == token.DEFAULT ||
+		p.tok == token.END_TAG || p.tok == token.LSS {
+		p.errorExpected(p.pos, "'"+token.IDENT.String()+"'")
+		return &ast.EndTag{OpenPos: openPos}
+	}
+
+	ident := p.parseIdent()
+
+	if p.tok != token.AT && p.tok != token.GTR {
+		p.expectSemi()
+	}
+
+	if p.tok == token.RBRACE || p.tok == token.END_TAG || p.tok == token.LSS {
+		p.errorExpected(p.pos, "'"+token.GTR.String()+"'")
+		return &ast.EndTag{OpenPos: openPos, Name: ident}
+	}
+
+	p.scanner.AllowInsertSemiAfterGTR()
+	closePos := p.expect2(token.GTR)
+	if p.tok != token.END_TAG && p.tok != token.LSS {
+		p.expectSemi()
+	}
+	return &ast.EndTag{
+		OpenPos:  openPos,
+		Name:     ident,
+		ClosePos: closePos,
+	}
+}
+
+func unlabel(s ast.Stmt) ast.Stmt {
+	for {
+		if l, ok := s.(*ast.LabeledStmt); ok {
+			s = l.Stmt
+			continue
+		}
+		return s
+	}
+}
+
+func unlabel2(labeled ast.Stmt) (lastLabeledStmt *ast.LabeledStmt, unlabeled ast.Stmt) {
+	unlabeled = labeled
+	for {
+		if l, ok := unlabeled.(*ast.LabeledStmt); ok {
+			unlabeled = l.Stmt
+			lastLabeledStmt = l
+			continue
+		}
+		return
+	}
+}
+
+/*
+<div>
+	a := 3
+	<div>
+	</div>
+</div>
+*/
+
+func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
+	depth := make([][2]int, 0, 16)
+	for i, stmt := range list {
+		lastLabeledStmt, unlabeledStmt := unlabel2(stmt)
+		switch unlabeledStmt := unlabeledStmt.(type) {
+		case *ast.OpenTag:
+			out = append(out, stmt)
+			depth = append(depth, [2]int{i, len(out) - 1})
+		case *ast.EndTag:
+		}
+	}
+	return
+}
+
 func (p *parser) parseTgoStmt() (s ast.Stmt) {
 	switch p.tok {
+	case token.LSS:
+		return p.parseTgoOpenTag()
+	case token.END_TAG:
+		return p.parseTgoCloseTag()
 	case token.STRING_TEMPLATE:
 		lit := p.templateLit[len(p.templateLit)-1]
 		p.templateLit = p.templateLit[:len(p.templateLit)-1]
@@ -29,45 +165,6 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 		p.next()
 		p.expectSemiAllowEndTag()
 		return &ast.ExprStmt{X: lit}
-	case token.LSS, token.END_TAG:
-		openPos := p.pos
-		closing := p.tok == token.END_TAG
-		p.next()
-
-		ident := p.parseIdent()
-
-		if p.tok != token.AT && p.tok != token.GTR {
-			p.expectSemi()
-		}
-
-		if closing {
-			p.scanner.AllowInsertSemiAfterGTR()
-			closePos := p.expect2(token.GTR)
-			if p.tok != token.END_TAG && p.tok != token.LSS {
-				p.expectSemi()
-			}
-			return &ast.EndTagStmt{
-				OpenPos:  openPos,
-				Name:     ident,
-				ClosePos: closePos,
-			}
-		}
-
-		// TODO: this might allow tags inside?
-		body := p.parseTagStmtList()
-		p.scanner.AllowInsertSemiAfterGTR()
-		closePos := p.expect2(token.GTR)
-		if p.tok != token.STRING && p.tok != token.STRING_TEMPLATE &&
-			p.tok != token.END_TAG && p.tok != token.LSS {
-			p.expectSemi()
-		}
-
-		return &ast.OpenTagStmt{
-			OpenPos:  openPos,
-			Name:     ident,
-			Body:     body,
-			ClosePos: closePos,
-		}
 	case token.AT:
 		startPos := p.pos
 
@@ -137,6 +234,18 @@ func (p *parser) parseTagStmtList() (list []ast.Stmt) {
 	}
 
 	for p.tok != token.CASE && p.tok != token.DEFAULT && p.tok != token.GTR && p.tok != token.RBRACE && p.tok != token.EOF {
+		list = append(list, p.parseStmt())
+	}
+
+	return
+}
+
+func (p *parser) parseElementBlockStmtList() (list []ast.Stmt) {
+	if p.trace {
+		defer un(trace(p, "TagStatementList"))
+	}
+
+	for p.tok != token.CASE && p.tok != token.DEFAULT && p.tok != token.END_TAG && p.tok != token.RBRACE && p.tok != token.EOF {
 		list = append(list, p.parseStmt())
 	}
 

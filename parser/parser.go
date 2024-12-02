@@ -18,6 +18,7 @@ package parser
 import (
 	"fmt"
 	"go/build/constraint"
+	"slices"
 	"strings"
 
 	"github.com/mateusz834/tgoast/ast"
@@ -67,6 +68,9 @@ type parser struct {
 	nestLev int
 
 	templateLit []*ast.TemplateLiteralExpr
+
+	openTags      []ast.OpenTag
+	openTagsIndex int
 }
 
 func (p *parser) init(fset *token.FileSet, filename string, src []byte, mode Mode) {
@@ -1407,6 +1411,76 @@ func (p *parser) parseStmtList() (list []ast.Stmt) {
 	for p.tok != token.CASE && p.tok != token.DEFAULT && p.tok != token.RBRACE && p.tok != token.EOF {
 		list = append(list, p.parseStmt())
 	}
+
+	type aa struct {
+		outPos  int
+		listPos int
+	}
+
+	var out []ast.Stmt
+	last := 0
+	openTagDepth := make([]aa, 0, 16)
+outer:
+	for i, n := range list {
+		switch v := unlabel(n).(type) {
+		case *ast.OpenTag:
+			last = i
+			out = append(out, n)
+			openTagDepth = append(openTagDepth, aa{outPos: len(out) - 1, listPos: i})
+		case *ast.EndTag:
+			last = i
+			for len(openTagDepth) != 0 {
+				openTagIndex := openTagDepth[len(openTagDepth)-1]
+				openTag := unlabel(list[openTagIndex.listPos]).(*ast.OpenTag)
+				openTagDepth = openTagDepth[:len(openTagDepth)-1]
+				if openTag.Name.Name == v.Name.Name {
+					body := list[openTagIndex.listPos+1 : i]
+
+					var lastLabeledStmt *ast.LabeledStmt
+					for {
+						if v, ok := n.(*ast.LabeledStmt); ok {
+							lastLabeledStmt = v
+							continue
+						}
+						if lastLabeledStmt != nil {
+							lastLabeledStmt.Stmt = &ast.EmptyStmt{Semicolon: v.OpenPos, Implicit: true}
+							body = body[:len(body)+1]
+						}
+						break
+					}
+
+					var elementBlockStmt ast.Stmt = &ast.ElementBlockStmt{
+						OpenTag: openTag,
+						Body:    slices.Clip(body),
+						EndTag:  v,
+					}
+
+					lastLabeledStmt = nil
+					for {
+						if v, ok := list[openTagIndex.listPos].(*ast.LabeledStmt); ok {
+							lastLabeledStmt = v
+							continue
+						}
+						if lastLabeledStmt != nil {
+							lastLabeledStmt.Stmt = elementBlockStmt
+							elementBlockStmt = n
+						}
+						break
+					}
+					list[openTagIndex.outPos] = elementBlockStmt
+					continue outer
+				}
+			}
+		}
+	}
+
+	if last == 0 {
+		return list
+	}
+
+	out = append(out, list[last:]...)
+
+	return out
 
 	return
 }
