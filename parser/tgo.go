@@ -143,7 +143,7 @@ func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 		case *ast.EndTag:
 			for len(depth) != 0 {
 				lastOpenTagData := depth[len(depth)-1]
-				depth = depth[:len(depth)]
+				depth = depth[:len(depth)-1]
 
 				openTag := list[lastOpenTagData.openTag]
 				lastLabeledOpen, unlabeled := unlabel2(openTag)
@@ -165,12 +165,14 @@ func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 						lastLabeledOpen.Stmt = s
 						s = openTag
 					}
+
 					if len(depth) != 0 {
 						last := &depth[len(depth)-1]
 						last.body = append(last.body, s)
 					} else {
 						out = append(out, s)
 					}
+
 					continue
 				}
 

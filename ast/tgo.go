@@ -10,10 +10,6 @@ func walkTgo(v Visitor, node Node) bool {
 		walkStmtList(v, n.Body)
 		v.Visit(n.EndTag.Name)
 		return true
-	case *VoidElementStmt:
-		v.Visit(n.Name)
-		walkStmtList(v, n.OpenTag.Body)
-		return true
 	case *AttributeStmt:
 		v.Visit(n.AttrName)
 		v.Visit(n.Value)
