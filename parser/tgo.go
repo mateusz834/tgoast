@@ -133,17 +133,17 @@ func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 		body    []ast.Stmt
 	}
 
-	depth := make([]openTag, 0, 16)
+	openTagDepth := make([]openTag, 0, 16)
 
 	for i, stmt := range list {
 		lastLabeledStmt, unlabeledStmt := unlabel2(stmt)
 		switch unlabeledStmt := unlabeledStmt.(type) {
 		case *ast.OpenTag:
-			depth = append(depth, openTag{openTag: i})
+			openTagDepth = append(openTagDepth, openTag{openTag: i})
 		case *ast.EndTag:
-			for len(depth) != 0 {
-				lastOpenTagData := depth[len(depth)-1]
-				depth = depth[:len(depth)-1]
+			for len(openTagDepth) != 0 {
+				lastOpenTagData := openTagDepth[len(openTagDepth)-1]
+				openTagDepth = openTagDepth[:len(openTagDepth)-1]
 
 				openTag := list[lastOpenTagData.openTag]
 				lastLabeledOpen, unlabeled := unlabel2(openTag)
@@ -166,29 +166,37 @@ func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 						s = openTag
 					}
 
-					if len(depth) != 0 {
-						last := &depth[len(depth)-1]
+					if len(openTagDepth) != 0 {
+						last := &openTagDepth[len(openTagDepth)-1]
 						last.body = append(last.body, s)
 					} else {
 						out = append(out, s)
 					}
 
-					continue
+					break
 				}
 
-				// end tag skipped
-				if len(depth) != 0 {
-					last := &depth[len(depth)-1]
-					last.body = append(last.body, stmt)
+				if len(openTagDepth) != 0 {
+					last := &openTagDepth[len(openTagDepth)-1]
+					last.body = append(last.body, openTag)
 					last.body = append(last.body, lastOpenTagData.body...)
 				} else {
-					out = append(out, stmt)
+					out = append(out, openTag)
 					out = append(out, lastOpenTagData.body...)
 				}
+
+			}
+
+			// end tag skipped
+			if len(openTagDepth) != 0 {
+				last := &openTagDepth[len(openTagDepth)-1]
+				last.body = append(last.body, stmt)
+			} else {
+				out = append(out, stmt)
 			}
 		default:
-			if len(depth) != 0 {
-				last := &depth[len(depth)-1]
+			if len(openTagDepth) != 0 {
+				last := &openTagDepth[len(openTagDepth)-1]
 				last.body = append(last.body, stmt)
 			} else {
 				out = append(out, stmt)
