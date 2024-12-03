@@ -127,23 +127,70 @@ func unlabel2(labeled ast.Stmt) (lastLabeledStmt *ast.LabeledStmt, unlabeled ast
 	}
 }
 
-/*
-<div>
-	a := 3
-	<div>
-	</div>
-</div>
-*/
-
 func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
-	depth := make([][2]int, 0, 16)
+	type openTag struct {
+		openTag int
+		body    []ast.Stmt
+	}
+
+	depth := make([]openTag, 0, 16)
+
 	for i, stmt := range list {
 		lastLabeledStmt, unlabeledStmt := unlabel2(stmt)
 		switch unlabeledStmt := unlabeledStmt.(type) {
 		case *ast.OpenTag:
-			out = append(out, stmt)
-			depth = append(depth, [2]int{i, len(out) - 1})
+			depth = append(depth, openTag{openTag: i})
 		case *ast.EndTag:
+			for len(depth) != 0 {
+				lastOpenTagData := depth[len(depth)-1]
+				depth = depth[:len(depth)]
+
+				openTag := list[lastOpenTagData.openTag]
+				lastLabeledOpen, unlabeled := unlabel2(openTag)
+				unlabeledOpenTag := unlabeled.(*ast.OpenTag)
+
+				if unlabeledOpenTag.Name.Name == unlabeledStmt.Name.Name {
+					if lastLabeledStmt != nil {
+						lastLabeledOpen.Stmt = &ast.EmptyStmt{}
+						lastOpenTagData.body = append(lastOpenTagData.body, stmt)
+					}
+
+					var s ast.Stmt = &ast.ElementBlockStmt{
+						OpenTag: unlabeledOpenTag,
+						Body:    lastOpenTagData.body,
+						EndTag:  unlabeledStmt,
+					}
+
+					if lastLabeledOpen != nil {
+						lastLabeledOpen.Stmt = s
+						s = openTag
+					}
+					if len(depth) != 0 {
+						last := &depth[len(depth)-1]
+						last.body = append(last.body, s)
+					} else {
+						out = append(out, s)
+					}
+					continue
+				}
+
+				// end tag skipped
+				if len(depth) != 0 {
+					last := &depth[len(depth)-1]
+					last.body = append(last.body, stmt)
+					last.body = append(last.body, lastOpenTagData.body...)
+				} else {
+					out = append(out, stmt)
+					out = append(out, lastOpenTagData.body...)
+				}
+			}
+		default:
+			if len(depth) != 0 {
+				last := &depth[len(depth)-1]
+				last.body = append(last.body, stmt)
+			} else {
+				out = append(out, stmt)
+			}
 		}
 	}
 	return
