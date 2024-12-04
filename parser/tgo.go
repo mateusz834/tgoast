@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"slices"
+
 	"github.com/mateusz834/tgoast/ast"
 	"github.com/mateusz834/tgoast/token"
 )
@@ -127,6 +129,12 @@ func unlabel2(labeled ast.Stmt) (lastLabeledStmt *ast.LabeledStmt, unlabeled ast
 	}
 }
 
+/*
+<div>
+	</span>
+</div>
+*/
+
 func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 	type openTag struct {
 		openTag int
@@ -137,19 +145,26 @@ func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 
 	for i, stmt := range list {
 		lastLabeledStmt, unlabeledStmt := unlabel2(stmt)
+	outer:
 		switch unlabeledStmt := unlabeledStmt.(type) {
 		case *ast.OpenTag:
 			openTagDepth = append(openTagDepth, openTag{openTag: i})
 		case *ast.EndTag:
-			for len(openTagDepth) != 0 {
-				lastOpenTagData := openTagDepth[len(openTagDepth)-1]
-				openTagDepth = openTagDepth[:len(openTagDepth)-1]
-
+			for i, lastOpenTagData := range slices.Backward(openTagDepth) {
 				openTag := list[lastOpenTagData.openTag]
 				lastLabeledOpen, unlabeled := unlabel2(openTag)
 				unlabeledOpenTag := unlabeled.(*ast.OpenTag)
 
 				if unlabeledOpenTag.Name.Name == unlabeledStmt.Name.Name {
+					for j := len(openTagDepth) - 1; j >= i+1; j-- {
+						cur := openTagDepth[j]
+						prev := &openTagDepth[j-1]
+						prev.body = append(prev.body, list[cur.openTag])
+						prev.body = append(prev.body, cur.body...)
+					}
+					lastOpenTagData = openTagDepth[i]
+					openTagDepth = openTagDepth[:i]
+
 					if lastLabeledStmt != nil {
 						lastLabeledOpen.Stmt = &ast.EmptyStmt{}
 						lastOpenTagData.body = append(lastOpenTagData.body, stmt)
@@ -173,18 +188,8 @@ func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 						out = append(out, s)
 					}
 
-					break
+					break outer
 				}
-
-				if len(openTagDepth) != 0 {
-					last := &openTagDepth[len(openTagDepth)-1]
-					last.body = append(last.body, openTag)
-					last.body = append(last.body, lastOpenTagData.body...)
-				} else {
-					out = append(out, openTag)
-					out = append(out, lastOpenTagData.body...)
-				}
-
 			}
 
 			// end tag skipped
