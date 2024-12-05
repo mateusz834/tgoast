@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"slices"
 
 	"github.com/mateusz834/tgoast/ast"
@@ -39,6 +40,7 @@ func (p *parser) combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 	last := 0
 	for i, stmt := range list {
 		lastLabeledStmt, unlabeledStmt := unlabel(stmt)
+	outer:
 		switch unlabeledStmt := unlabeledStmt.(type) {
 		case *ast.OpenTag:
 			appendStmts(list[last:i])
@@ -88,11 +90,11 @@ func (p *parser) combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 					}
 
 					appendStmts([]ast.Stmt{s})
-					break
+					break outer
 				}
-
-				p.error(unlabeledStmt.OpenPos, "unopenned tag")
 			}
+
+			p.error(unlabeledStmt.OpenPos, fmt.Sprintf("unopenend tag: %v", unlabeledStmt.Name.Name))
 		}
 	}
 

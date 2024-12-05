@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/scanner"
 	"github.com/mateusz834/tgoast/token"
 )
 
@@ -25,6 +26,11 @@ func TestTest(t *testing.T) {
 	f, err := ParseFile(fset, "0", testSrc, SkipObjectResolution|ParseComments)
 	if err != nil {
 		ast.Print(fset, f)
+		if errs, ok := err.(scanner.ErrorList); ok {
+			for _, err := range errs {
+				t.Fatal(err)
+			}
+		}
 		t.Fatal(err)
 	}
 
