@@ -15,12 +15,8 @@ const testSrc = `package test
 import "github.com/mateusz834/tgo"
 func a(tgo.Ctx) error {
 	<div>
-		<a>
-		<a>
-		<a>
-		</a>
+		<br>
 	</div>
-	</a>
 }
 `
 

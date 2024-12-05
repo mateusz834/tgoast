@@ -7,6 +7,104 @@ import (
 	"github.com/mateusz834/tgoast/token"
 )
 
+func (p *parser) combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
+	unlabel := func(labeled ast.Stmt) (lastLabeledStmt *ast.LabeledStmt, unlabeled ast.Stmt) {
+		unlabeled = labeled
+		for {
+			if l, ok := unlabeled.(*ast.LabeledStmt); ok {
+				unlabeled = l.Stmt
+				lastLabeledStmt = l
+				continue
+			}
+			return
+		}
+	}
+
+	type openTagData struct {
+		openTagIndex int
+		body         []ast.Stmt
+	}
+
+	openTagDepth := make([]openTagData, 0, 16)
+
+	appendStmts := func(stmts []ast.Stmt) {
+		if len(openTagDepth) != 0 {
+			last := &openTagDepth[len(openTagDepth)-1]
+			last.body = append(last.body, stmts...)
+		} else {
+			out = append(out, stmts...)
+		}
+	}
+
+	last := 0
+	for i, stmt := range list {
+		lastLabeledStmt, unlabeledStmt := unlabel(stmt)
+		switch unlabeledStmt := unlabeledStmt.(type) {
+		case *ast.OpenTag:
+			appendStmts(list[last:i])
+			last = i + 1
+			openTagDepth = append(openTagDepth, openTagData{openTagIndex: i})
+		case *ast.EndTag:
+			for j, lastOpenTagData := range slices.Backward(openTagDepth) {
+				openTag := list[lastOpenTagData.openTagIndex]
+				lastLabeledOpen, unlabeled := unlabel(openTag)
+				unlabeledOpenTag := unlabeled.(*ast.OpenTag)
+
+				if unlabeledOpenTag.Name.Name == unlabeledStmt.Name.Name {
+					appendStmts(list[last:i])
+					last = i + 1
+
+					body := lastOpenTagData.body
+
+					for _, v := range openTagDepth[j+1:] {
+						openTagStmt := list[v.openTagIndex]
+						_, openTag := unlabel(openTagStmt)
+						name := openTag.(*ast.OpenTag).Name
+						if name != nil {
+							if name.Name != "br" {
+								p.error(openTag.(*ast.OpenTag).OpenPos, "unclosed tag")
+							}
+						}
+						body = append(body, openTagStmt)
+						body = append(body, v.body...)
+					}
+
+					openTagDepth = openTagDepth[:j]
+
+					if lastLabeledStmt != nil {
+						lastLabeledOpen.Stmt = &ast.EmptyStmt{} // TODO:
+						body = append(body, stmt)
+					}
+
+					var s ast.Stmt = &ast.ElementBlockStmt{
+						OpenTag: unlabeledOpenTag,
+						Body:    body,
+						EndTag:  unlabeledStmt,
+					}
+
+					if lastLabeledOpen != nil {
+						lastLabeledOpen.Stmt = s
+						s = openTag
+					}
+
+					appendStmts([]ast.Stmt{s})
+					break
+				}
+
+				p.error(unlabeledStmt.OpenPos, "unopenned tag")
+			}
+		}
+	}
+
+	if last == 0 {
+		out = list
+	}
+
+	appendStmts(list[last:])
+
+	return
+}
+
 func (p *parser) nextTgoTemplate() {
 	if p.tok == token.STRING_TEMPLATE {
 		pos := p.pos
@@ -105,110 +203,6 @@ func (p *parser) parseTgoCloseTag() *ast.EndTag {
 		Name:     ident,
 		ClosePos: closePos,
 	}
-}
-
-func unlabel(s ast.Stmt) ast.Stmt {
-	for {
-		if l, ok := s.(*ast.LabeledStmt); ok {
-			s = l.Stmt
-			continue
-		}
-		return s
-	}
-}
-
-func unlabel2(labeled ast.Stmt) (lastLabeledStmt *ast.LabeledStmt, unlabeled ast.Stmt) {
-	unlabeled = labeled
-	for {
-		if l, ok := unlabeled.(*ast.LabeledStmt); ok {
-			unlabeled = l.Stmt
-			lastLabeledStmt = l
-			continue
-		}
-		return
-	}
-}
-
-/*
-<div>
-	</span>
-</div>
-*/
-
-func combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
-	type openTag struct {
-		openTag int
-		body    []ast.Stmt
-	}
-
-	openTagDepth := make([]openTag, 0, 16)
-
-	for i, stmt := range list {
-		lastLabeledStmt, unlabeledStmt := unlabel2(stmt)
-	outer:
-		switch unlabeledStmt := unlabeledStmt.(type) {
-		case *ast.OpenTag:
-			openTagDepth = append(openTagDepth, openTag{openTag: i})
-		case *ast.EndTag:
-			for i, lastOpenTagData := range slices.Backward(openTagDepth) {
-				openTag := list[lastOpenTagData.openTag]
-				lastLabeledOpen, unlabeled := unlabel2(openTag)
-				unlabeledOpenTag := unlabeled.(*ast.OpenTag)
-
-				if unlabeledOpenTag.Name.Name == unlabeledStmt.Name.Name {
-					for j := len(openTagDepth) - 1; j >= i+1; j-- {
-						cur := openTagDepth[j]
-						prev := &openTagDepth[j-1]
-						prev.body = append(prev.body, list[cur.openTag])
-						prev.body = append(prev.body, cur.body...)
-					}
-					lastOpenTagData = openTagDepth[i]
-					openTagDepth = openTagDepth[:i]
-
-					if lastLabeledStmt != nil {
-						lastLabeledOpen.Stmt = &ast.EmptyStmt{}
-						lastOpenTagData.body = append(lastOpenTagData.body, stmt)
-					}
-
-					var s ast.Stmt = &ast.ElementBlockStmt{
-						OpenTag: unlabeledOpenTag,
-						Body:    lastOpenTagData.body,
-						EndTag:  unlabeledStmt,
-					}
-
-					if lastLabeledOpen != nil {
-						lastLabeledOpen.Stmt = s
-						s = openTag
-					}
-
-					if len(openTagDepth) != 0 {
-						last := &openTagDepth[len(openTagDepth)-1]
-						last.body = append(last.body, s)
-					} else {
-						out = append(out, s)
-					}
-
-					break outer
-				}
-			}
-
-			// end tag skipped
-			if len(openTagDepth) != 0 {
-				last := &openTagDepth[len(openTagDepth)-1]
-				last.body = append(last.body, stmt)
-			} else {
-				out = append(out, stmt)
-			}
-		default:
-			if len(openTagDepth) != 0 {
-				last := &openTagDepth[len(openTagDepth)-1]
-				last.body = append(last.body, stmt)
-			} else {
-				out = append(out, stmt)
-			}
-		}
-	}
-	return
 }
 
 func (p *parser) parseTgoStmt() (s ast.Stmt) {

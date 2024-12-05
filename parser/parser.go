@@ -1411,7 +1411,7 @@ func (p *parser) parseStmtList() (list []ast.Stmt) {
 		list = append(list, p.parseStmt())
 	}
 
-	list = combineElemmentBlocks(list)
+	list = p.combineElemmentBlocks(list)
 
 	return
 }
