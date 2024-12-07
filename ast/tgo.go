@@ -1,14 +1,22 @@
 package ast
 
-import "github.com/mateusz834/tgoast/token"
+import (
+	"github.com/mateusz834/tgoast/token"
+)
 
 func walkTgo(v Visitor, node Node) bool {
 	switch n := node.(type) {
 	case *ElementBlockStmt:
-		v.Visit(n.OpenTag.Name)
-		walkStmtList(v, n.OpenTag.Body)
+		v.Visit(n.OpenTag)
 		walkStmtList(v, n.Body)
-		v.Visit(n.EndTag.Name)
+		v.Visit(n.EndTag)
+		return true
+	case *OpenTag:
+		v.Visit(n.Name)
+		walkStmtList(v, n.Body)
+		return true
+	case *EndTag:
+		v.Visit(n.Name)
 		return true
 	case *AttributeStmt:
 		v.Visit(n.AttrName)
