@@ -116,9 +116,7 @@ func (p *parser) combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 		out = append(out, openTagStmt)
 		out = append(out, v.body...)
 	}
-
-	appendStmts(list[last:])
-
+	out = append(out, list[last:]...)
 	return
 }
 

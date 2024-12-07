@@ -1,0 +1,119 @@
+package templates
+
+func test() {
+	<div>
+	</div>
+}
+
+func test() {
+	<div>
+}
+
+func test() {
+	</div>
+}
+
+func test() {
+	a := 3
+	<div>
+	</div>
+}
+
+func test() {
+	<div>
+		a := 3
+	</div>
+}
+
+func test() {
+	<div>
+	</div>
+	a := 3
+}
+
+func test() {
+	a := 3
+	<div>
+}
+
+func test() {
+	<div>
+	a := 3
+}
+
+func test() {
+	</div>
+	a := 3
+}
+
+func test() {
+	a := 3
+	</div>
+}
+
+func test() {
+	<div>
+		<span>
+		a := 3
+	</div>
+}
+
+func test() {
+	<div>
+		a := 3
+		<span>
+	</div>
+}
+
+func test() {
+	<div>
+		a := 3
+		<span>
+		a := 3
+	</div>
+}
+
+func test() {
+	<div>
+		a := 3
+		<span>
+		a := 3
+		</span>
+	</div>
+}
+
+func test() {
+	<div>
+		a := 3
+		<span>
+		a := 3
+		</span>
+	</div>
+}
+
+func test() {
+	<div>
+		</span>
+	</div>
+}
+
+func test() {
+	<div>
+		a := 3
+		</span>
+	</div>
+}
+
+func test() {
+	<div>
+		a := 3
+		</span>
+	</div>
+}
+
+func test() {
+	<div>
+		</span>
+		a := 3
+	</div>
+}

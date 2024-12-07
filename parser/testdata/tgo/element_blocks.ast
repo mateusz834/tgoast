@@ -1,0 +1,1077 @@
+     0  *ast.File {
+     1  .  Package: element_blocks.tgo:1:1
+     2  .  Name: *ast.Ident {
+     3  .  .  NamePos: element_blocks.tgo:1:9
+     4  .  .  Name: "templates"
+     5  .  }
+     6  .  Decls: []ast.Decl (len = 19) {
+     7  .  .  0: *ast.FuncDecl {
+     8  .  .  .  Name: *ast.Ident {
+     9  .  .  .  .  NamePos: element_blocks.tgo:3:6
+    10  .  .  .  .  Name: "test"
+    11  .  .  .  }
+    12  .  .  .  Type: *ast.FuncType {
+    13  .  .  .  .  Func: element_blocks.tgo:3:1
+    14  .  .  .  .  Params: *ast.FieldList {
+    15  .  .  .  .  .  Opening: element_blocks.tgo:3:10
+    16  .  .  .  .  .  Closing: element_blocks.tgo:3:11
+    17  .  .  .  .  }
+    18  .  .  .  }
+    19  .  .  .  Body: *ast.BlockStmt {
+    20  .  .  .  .  Lbrace: element_blocks.tgo:3:13
+    21  .  .  .  .  List: []ast.Stmt (len = 1) {
+    22  .  .  .  .  .  0: *ast.ElementBlockStmt {
+    23  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+    24  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:4:2
+    25  .  .  .  .  .  .  .  Name: *ast.Ident {
+    26  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:4:3
+    27  .  .  .  .  .  .  .  .  Name: "div"
+    28  .  .  .  .  .  .  .  }
+    29  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:4:6
+    30  .  .  .  .  .  .  }
+    31  .  .  .  .  .  .  EndTag: *ast.EndTag {
+    32  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:5:2
+    33  .  .  .  .  .  .  .  Name: *ast.Ident {
+    34  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:5:4
+    35  .  .  .  .  .  .  .  .  Name: "div"
+    36  .  .  .  .  .  .  .  }
+    37  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:5:7
+    38  .  .  .  .  .  .  }
+    39  .  .  .  .  .  }
+    40  .  .  .  .  }
+    41  .  .  .  .  Rbrace: element_blocks.tgo:6:1
+    42  .  .  .  }
+    43  .  .  }
+    44  .  .  1: *ast.FuncDecl {
+    45  .  .  .  Name: *ast.Ident {
+    46  .  .  .  .  NamePos: element_blocks.tgo:8:6
+    47  .  .  .  .  Name: "test"
+    48  .  .  .  }
+    49  .  .  .  Type: *ast.FuncType {
+    50  .  .  .  .  Func: element_blocks.tgo:8:1
+    51  .  .  .  .  Params: *ast.FieldList {
+    52  .  .  .  .  .  Opening: element_blocks.tgo:8:10
+    53  .  .  .  .  .  Closing: element_blocks.tgo:8:11
+    54  .  .  .  .  }
+    55  .  .  .  }
+    56  .  .  .  Body: *ast.BlockStmt {
+    57  .  .  .  .  Lbrace: element_blocks.tgo:8:13
+    58  .  .  .  .  List: []ast.Stmt (len = 1) {
+    59  .  .  .  .  .  0: *ast.OpenTag {
+    60  .  .  .  .  .  .  OpenPos: element_blocks.tgo:9:2
+    61  .  .  .  .  .  .  Name: *ast.Ident {
+    62  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:9:3
+    63  .  .  .  .  .  .  .  Name: "div"
+    64  .  .  .  .  .  .  }
+    65  .  .  .  .  .  .  ClosePos: element_blocks.tgo:9:6
+    66  .  .  .  .  .  }
+    67  .  .  .  .  }
+    68  .  .  .  .  Rbrace: element_blocks.tgo:10:1
+    69  .  .  .  }
+    70  .  .  }
+    71  .  .  2: *ast.FuncDecl {
+    72  .  .  .  Name: *ast.Ident {
+    73  .  .  .  .  NamePos: element_blocks.tgo:12:6
+    74  .  .  .  .  Name: "test"
+    75  .  .  .  }
+    76  .  .  .  Type: *ast.FuncType {
+    77  .  .  .  .  Func: element_blocks.tgo:12:1
+    78  .  .  .  .  Params: *ast.FieldList {
+    79  .  .  .  .  .  Opening: element_blocks.tgo:12:10
+    80  .  .  .  .  .  Closing: element_blocks.tgo:12:11
+    81  .  .  .  .  }
+    82  .  .  .  }
+    83  .  .  .  Body: *ast.BlockStmt {
+    84  .  .  .  .  Lbrace: element_blocks.tgo:12:13
+    85  .  .  .  .  List: []ast.Stmt (len = 1) {
+    86  .  .  .  .  .  0: *ast.EndTag {
+    87  .  .  .  .  .  .  OpenPos: element_blocks.tgo:13:2
+    88  .  .  .  .  .  .  Name: *ast.Ident {
+    89  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:13:4
+    90  .  .  .  .  .  .  .  Name: "div"
+    91  .  .  .  .  .  .  }
+    92  .  .  .  .  .  .  ClosePos: element_blocks.tgo:13:7
+    93  .  .  .  .  .  }
+    94  .  .  .  .  }
+    95  .  .  .  .  Rbrace: element_blocks.tgo:14:1
+    96  .  .  .  }
+    97  .  .  }
+    98  .  .  3: *ast.FuncDecl {
+    99  .  .  .  Name: *ast.Ident {
+   100  .  .  .  .  NamePos: element_blocks.tgo:16:6
+   101  .  .  .  .  Name: "test"
+   102  .  .  .  }
+   103  .  .  .  Type: *ast.FuncType {
+   104  .  .  .  .  Func: element_blocks.tgo:16:1
+   105  .  .  .  .  Params: *ast.FieldList {
+   106  .  .  .  .  .  Opening: element_blocks.tgo:16:10
+   107  .  .  .  .  .  Closing: element_blocks.tgo:16:11
+   108  .  .  .  .  }
+   109  .  .  .  }
+   110  .  .  .  Body: *ast.BlockStmt {
+   111  .  .  .  .  Lbrace: element_blocks.tgo:16:13
+   112  .  .  .  .  List: []ast.Stmt (len = 2) {
+   113  .  .  .  .  .  0: *ast.AssignStmt {
+   114  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   115  .  .  .  .  .  .  .  0: *ast.Ident {
+   116  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:17:2
+   117  .  .  .  .  .  .  .  .  Name: "a"
+   118  .  .  .  .  .  .  .  }
+   119  .  .  .  .  .  .  }
+   120  .  .  .  .  .  .  TokPos: element_blocks.tgo:17:4
+   121  .  .  .  .  .  .  Tok: :=
+   122  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   123  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   124  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:17:7
+   125  .  .  .  .  .  .  .  .  Kind: INT
+   126  .  .  .  .  .  .  .  .  Value: "3"
+   127  .  .  .  .  .  .  .  }
+   128  .  .  .  .  .  .  }
+   129  .  .  .  .  .  }
+   130  .  .  .  .  .  1: *ast.ElementBlockStmt {
+   131  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   132  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:18:2
+   133  .  .  .  .  .  .  .  Name: *ast.Ident {
+   134  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:18:3
+   135  .  .  .  .  .  .  .  .  Name: "div"
+   136  .  .  .  .  .  .  .  }
+   137  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:18:6
+   138  .  .  .  .  .  .  }
+   139  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   140  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:19:2
+   141  .  .  .  .  .  .  .  Name: *ast.Ident {
+   142  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:19:4
+   143  .  .  .  .  .  .  .  .  Name: "div"
+   144  .  .  .  .  .  .  .  }
+   145  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:19:7
+   146  .  .  .  .  .  .  }
+   147  .  .  .  .  .  }
+   148  .  .  .  .  }
+   149  .  .  .  .  Rbrace: element_blocks.tgo:20:1
+   150  .  .  .  }
+   151  .  .  }
+   152  .  .  4: *ast.FuncDecl {
+   153  .  .  .  Name: *ast.Ident {
+   154  .  .  .  .  NamePos: element_blocks.tgo:22:6
+   155  .  .  .  .  Name: "test"
+   156  .  .  .  }
+   157  .  .  .  Type: *ast.FuncType {
+   158  .  .  .  .  Func: element_blocks.tgo:22:1
+   159  .  .  .  .  Params: *ast.FieldList {
+   160  .  .  .  .  .  Opening: element_blocks.tgo:22:10
+   161  .  .  .  .  .  Closing: element_blocks.tgo:22:11
+   162  .  .  .  .  }
+   163  .  .  .  }
+   164  .  .  .  Body: *ast.BlockStmt {
+   165  .  .  .  .  Lbrace: element_blocks.tgo:22:13
+   166  .  .  .  .  List: []ast.Stmt (len = 1) {
+   167  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   168  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   169  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:23:2
+   170  .  .  .  .  .  .  .  Name: *ast.Ident {
+   171  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:23:3
+   172  .  .  .  .  .  .  .  .  Name: "div"
+   173  .  .  .  .  .  .  .  }
+   174  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:23:6
+   175  .  .  .  .  .  .  }
+   176  .  .  .  .  .  .  Body: []ast.Stmt (len = 1) {
+   177  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   178  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   179  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   180  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:24:3
+   181  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   182  .  .  .  .  .  .  .  .  .  }
+   183  .  .  .  .  .  .  .  .  }
+   184  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:24:5
+   185  .  .  .  .  .  .  .  .  Tok: :=
+   186  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   187  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   188  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:24:8
+   189  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   190  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   191  .  .  .  .  .  .  .  .  .  }
+   192  .  .  .  .  .  .  .  .  }
+   193  .  .  .  .  .  .  .  }
+   194  .  .  .  .  .  .  }
+   195  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   196  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:25:2
+   197  .  .  .  .  .  .  .  Name: *ast.Ident {
+   198  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:25:4
+   199  .  .  .  .  .  .  .  .  Name: "div"
+   200  .  .  .  .  .  .  .  }
+   201  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:25:7
+   202  .  .  .  .  .  .  }
+   203  .  .  .  .  .  }
+   204  .  .  .  .  }
+   205  .  .  .  .  Rbrace: element_blocks.tgo:26:1
+   206  .  .  .  }
+   207  .  .  }
+   208  .  .  5: *ast.FuncDecl {
+   209  .  .  .  Name: *ast.Ident {
+   210  .  .  .  .  NamePos: element_blocks.tgo:28:6
+   211  .  .  .  .  Name: "test"
+   212  .  .  .  }
+   213  .  .  .  Type: *ast.FuncType {
+   214  .  .  .  .  Func: element_blocks.tgo:28:1
+   215  .  .  .  .  Params: *ast.FieldList {
+   216  .  .  .  .  .  Opening: element_blocks.tgo:28:10
+   217  .  .  .  .  .  Closing: element_blocks.tgo:28:11
+   218  .  .  .  .  }
+   219  .  .  .  }
+   220  .  .  .  Body: *ast.BlockStmt {
+   221  .  .  .  .  Lbrace: element_blocks.tgo:28:13
+   222  .  .  .  .  List: []ast.Stmt (len = 2) {
+   223  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   224  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   225  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:29:2
+   226  .  .  .  .  .  .  .  Name: *ast.Ident {
+   227  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:29:3
+   228  .  .  .  .  .  .  .  .  Name: "div"
+   229  .  .  .  .  .  .  .  }
+   230  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:29:6
+   231  .  .  .  .  .  .  }
+   232  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   233  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:30:2
+   234  .  .  .  .  .  .  .  Name: *ast.Ident {
+   235  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:30:4
+   236  .  .  .  .  .  .  .  .  Name: "div"
+   237  .  .  .  .  .  .  .  }
+   238  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:30:7
+   239  .  .  .  .  .  .  }
+   240  .  .  .  .  .  }
+   241  .  .  .  .  .  1: *ast.AssignStmt {
+   242  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   243  .  .  .  .  .  .  .  0: *ast.Ident {
+   244  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:31:2
+   245  .  .  .  .  .  .  .  .  Name: "a"
+   246  .  .  .  .  .  .  .  }
+   247  .  .  .  .  .  .  }
+   248  .  .  .  .  .  .  TokPos: element_blocks.tgo:31:4
+   249  .  .  .  .  .  .  Tok: :=
+   250  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   251  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   252  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:31:7
+   253  .  .  .  .  .  .  .  .  Kind: INT
+   254  .  .  .  .  .  .  .  .  Value: "3"
+   255  .  .  .  .  .  .  .  }
+   256  .  .  .  .  .  .  }
+   257  .  .  .  .  .  }
+   258  .  .  .  .  }
+   259  .  .  .  .  Rbrace: element_blocks.tgo:32:1
+   260  .  .  .  }
+   261  .  .  }
+   262  .  .  6: *ast.FuncDecl {
+   263  .  .  .  Name: *ast.Ident {
+   264  .  .  .  .  NamePos: element_blocks.tgo:34:6
+   265  .  .  .  .  Name: "test"
+   266  .  .  .  }
+   267  .  .  .  Type: *ast.FuncType {
+   268  .  .  .  .  Func: element_blocks.tgo:34:1
+   269  .  .  .  .  Params: *ast.FieldList {
+   270  .  .  .  .  .  Opening: element_blocks.tgo:34:10
+   271  .  .  .  .  .  Closing: element_blocks.tgo:34:11
+   272  .  .  .  .  }
+   273  .  .  .  }
+   274  .  .  .  Body: *ast.BlockStmt {
+   275  .  .  .  .  Lbrace: element_blocks.tgo:34:13
+   276  .  .  .  .  List: []ast.Stmt (len = 2) {
+   277  .  .  .  .  .  0: *ast.AssignStmt {
+   278  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   279  .  .  .  .  .  .  .  0: *ast.Ident {
+   280  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:35:2
+   281  .  .  .  .  .  .  .  .  Name: "a"
+   282  .  .  .  .  .  .  .  }
+   283  .  .  .  .  .  .  }
+   284  .  .  .  .  .  .  TokPos: element_blocks.tgo:35:4
+   285  .  .  .  .  .  .  Tok: :=
+   286  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   287  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   288  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:35:7
+   289  .  .  .  .  .  .  .  .  Kind: INT
+   290  .  .  .  .  .  .  .  .  Value: "3"
+   291  .  .  .  .  .  .  .  }
+   292  .  .  .  .  .  .  }
+   293  .  .  .  .  .  }
+   294  .  .  .  .  .  1: *ast.OpenTag {
+   295  .  .  .  .  .  .  OpenPos: element_blocks.tgo:36:2
+   296  .  .  .  .  .  .  Name: *ast.Ident {
+   297  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:36:3
+   298  .  .  .  .  .  .  .  Name: "div"
+   299  .  .  .  .  .  .  }
+   300  .  .  .  .  .  .  ClosePos: element_blocks.tgo:36:6
+   301  .  .  .  .  .  }
+   302  .  .  .  .  }
+   303  .  .  .  .  Rbrace: element_blocks.tgo:37:1
+   304  .  .  .  }
+   305  .  .  }
+   306  .  .  7: *ast.FuncDecl {
+   307  .  .  .  Name: *ast.Ident {
+   308  .  .  .  .  NamePos: element_blocks.tgo:39:6
+   309  .  .  .  .  Name: "test"
+   310  .  .  .  }
+   311  .  .  .  Type: *ast.FuncType {
+   312  .  .  .  .  Func: element_blocks.tgo:39:1
+   313  .  .  .  .  Params: *ast.FieldList {
+   314  .  .  .  .  .  Opening: element_blocks.tgo:39:10
+   315  .  .  .  .  .  Closing: element_blocks.tgo:39:11
+   316  .  .  .  .  }
+   317  .  .  .  }
+   318  .  .  .  Body: *ast.BlockStmt {
+   319  .  .  .  .  Lbrace: element_blocks.tgo:39:13
+   320  .  .  .  .  List: []ast.Stmt (len = 2) {
+   321  .  .  .  .  .  0: *ast.OpenTag {
+   322  .  .  .  .  .  .  OpenPos: element_blocks.tgo:40:2
+   323  .  .  .  .  .  .  Name: *ast.Ident {
+   324  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:40:3
+   325  .  .  .  .  .  .  .  Name: "div"
+   326  .  .  .  .  .  .  }
+   327  .  .  .  .  .  .  ClosePos: element_blocks.tgo:40:6
+   328  .  .  .  .  .  }
+   329  .  .  .  .  .  1: *ast.AssignStmt {
+   330  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   331  .  .  .  .  .  .  .  0: *ast.Ident {
+   332  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:41:2
+   333  .  .  .  .  .  .  .  .  Name: "a"
+   334  .  .  .  .  .  .  .  }
+   335  .  .  .  .  .  .  }
+   336  .  .  .  .  .  .  TokPos: element_blocks.tgo:41:4
+   337  .  .  .  .  .  .  Tok: :=
+   338  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   339  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   340  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:41:7
+   341  .  .  .  .  .  .  .  .  Kind: INT
+   342  .  .  .  .  .  .  .  .  Value: "3"
+   343  .  .  .  .  .  .  .  }
+   344  .  .  .  .  .  .  }
+   345  .  .  .  .  .  }
+   346  .  .  .  .  }
+   347  .  .  .  .  Rbrace: element_blocks.tgo:42:1
+   348  .  .  .  }
+   349  .  .  }
+   350  .  .  8: *ast.FuncDecl {
+   351  .  .  .  Name: *ast.Ident {
+   352  .  .  .  .  NamePos: element_blocks.tgo:44:6
+   353  .  .  .  .  Name: "test"
+   354  .  .  .  }
+   355  .  .  .  Type: *ast.FuncType {
+   356  .  .  .  .  Func: element_blocks.tgo:44:1
+   357  .  .  .  .  Params: *ast.FieldList {
+   358  .  .  .  .  .  Opening: element_blocks.tgo:44:10
+   359  .  .  .  .  .  Closing: element_blocks.tgo:44:11
+   360  .  .  .  .  }
+   361  .  .  .  }
+   362  .  .  .  Body: *ast.BlockStmt {
+   363  .  .  .  .  Lbrace: element_blocks.tgo:44:13
+   364  .  .  .  .  List: []ast.Stmt (len = 2) {
+   365  .  .  .  .  .  0: *ast.EndTag {
+   366  .  .  .  .  .  .  OpenPos: element_blocks.tgo:45:2
+   367  .  .  .  .  .  .  Name: *ast.Ident {
+   368  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:45:4
+   369  .  .  .  .  .  .  .  Name: "div"
+   370  .  .  .  .  .  .  }
+   371  .  .  .  .  .  .  ClosePos: element_blocks.tgo:45:7
+   372  .  .  .  .  .  }
+   373  .  .  .  .  .  1: *ast.AssignStmt {
+   374  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   375  .  .  .  .  .  .  .  0: *ast.Ident {
+   376  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:46:2
+   377  .  .  .  .  .  .  .  .  Name: "a"
+   378  .  .  .  .  .  .  .  }
+   379  .  .  .  .  .  .  }
+   380  .  .  .  .  .  .  TokPos: element_blocks.tgo:46:4
+   381  .  .  .  .  .  .  Tok: :=
+   382  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   383  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   384  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:46:7
+   385  .  .  .  .  .  .  .  .  Kind: INT
+   386  .  .  .  .  .  .  .  .  Value: "3"
+   387  .  .  .  .  .  .  .  }
+   388  .  .  .  .  .  .  }
+   389  .  .  .  .  .  }
+   390  .  .  .  .  }
+   391  .  .  .  .  Rbrace: element_blocks.tgo:47:1
+   392  .  .  .  }
+   393  .  .  }
+   394  .  .  9: *ast.FuncDecl {
+   395  .  .  .  Name: *ast.Ident {
+   396  .  .  .  .  NamePos: element_blocks.tgo:49:6
+   397  .  .  .  .  Name: "test"
+   398  .  .  .  }
+   399  .  .  .  Type: *ast.FuncType {
+   400  .  .  .  .  Func: element_blocks.tgo:49:1
+   401  .  .  .  .  Params: *ast.FieldList {
+   402  .  .  .  .  .  Opening: element_blocks.tgo:49:10
+   403  .  .  .  .  .  Closing: element_blocks.tgo:49:11
+   404  .  .  .  .  }
+   405  .  .  .  }
+   406  .  .  .  Body: *ast.BlockStmt {
+   407  .  .  .  .  Lbrace: element_blocks.tgo:49:13
+   408  .  .  .  .  List: []ast.Stmt (len = 2) {
+   409  .  .  .  .  .  0: *ast.AssignStmt {
+   410  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   411  .  .  .  .  .  .  .  0: *ast.Ident {
+   412  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:50:2
+   413  .  .  .  .  .  .  .  .  Name: "a"
+   414  .  .  .  .  .  .  .  }
+   415  .  .  .  .  .  .  }
+   416  .  .  .  .  .  .  TokPos: element_blocks.tgo:50:4
+   417  .  .  .  .  .  .  Tok: :=
+   418  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   419  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   420  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:50:7
+   421  .  .  .  .  .  .  .  .  Kind: INT
+   422  .  .  .  .  .  .  .  .  Value: "3"
+   423  .  .  .  .  .  .  .  }
+   424  .  .  .  .  .  .  }
+   425  .  .  .  .  .  }
+   426  .  .  .  .  .  1: *ast.EndTag {
+   427  .  .  .  .  .  .  OpenPos: element_blocks.tgo:51:2
+   428  .  .  .  .  .  .  Name: *ast.Ident {
+   429  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:51:4
+   430  .  .  .  .  .  .  .  Name: "div"
+   431  .  .  .  .  .  .  }
+   432  .  .  .  .  .  .  ClosePos: element_blocks.tgo:51:7
+   433  .  .  .  .  .  }
+   434  .  .  .  .  }
+   435  .  .  .  .  Rbrace: element_blocks.tgo:52:1
+   436  .  .  .  }
+   437  .  .  }
+   438  .  .  10: *ast.FuncDecl {
+   439  .  .  .  Name: *ast.Ident {
+   440  .  .  .  .  NamePos: element_blocks.tgo:54:6
+   441  .  .  .  .  Name: "test"
+   442  .  .  .  }
+   443  .  .  .  Type: *ast.FuncType {
+   444  .  .  .  .  Func: element_blocks.tgo:54:1
+   445  .  .  .  .  Params: *ast.FieldList {
+   446  .  .  .  .  .  Opening: element_blocks.tgo:54:10
+   447  .  .  .  .  .  Closing: element_blocks.tgo:54:11
+   448  .  .  .  .  }
+   449  .  .  .  }
+   450  .  .  .  Body: *ast.BlockStmt {
+   451  .  .  .  .  Lbrace: element_blocks.tgo:54:13
+   452  .  .  .  .  List: []ast.Stmt (len = 1) {
+   453  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   454  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   455  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:55:2
+   456  .  .  .  .  .  .  .  Name: *ast.Ident {
+   457  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:55:3
+   458  .  .  .  .  .  .  .  .  Name: "div"
+   459  .  .  .  .  .  .  .  }
+   460  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:55:6
+   461  .  .  .  .  .  .  }
+   462  .  .  .  .  .  .  Body: []ast.Stmt (len = 2) {
+   463  .  .  .  .  .  .  .  0: *ast.OpenTag {
+   464  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:56:3
+   465  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   466  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:56:4
+   467  .  .  .  .  .  .  .  .  .  Name: "span"
+   468  .  .  .  .  .  .  .  .  }
+   469  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:56:8
+   470  .  .  .  .  .  .  .  }
+   471  .  .  .  .  .  .  .  1: *ast.AssignStmt {
+   472  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   473  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   474  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:57:3
+   475  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   476  .  .  .  .  .  .  .  .  .  }
+   477  .  .  .  .  .  .  .  .  }
+   478  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:57:5
+   479  .  .  .  .  .  .  .  .  Tok: :=
+   480  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   481  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   482  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:57:8
+   483  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   484  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   485  .  .  .  .  .  .  .  .  .  }
+   486  .  .  .  .  .  .  .  .  }
+   487  .  .  .  .  .  .  .  }
+   488  .  .  .  .  .  .  }
+   489  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   490  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:58:2
+   491  .  .  .  .  .  .  .  Name: *ast.Ident {
+   492  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:58:4
+   493  .  .  .  .  .  .  .  .  Name: "div"
+   494  .  .  .  .  .  .  .  }
+   495  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:58:7
+   496  .  .  .  .  .  .  }
+   497  .  .  .  .  .  }
+   498  .  .  .  .  }
+   499  .  .  .  .  Rbrace: element_blocks.tgo:59:1
+   500  .  .  .  }
+   501  .  .  }
+   502  .  .  11: *ast.FuncDecl {
+   503  .  .  .  Name: *ast.Ident {
+   504  .  .  .  .  NamePos: element_blocks.tgo:61:6
+   505  .  .  .  .  Name: "test"
+   506  .  .  .  }
+   507  .  .  .  Type: *ast.FuncType {
+   508  .  .  .  .  Func: element_blocks.tgo:61:1
+   509  .  .  .  .  Params: *ast.FieldList {
+   510  .  .  .  .  .  Opening: element_blocks.tgo:61:10
+   511  .  .  .  .  .  Closing: element_blocks.tgo:61:11
+   512  .  .  .  .  }
+   513  .  .  .  }
+   514  .  .  .  Body: *ast.BlockStmt {
+   515  .  .  .  .  Lbrace: element_blocks.tgo:61:13
+   516  .  .  .  .  List: []ast.Stmt (len = 1) {
+   517  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   518  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   519  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:62:2
+   520  .  .  .  .  .  .  .  Name: *ast.Ident {
+   521  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:62:3
+   522  .  .  .  .  .  .  .  .  Name: "div"
+   523  .  .  .  .  .  .  .  }
+   524  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:62:6
+   525  .  .  .  .  .  .  }
+   526  .  .  .  .  .  .  Body: []ast.Stmt (len = 2) {
+   527  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   528  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   529  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   530  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:63:3
+   531  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   532  .  .  .  .  .  .  .  .  .  }
+   533  .  .  .  .  .  .  .  .  }
+   534  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:63:5
+   535  .  .  .  .  .  .  .  .  Tok: :=
+   536  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   537  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   538  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:63:8
+   539  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   540  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   541  .  .  .  .  .  .  .  .  .  }
+   542  .  .  .  .  .  .  .  .  }
+   543  .  .  .  .  .  .  .  }
+   544  .  .  .  .  .  .  .  1: *ast.OpenTag {
+   545  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:64:3
+   546  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   547  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:64:4
+   548  .  .  .  .  .  .  .  .  .  Name: "span"
+   549  .  .  .  .  .  .  .  .  }
+   550  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:64:8
+   551  .  .  .  .  .  .  .  }
+   552  .  .  .  .  .  .  }
+   553  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   554  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:65:2
+   555  .  .  .  .  .  .  .  Name: *ast.Ident {
+   556  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:65:4
+   557  .  .  .  .  .  .  .  .  Name: "div"
+   558  .  .  .  .  .  .  .  }
+   559  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:65:7
+   560  .  .  .  .  .  .  }
+   561  .  .  .  .  .  }
+   562  .  .  .  .  }
+   563  .  .  .  .  Rbrace: element_blocks.tgo:66:1
+   564  .  .  .  }
+   565  .  .  }
+   566  .  .  12: *ast.FuncDecl {
+   567  .  .  .  Name: *ast.Ident {
+   568  .  .  .  .  NamePos: element_blocks.tgo:68:6
+   569  .  .  .  .  Name: "test"
+   570  .  .  .  }
+   571  .  .  .  Type: *ast.FuncType {
+   572  .  .  .  .  Func: element_blocks.tgo:68:1
+   573  .  .  .  .  Params: *ast.FieldList {
+   574  .  .  .  .  .  Opening: element_blocks.tgo:68:10
+   575  .  .  .  .  .  Closing: element_blocks.tgo:68:11
+   576  .  .  .  .  }
+   577  .  .  .  }
+   578  .  .  .  Body: *ast.BlockStmt {
+   579  .  .  .  .  Lbrace: element_blocks.tgo:68:13
+   580  .  .  .  .  List: []ast.Stmt (len = 1) {
+   581  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   582  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   583  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:69:2
+   584  .  .  .  .  .  .  .  Name: *ast.Ident {
+   585  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:69:3
+   586  .  .  .  .  .  .  .  .  Name: "div"
+   587  .  .  .  .  .  .  .  }
+   588  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:69:6
+   589  .  .  .  .  .  .  }
+   590  .  .  .  .  .  .  Body: []ast.Stmt (len = 3) {
+   591  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   592  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   593  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   594  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:70:3
+   595  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   596  .  .  .  .  .  .  .  .  .  }
+   597  .  .  .  .  .  .  .  .  }
+   598  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:70:5
+   599  .  .  .  .  .  .  .  .  Tok: :=
+   600  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   601  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   602  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:70:8
+   603  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   604  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   605  .  .  .  .  .  .  .  .  .  }
+   606  .  .  .  .  .  .  .  .  }
+   607  .  .  .  .  .  .  .  }
+   608  .  .  .  .  .  .  .  1: *ast.OpenTag {
+   609  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:71:3
+   610  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   611  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:71:4
+   612  .  .  .  .  .  .  .  .  .  Name: "span"
+   613  .  .  .  .  .  .  .  .  }
+   614  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:71:8
+   615  .  .  .  .  .  .  .  }
+   616  .  .  .  .  .  .  .  2: *ast.AssignStmt {
+   617  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   618  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   619  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:72:3
+   620  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   621  .  .  .  .  .  .  .  .  .  }
+   622  .  .  .  .  .  .  .  .  }
+   623  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:72:5
+   624  .  .  .  .  .  .  .  .  Tok: :=
+   625  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   626  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   627  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:72:8
+   628  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   629  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   630  .  .  .  .  .  .  .  .  .  }
+   631  .  .  .  .  .  .  .  .  }
+   632  .  .  .  .  .  .  .  }
+   633  .  .  .  .  .  .  }
+   634  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   635  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:73:2
+   636  .  .  .  .  .  .  .  Name: *ast.Ident {
+   637  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:73:4
+   638  .  .  .  .  .  .  .  .  Name: "div"
+   639  .  .  .  .  .  .  .  }
+   640  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:73:7
+   641  .  .  .  .  .  .  }
+   642  .  .  .  .  .  }
+   643  .  .  .  .  }
+   644  .  .  .  .  Rbrace: element_blocks.tgo:74:1
+   645  .  .  .  }
+   646  .  .  }
+   647  .  .  13: *ast.FuncDecl {
+   648  .  .  .  Name: *ast.Ident {
+   649  .  .  .  .  NamePos: element_blocks.tgo:76:6
+   650  .  .  .  .  Name: "test"
+   651  .  .  .  }
+   652  .  .  .  Type: *ast.FuncType {
+   653  .  .  .  .  Func: element_blocks.tgo:76:1
+   654  .  .  .  .  Params: *ast.FieldList {
+   655  .  .  .  .  .  Opening: element_blocks.tgo:76:10
+   656  .  .  .  .  .  Closing: element_blocks.tgo:76:11
+   657  .  .  .  .  }
+   658  .  .  .  }
+   659  .  .  .  Body: *ast.BlockStmt {
+   660  .  .  .  .  Lbrace: element_blocks.tgo:76:13
+   661  .  .  .  .  List: []ast.Stmt (len = 1) {
+   662  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   663  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   664  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:77:2
+   665  .  .  .  .  .  .  .  Name: *ast.Ident {
+   666  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:77:3
+   667  .  .  .  .  .  .  .  .  Name: "div"
+   668  .  .  .  .  .  .  .  }
+   669  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:77:6
+   670  .  .  .  .  .  .  }
+   671  .  .  .  .  .  .  Body: []ast.Stmt (len = 2) {
+   672  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   673  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   674  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   675  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:78:3
+   676  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   677  .  .  .  .  .  .  .  .  .  }
+   678  .  .  .  .  .  .  .  .  }
+   679  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:78:5
+   680  .  .  .  .  .  .  .  .  Tok: :=
+   681  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   682  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   683  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:78:8
+   684  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   685  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   686  .  .  .  .  .  .  .  .  .  }
+   687  .  .  .  .  .  .  .  .  }
+   688  .  .  .  .  .  .  .  }
+   689  .  .  .  .  .  .  .  1: *ast.ElementBlockStmt {
+   690  .  .  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   691  .  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:79:3
+   692  .  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   693  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:79:4
+   694  .  .  .  .  .  .  .  .  .  .  Name: "span"
+   695  .  .  .  .  .  .  .  .  .  }
+   696  .  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:79:8
+   697  .  .  .  .  .  .  .  .  }
+   698  .  .  .  .  .  .  .  .  Body: []ast.Stmt (len = 1) {
+   699  .  .  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   700  .  .  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   701  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   702  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:80:3
+   703  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   704  .  .  .  .  .  .  .  .  .  .  .  }
+   705  .  .  .  .  .  .  .  .  .  .  }
+   706  .  .  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:80:5
+   707  .  .  .  .  .  .  .  .  .  .  Tok: :=
+   708  .  .  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   709  .  .  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   710  .  .  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:80:8
+   711  .  .  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   712  .  .  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   713  .  .  .  .  .  .  .  .  .  .  .  }
+   714  .  .  .  .  .  .  .  .  .  .  }
+   715  .  .  .  .  .  .  .  .  .  }
+   716  .  .  .  .  .  .  .  .  }
+   717  .  .  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   718  .  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:81:3
+   719  .  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   720  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:81:5
+   721  .  .  .  .  .  .  .  .  .  .  Name: "span"
+   722  .  .  .  .  .  .  .  .  .  }
+   723  .  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:81:9
+   724  .  .  .  .  .  .  .  .  }
+   725  .  .  .  .  .  .  .  }
+   726  .  .  .  .  .  .  }
+   727  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   728  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:82:2
+   729  .  .  .  .  .  .  .  Name: *ast.Ident {
+   730  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:82:4
+   731  .  .  .  .  .  .  .  .  Name: "div"
+   732  .  .  .  .  .  .  .  }
+   733  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:82:7
+   734  .  .  .  .  .  .  }
+   735  .  .  .  .  .  }
+   736  .  .  .  .  }
+   737  .  .  .  .  Rbrace: element_blocks.tgo:83:1
+   738  .  .  .  }
+   739  .  .  }
+   740  .  .  14: *ast.FuncDecl {
+   741  .  .  .  Name: *ast.Ident {
+   742  .  .  .  .  NamePos: element_blocks.tgo:85:6
+   743  .  .  .  .  Name: "test"
+   744  .  .  .  }
+   745  .  .  .  Type: *ast.FuncType {
+   746  .  .  .  .  Func: element_blocks.tgo:85:1
+   747  .  .  .  .  Params: *ast.FieldList {
+   748  .  .  .  .  .  Opening: element_blocks.tgo:85:10
+   749  .  .  .  .  .  Closing: element_blocks.tgo:85:11
+   750  .  .  .  .  }
+   751  .  .  .  }
+   752  .  .  .  Body: *ast.BlockStmt {
+   753  .  .  .  .  Lbrace: element_blocks.tgo:85:13
+   754  .  .  .  .  List: []ast.Stmt (len = 1) {
+   755  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   756  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   757  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:86:2
+   758  .  .  .  .  .  .  .  Name: *ast.Ident {
+   759  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:86:3
+   760  .  .  .  .  .  .  .  .  Name: "div"
+   761  .  .  .  .  .  .  .  }
+   762  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:86:6
+   763  .  .  .  .  .  .  }
+   764  .  .  .  .  .  .  Body: []ast.Stmt (len = 2) {
+   765  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   766  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   767  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   768  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:87:3
+   769  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   770  .  .  .  .  .  .  .  .  .  }
+   771  .  .  .  .  .  .  .  .  }
+   772  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:87:5
+   773  .  .  .  .  .  .  .  .  Tok: :=
+   774  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   775  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   776  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:87:8
+   777  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   778  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   779  .  .  .  .  .  .  .  .  .  }
+   780  .  .  .  .  .  .  .  .  }
+   781  .  .  .  .  .  .  .  }
+   782  .  .  .  .  .  .  .  1: *ast.ElementBlockStmt {
+   783  .  .  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   784  .  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:88:3
+   785  .  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   786  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:88:4
+   787  .  .  .  .  .  .  .  .  .  .  Name: "span"
+   788  .  .  .  .  .  .  .  .  .  }
+   789  .  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:88:8
+   790  .  .  .  .  .  .  .  .  }
+   791  .  .  .  .  .  .  .  .  Body: []ast.Stmt (len = 1) {
+   792  .  .  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   793  .  .  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   794  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   795  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:89:3
+   796  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   797  .  .  .  .  .  .  .  .  .  .  .  }
+   798  .  .  .  .  .  .  .  .  .  .  }
+   799  .  .  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:89:5
+   800  .  .  .  .  .  .  .  .  .  .  Tok: :=
+   801  .  .  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   802  .  .  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   803  .  .  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:89:8
+   804  .  .  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   805  .  .  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   806  .  .  .  .  .  .  .  .  .  .  .  }
+   807  .  .  .  .  .  .  .  .  .  .  }
+   808  .  .  .  .  .  .  .  .  .  }
+   809  .  .  .  .  .  .  .  .  }
+   810  .  .  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   811  .  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:90:3
+   812  .  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   813  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:90:5
+   814  .  .  .  .  .  .  .  .  .  .  Name: "span"
+   815  .  .  .  .  .  .  .  .  .  }
+   816  .  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:90:9
+   817  .  .  .  .  .  .  .  .  }
+   818  .  .  .  .  .  .  .  }
+   819  .  .  .  .  .  .  }
+   820  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   821  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:91:2
+   822  .  .  .  .  .  .  .  Name: *ast.Ident {
+   823  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:91:4
+   824  .  .  .  .  .  .  .  .  Name: "div"
+   825  .  .  .  .  .  .  .  }
+   826  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:91:7
+   827  .  .  .  .  .  .  }
+   828  .  .  .  .  .  }
+   829  .  .  .  .  }
+   830  .  .  .  .  Rbrace: element_blocks.tgo:92:1
+   831  .  .  .  }
+   832  .  .  }
+   833  .  .  15: *ast.FuncDecl {
+   834  .  .  .  Name: *ast.Ident {
+   835  .  .  .  .  NamePos: element_blocks.tgo:94:6
+   836  .  .  .  .  Name: "test"
+   837  .  .  .  }
+   838  .  .  .  Type: *ast.FuncType {
+   839  .  .  .  .  Func: element_blocks.tgo:94:1
+   840  .  .  .  .  Params: *ast.FieldList {
+   841  .  .  .  .  .  Opening: element_blocks.tgo:94:10
+   842  .  .  .  .  .  Closing: element_blocks.tgo:94:11
+   843  .  .  .  .  }
+   844  .  .  .  }
+   845  .  .  .  Body: *ast.BlockStmt {
+   846  .  .  .  .  Lbrace: element_blocks.tgo:94:13
+   847  .  .  .  .  List: []ast.Stmt (len = 1) {
+   848  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   849  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   850  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:95:2
+   851  .  .  .  .  .  .  .  Name: *ast.Ident {
+   852  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:95:3
+   853  .  .  .  .  .  .  .  .  Name: "div"
+   854  .  .  .  .  .  .  .  }
+   855  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:95:6
+   856  .  .  .  .  .  .  }
+   857  .  .  .  .  .  .  Body: []ast.Stmt (len = 1) {
+   858  .  .  .  .  .  .  .  0: *ast.EndTag {
+   859  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:96:3
+   860  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   861  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:96:5
+   862  .  .  .  .  .  .  .  .  .  Name: "span"
+   863  .  .  .  .  .  .  .  .  }
+   864  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:96:9
+   865  .  .  .  .  .  .  .  }
+   866  .  .  .  .  .  .  }
+   867  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   868  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:97:2
+   869  .  .  .  .  .  .  .  Name: *ast.Ident {
+   870  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:97:4
+   871  .  .  .  .  .  .  .  .  Name: "div"
+   872  .  .  .  .  .  .  .  }
+   873  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:97:7
+   874  .  .  .  .  .  .  }
+   875  .  .  .  .  .  }
+   876  .  .  .  .  }
+   877  .  .  .  .  Rbrace: element_blocks.tgo:98:1
+   878  .  .  .  }
+   879  .  .  }
+   880  .  .  16: *ast.FuncDecl {
+   881  .  .  .  Name: *ast.Ident {
+   882  .  .  .  .  NamePos: element_blocks.tgo:100:6
+   883  .  .  .  .  Name: "test"
+   884  .  .  .  }
+   885  .  .  .  Type: *ast.FuncType {
+   886  .  .  .  .  Func: element_blocks.tgo:100:1
+   887  .  .  .  .  Params: *ast.FieldList {
+   888  .  .  .  .  .  Opening: element_blocks.tgo:100:10
+   889  .  .  .  .  .  Closing: element_blocks.tgo:100:11
+   890  .  .  .  .  }
+   891  .  .  .  }
+   892  .  .  .  Body: *ast.BlockStmt {
+   893  .  .  .  .  Lbrace: element_blocks.tgo:100:13
+   894  .  .  .  .  List: []ast.Stmt (len = 1) {
+   895  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   896  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   897  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:101:2
+   898  .  .  .  .  .  .  .  Name: *ast.Ident {
+   899  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:101:3
+   900  .  .  .  .  .  .  .  .  Name: "div"
+   901  .  .  .  .  .  .  .  }
+   902  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:101:6
+   903  .  .  .  .  .  .  }
+   904  .  .  .  .  .  .  Body: []ast.Stmt (len = 2) {
+   905  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   906  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   907  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   908  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:102:3
+   909  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   910  .  .  .  .  .  .  .  .  .  }
+   911  .  .  .  .  .  .  .  .  }
+   912  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:102:5
+   913  .  .  .  .  .  .  .  .  Tok: :=
+   914  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   915  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   916  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:102:8
+   917  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   918  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   919  .  .  .  .  .  .  .  .  .  }
+   920  .  .  .  .  .  .  .  .  }
+   921  .  .  .  .  .  .  .  }
+   922  .  .  .  .  .  .  .  1: *ast.EndTag {
+   923  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:103:3
+   924  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   925  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:103:5
+   926  .  .  .  .  .  .  .  .  .  Name: "span"
+   927  .  .  .  .  .  .  .  .  }
+   928  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:103:9
+   929  .  .  .  .  .  .  .  }
+   930  .  .  .  .  .  .  }
+   931  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   932  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:104:2
+   933  .  .  .  .  .  .  .  Name: *ast.Ident {
+   934  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:104:4
+   935  .  .  .  .  .  .  .  .  Name: "div"
+   936  .  .  .  .  .  .  .  }
+   937  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:104:7
+   938  .  .  .  .  .  .  }
+   939  .  .  .  .  .  }
+   940  .  .  .  .  }
+   941  .  .  .  .  Rbrace: element_blocks.tgo:105:1
+   942  .  .  .  }
+   943  .  .  }
+   944  .  .  17: *ast.FuncDecl {
+   945  .  .  .  Name: *ast.Ident {
+   946  .  .  .  .  NamePos: element_blocks.tgo:107:6
+   947  .  .  .  .  Name: "test"
+   948  .  .  .  }
+   949  .  .  .  Type: *ast.FuncType {
+   950  .  .  .  .  Func: element_blocks.tgo:107:1
+   951  .  .  .  .  Params: *ast.FieldList {
+   952  .  .  .  .  .  Opening: element_blocks.tgo:107:10
+   953  .  .  .  .  .  Closing: element_blocks.tgo:107:11
+   954  .  .  .  .  }
+   955  .  .  .  }
+   956  .  .  .  Body: *ast.BlockStmt {
+   957  .  .  .  .  Lbrace: element_blocks.tgo:107:13
+   958  .  .  .  .  List: []ast.Stmt (len = 1) {
+   959  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   960  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   961  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:108:2
+   962  .  .  .  .  .  .  .  Name: *ast.Ident {
+   963  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:108:3
+   964  .  .  .  .  .  .  .  .  Name: "div"
+   965  .  .  .  .  .  .  .  }
+   966  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:108:6
+   967  .  .  .  .  .  .  }
+   968  .  .  .  .  .  .  Body: []ast.Stmt (len = 2) {
+   969  .  .  .  .  .  .  .  0: *ast.AssignStmt {
+   970  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+   971  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+   972  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:109:3
+   973  .  .  .  .  .  .  .  .  .  .  Name: "a"
+   974  .  .  .  .  .  .  .  .  .  }
+   975  .  .  .  .  .  .  .  .  }
+   976  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:109:5
+   977  .  .  .  .  .  .  .  .  Tok: :=
+   978  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+   979  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+   980  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:109:8
+   981  .  .  .  .  .  .  .  .  .  .  Kind: INT
+   982  .  .  .  .  .  .  .  .  .  .  Value: "3"
+   983  .  .  .  .  .  .  .  .  .  }
+   984  .  .  .  .  .  .  .  .  }
+   985  .  .  .  .  .  .  .  }
+   986  .  .  .  .  .  .  .  1: *ast.EndTag {
+   987  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:110:3
+   988  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+   989  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:110:5
+   990  .  .  .  .  .  .  .  .  .  Name: "span"
+   991  .  .  .  .  .  .  .  .  }
+   992  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:110:9
+   993  .  .  .  .  .  .  .  }
+   994  .  .  .  .  .  .  }
+   995  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   996  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:111:2
+   997  .  .  .  .  .  .  .  Name: *ast.Ident {
+   998  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:111:4
+   999  .  .  .  .  .  .  .  .  Name: "div"
+  1000  .  .  .  .  .  .  .  }
+  1001  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:111:7
+  1002  .  .  .  .  .  .  }
+  1003  .  .  .  .  .  }
+  1004  .  .  .  .  }
+  1005  .  .  .  .  Rbrace: element_blocks.tgo:112:1
+  1006  .  .  .  }
+  1007  .  .  }
+  1008  .  .  18: *ast.FuncDecl {
+  1009  .  .  .  Name: *ast.Ident {
+  1010  .  .  .  .  NamePos: element_blocks.tgo:114:6
+  1011  .  .  .  .  Name: "test"
+  1012  .  .  .  }
+  1013  .  .  .  Type: *ast.FuncType {
+  1014  .  .  .  .  Func: element_blocks.tgo:114:1
+  1015  .  .  .  .  Params: *ast.FieldList {
+  1016  .  .  .  .  .  Opening: element_blocks.tgo:114:10
+  1017  .  .  .  .  .  Closing: element_blocks.tgo:114:11
+  1018  .  .  .  .  }
+  1019  .  .  .  }
+  1020  .  .  .  Body: *ast.BlockStmt {
+  1021  .  .  .  .  Lbrace: element_blocks.tgo:114:13
+  1022  .  .  .  .  List: []ast.Stmt (len = 1) {
+  1023  .  .  .  .  .  0: *ast.ElementBlockStmt {
+  1024  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+  1025  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:115:2
+  1026  .  .  .  .  .  .  .  Name: *ast.Ident {
+  1027  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:115:3
+  1028  .  .  .  .  .  .  .  .  Name: "div"
+  1029  .  .  .  .  .  .  .  }
+  1030  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:115:6
+  1031  .  .  .  .  .  .  }
+  1032  .  .  .  .  .  .  Body: []ast.Stmt (len = 2) {
+  1033  .  .  .  .  .  .  .  0: *ast.EndTag {
+  1034  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:116:3
+  1035  .  .  .  .  .  .  .  .  Name: *ast.Ident {
+  1036  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:116:5
+  1037  .  .  .  .  .  .  .  .  .  Name: "span"
+  1038  .  .  .  .  .  .  .  .  }
+  1039  .  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:116:9
+  1040  .  .  .  .  .  .  .  }
+  1041  .  .  .  .  .  .  .  1: *ast.AssignStmt {
+  1042  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
+  1043  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
+  1044  .  .  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:117:3
+  1045  .  .  .  .  .  .  .  .  .  .  Name: "a"
+  1046  .  .  .  .  .  .  .  .  .  }
+  1047  .  .  .  .  .  .  .  .  }
+  1048  .  .  .  .  .  .  .  .  TokPos: element_blocks.tgo:117:5
+  1049  .  .  .  .  .  .  .  .  Tok: :=
+  1050  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
+  1051  .  .  .  .  .  .  .  .  .  0: *ast.BasicLit {
+  1052  .  .  .  .  .  .  .  .  .  .  ValuePos: element_blocks.tgo:117:8
+  1053  .  .  .  .  .  .  .  .  .  .  Kind: INT
+  1054  .  .  .  .  .  .  .  .  .  .  Value: "3"
+  1055  .  .  .  .  .  .  .  .  .  }
+  1056  .  .  .  .  .  .  .  .  }
+  1057  .  .  .  .  .  .  .  }
+  1058  .  .  .  .  .  .  }
+  1059  .  .  .  .  .  .  EndTag: *ast.EndTag {
+  1060  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:118:2
+  1061  .  .  .  .  .  .  .  Name: *ast.Ident {
+  1062  .  .  .  .  .  .  .  .  NamePos: element_blocks.tgo:118:4
+  1063  .  .  .  .  .  .  .  .  Name: "div"
+  1064  .  .  .  .  .  .  .  }
+  1065  .  .  .  .  .  .  .  ClosePos: element_blocks.tgo:118:7
+  1066  .  .  .  .  .  .  }
+  1067  .  .  .  .  .  }
+  1068  .  .  .  .  }
+  1069  .  .  .  .  Rbrace: element_blocks.tgo:119:1
+  1070  .  .  .  }
+  1071  .  .  }
+  1072  .  }
+  1073  .  FileStart: element_blocks.tgo:1:1
+  1074  .  FileEnd: element_blocks.tgo:119:3
+  1075  .  GoVersion: ""
+  1076  }
