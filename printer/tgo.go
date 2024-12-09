@@ -43,7 +43,22 @@ func (p *printer) tagForceNewline(tagOpenPos, nameStartPos, nameEndPos, tagClose
 	return forceNewline
 }
 
-func (p *printer) opentag(b *ast.OpenTagStmt) {
+func (p *printer) elementBlockStmt(b *ast.ElementBlockStmt) {
+	p.opentag(b.OpenTag)
+	indent := 1
+	oneline := false
+	if p.lineFor(b.OpenTag.Pos()) == p.lineFor(b.EndTag.End()) && !p.willHaveNewLine(b) {
+		indent = 0
+		oneline = true
+	}
+	p.stmtList(b.Body, indent, false, oneline)
+	if !oneline {
+		p.linebreak(p.lineFor(b.EndTag.Pos()), 1, ignore, true)
+	}
+	p.endtag(b.EndTag)
+}
+
+func (p *printer) opentag(b *ast.OpenTag) {
 	p.setPos(b.OpenPos)
 	p.print(token.LSS)
 
@@ -64,7 +79,7 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	}
 
 	beforeStmtsLine := p.out.Line
-	p.stmtList(b.Body, -1, true)
+	p.stmtList(b.Body, -1, true, false)
 	if beforeStmtsLine != p.out.Line {
 		p.linebreak(p.lineFor(b.ClosePos), 1, ignore, false)
 	}
@@ -80,7 +95,7 @@ func (p *printer) opentag(b *ast.OpenTagStmt) {
 	p.inStartTag = false
 }
 
-func (p *printer) endtag(b *ast.EndTagStmt) {
+func (p *printer) endtag(b *ast.EndTag) {
 	p.setPos(b.OpenPos)
 	p.print(token.END_TAG)
 
@@ -139,80 +154,54 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	}
 }
 
-func unlabel(s ast.Stmt) ast.Stmt {
-	for {
-		if l, ok := s.(*ast.LabeledStmt); ok {
-			s = l.Stmt
-			continue
-		}
-		return s
-	}
-}
+func (p *printer) willHaveNewLine(b *ast.ElementBlockStmt) bool {
+	// TODO: rework this, simplify
 
-func (p *printer) tagIndent(list []ast.Stmt) (openPair map[*ast.OpenTagStmt]struct{}, endPair map[*ast.EndTagStmt]struct{}, oneline map[*ast.OpenTagStmt]struct{}) {
-	openPair = make(map[*ast.OpenTagStmt]struct{})
-	endPair = make(map[*ast.EndTagStmt]struct{})
-	oneline = make(map[*ast.OpenTagStmt]struct{})
-
-	deep := make([]int, 0, 32)
-	for i, v := range list {
-		switch v := unlabel(v).(type) {
-		case *ast.OpenTagStmt:
-			deep = append(deep, i)
-		case *ast.EndTagStmt:
-			for len(deep) != 0 {
-				openTagIndex := deep[len(deep)-1]
-				openTag := unlabel(list[openTagIndex]).(*ast.OpenTagStmt)
-				deep = deep[:len(deep)-1]
-				if openTag.Name.Name == v.Name.Name {
-					openPair[openTag] = struct{}{}
-					endPair[v] = struct{}{}
-					if p.lineFor(openTag.Pos()) == p.lineFor(v.End()) && !p.willHaveNewLine(openTag, list[openTagIndex+1:i]) {
-						oneline[openTag] = struct{}{}
-					}
-					break
-				}
-			}
-		}
-	}
-
-	return
-}
-
-func (p *printer) willHaveNewLine(o *ast.OpenTagStmt, list []ast.Stmt) bool {
-	if v, ok := p.hasNewline[o]; ok {
+	if v, ok := p.hasNewline[b]; ok {
 		return v
 	}
 
 	cfg := Config{Mode: RawFormat}
 	var counter sizeCounter
-	if err := cfg.fprint(&counter, p.fset, list, p.nodeSizes, p.hasNewline); err != nil {
+	if err := cfg.fprint(&counter, p.fset, b.Body, p.nodeSizes, p.hasNewline); err != nil {
 		return true
 	}
 
 	var counter2 sizeCounter
-	if err := cfg.fprint(&counter2, p.fset, o, p.nodeSizes, p.hasNewline); err != nil {
+	if err := cfg.fprint(&counter2, p.fset, b.OpenTag, p.nodeSizes, p.hasNewline); err != nil {
+		return true
+	}
+
+	var counter3 sizeCounter
+	if err := cfg.fprint(&counter3, p.fset, b.EndTag, p.nodeSizes, p.hasNewline); err != nil {
 		return true
 	}
 
 	forceMultiLine := false
-	for _, v := range list {
-		switch v := v.(type) {
-		case *ast.OpenTagStmt, *ast.EndTagStmt:
-			continue
-		case *ast.ExprStmt:
-			switch v := v.X.(type) {
-			case *ast.BasicLit:
-				if v.Kind == token.STRING {
+	var checkList func(list []ast.Stmt)
+	checkList = func(list []ast.Stmt) {
+		for _, v := range list {
+			switch v := v.(type) {
+			case *ast.OpenTag, *ast.EndTag:
+				continue
+			case *ast.ElementBlockStmt:
+				checkList(v.Body)
+				continue
+			case *ast.ExprStmt:
+				switch v := v.X.(type) {
+				case *ast.BasicLit:
+					if v.Kind == token.STRING {
+						continue
+					}
+				case *ast.TemplateLiteralExpr:
 					continue
 				}
-			case *ast.TemplateLiteralExpr:
-				continue
 			}
+			forceMultiLine = true
 		}
-		forceMultiLine = true
 	}
+	checkList(b.Body)
 
-	p.hasNewline[o] = counter.hasNewline || counter2.hasNewline || forceMultiLine
-	return counter.hasNewline || counter2.hasNewline || forceMultiLine
+	p.hasNewline[b] = counter.hasNewline || counter2.hasNewline || counter3.hasNewline || forceMultiLine
+	return counter.hasNewline || counter2.hasNewline || counter3.hasNewline || forceMultiLine
 }
