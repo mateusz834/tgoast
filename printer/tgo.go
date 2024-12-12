@@ -80,7 +80,6 @@ func (p *printer) opentag(b *ast.OpenTag) {
 		p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
 	}
 
-	// TODO: this should pass 1 to stmtList, instead?
 	if !forceNewline {
 		p.print(indent)
 	}
