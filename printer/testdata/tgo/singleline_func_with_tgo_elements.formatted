@@ -1,0 +1,65 @@
+// fmtWithErrors
+package templates
+
+func test() {
+	"a"
+}
+
+func test() {
+	"\{"a"}"
+}
+
+func test() {
+	<div>
+}
+
+func test() {
+	</div>
+}
+
+func test() {
+	@attr
+}
+
+func test() {
+	@attr="val"
+}
+
+func test() {
+	@attr="\{"val"}"
+}
+
+func test() {
+a:
+	"a"
+}
+
+func test() {
+a:
+	"\{"a"}"
+}
+
+func test() {
+a:
+	<div>
+}
+
+func test() {
+a:
+	</div>
+}
+
+func test() {
+a:
+	@attr
+}
+
+func test() {
+a:
+	@attr="val"
+}
+
+func test() {
+a:
+	@attr="\{"val"}"
+}
