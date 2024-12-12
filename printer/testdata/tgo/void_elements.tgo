@@ -1,3 +1,4 @@
+// fmtWithErrors
 package templates
 
 func test() {
