@@ -54,8 +54,14 @@ func (p *printer) elementBlockStmt(b *ast.ElementBlockStmt) {
 	p.stmtList(b.Body, indent, false, oneline)
 	if !oneline {
 		p.linebreak(p.lineFor(b.EndTag.Pos()), 1, ignore, true)
+	} else {
+		p.print(noExtraLinebreak)
 	}
+
 	p.endtag(b.EndTag)
+	if oneline {
+		p.print(noExtraLinebreak)
+	}
 }
 
 func (p *printer) opentag(b *ast.OpenTag) {
@@ -74,6 +80,7 @@ func (p *printer) opentag(b *ast.OpenTag) {
 		p.linebreak(p.lineFor(b.Name.NamePos), 1, ignore, false)
 	}
 
+	// TODO: this should pass 1 to stmtList, instead?
 	if !forceNewline {
 		p.print(indent)
 	}
