@@ -8,35 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/ast"
 	"github.com/mateusz834/tgoast/parser"
 	"github.com/mateusz834/tgoast/scanner"
 	"github.com/mateusz834/tgoast/token"
 )
-
-const testSrc = `package test
-import "github.com/mateusz834/tgo"
-func a(tgo.Ctx) error {
-	<div>"test";<div @attr="value">"test"</div></div>
-}
-`
-
-func TestTest(t *testing.T) {
-	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, "0", testSrc, parser.SkipObjectResolution|parser.ParseComments)
-	if err != nil {
-		if errs, ok := err.(scanner.ErrorList); ok {
-			for _, err := range errs {
-				t.Fatal(err)
-			}
-		}
-		t.Fatal(err)
-	}
-	ast.Print(fset, f)
-	var out strings.Builder
-	Fprint(&out, fset, f)
-	t.Logf("\n%v", out.String())
-}
 
 func TestTgoSyntax(t *testing.T) {
 	const testdata = "./testdata/tgo"
