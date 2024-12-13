@@ -1,6 +1,8 @@
 package printer
 
 import (
+	"fmt"
+
 	"github.com/mateusz834/tgoast/ast"
 	"github.com/mateusz834/tgoast/token"
 )
@@ -47,10 +49,11 @@ func (p *printer) elementBlockStmt(b *ast.ElementBlockStmt) {
 	p.opentag(b.OpenTag)
 	indent := 1
 	oneline := false
-	if p.lineFor(b.OpenTag.Pos()) == p.lineFor(b.EndTag.End()) && !p.willHaveNewLine(b) {
+	if p.isOneline(b) {
 		indent = 0
 		oneline = true
 	}
+	fmt.Printf("oneline: %v %v\n", b.OpenTag.Name, oneline)
 	p.stmtList(b.Body, indent, false, oneline)
 	if !oneline {
 		p.linebreak(p.lineFor(b.EndTag.Pos()), 1, ignore, true)
@@ -160,54 +163,56 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	}
 }
 
-func (p *printer) willHaveNewLine(b *ast.ElementBlockStmt) bool {
-	// TODO: rework this, simplify
-
-	if v, ok := p.hasNewline[b]; ok {
-		return v
+func (p *printer) isOneline(b *ast.ElementBlockStmt) bool {
+	if p.lineFor(b.OpenTag.Pos()) != p.lineFor(b.EndTag.End()) {
+		return false
 	}
 
-	cfg := Config{Mode: RawFormat}
-	var counter sizeCounter
-	if err := cfg.fprint(&counter, p.fset, b.Body, p.nodeSizes, p.hasNewline); err != nil {
-		return true
-	}
+	oneline := len(b.OpenTag.Body) == 0
 
-	var counter2 sizeCounter
-	if err := cfg.fprint(&counter2, p.fset, b.OpenTag, p.nodeSizes, p.hasNewline); err != nil {
-		return true
-	}
-
-	var counter3 sizeCounter
-	if err := cfg.fprint(&counter3, p.fset, b.EndTag, p.nodeSizes, p.hasNewline); err != nil {
-		return true
-	}
-
-	forceMultiLine := false
 	var checkList func(list []ast.Stmt)
 	checkList = func(list []ast.Stmt) {
+		hasStringNodes := false
+		hasTagNodes := false
 		for _, v := range list {
+			fmt.Printf("v: %#v\n", v)
 			switch v := v.(type) {
-			case *ast.OpenTag, *ast.EndTag:
-				continue
-			case *ast.ElementBlockStmt:
-				checkList(v.Body)
-				continue
 			case *ast.ExprStmt:
 				switch v := v.X.(type) {
 				case *ast.BasicLit:
 					if v.Kind == token.STRING {
+						hasStringNodes = true
 						continue
 					}
 				case *ast.TemplateLiteralExpr:
+					hasStringNodes = true
+					continue
+				}
+			case *ast.OpenTag:
+				if len(v.Body) == 0 {
+					hasTagNodes = true
+					continue
+				}
+			case *ast.EndTag:
+				hasTagNodes = true
+				continue
+			case *ast.ElementBlockStmt:
+				hasTagNodes = true
+				if len(v.OpenTag.Body) == 0 {
+					checkList(v.Body)
 					continue
 				}
 			}
-			forceMultiLine = true
+			oneline = false
+			return
+		}
+
+		if hasTagNodes && hasStringNodes {
+			oneline = false
 		}
 	}
+
 	checkList(b.Body)
 
-	p.hasNewline[b] = counter.hasNewline || counter2.hasNewline || counter3.hasNewline || forceMultiLine
-	return counter.hasNewline || counter2.hasNewline || counter3.hasNewline || forceMultiLine
+	return oneline
 }

@@ -1829,7 +1829,7 @@ func (p *printer) nodeSize(n ast.Node, maxSize int) (size int) {
 	// in RawFormat
 	cfg := Config{Mode: RawFormat}
 	var counter sizeCounter
-	if err := cfg.fprint(&counter, p.fset, n, p.nodeSizes, p.hasNewline); err != nil {
+	if err := cfg.fprint(&counter, p.fset, n, p.nodeSizes); err != nil {
 		return
 	}
 	if counter.size <= maxSize && !counter.hasNewline {
