@@ -18,65 +18,44 @@ import (
 	"github.com/mateusz834/tgoast/token"
 )
 
-const testSrc = `package test
-import "github.com/mateusz834/tgo"
-func a(tgo.Ctx) error {
-	<a>
-	a := 3
-}
-`
-
-func TestTest(t *testing.T) {
-	fset := token.NewFileSet()
-	f, err := ParseFile(fset, "0", testSrc, SkipObjectResolution|ParseComments)
-	if err != nil {
-		ast.Print(fset, f)
-		if errs, ok := err.(scanner.ErrorList); ok {
-			for _, err := range errs {
-				t.Fatal(err)
-			}
-		}
-		t.Fatal(err)
-	}
-
-	ast.Print(fset, f)
-}
-
 func TestTgoBasicSyntax(t *testing.T) {
 	const prefix = "package main\nfunc test() {"
 	off := token.Pos(len(prefix)) + 1
 
 	cases := []struct {
-		in  string
-		out []ast.Stmt
+		in    string
+		out   []ast.Stmt
+		errOk bool
 	}{
-		//{
-		//	in: `<div>`,
-		//	out: []ast.Stmt{
-		//		&ast.OpenTag{
-		//			OpenPos: off,
-		//			Name: &ast.Ident{
-		//				NamePos: off + 1,
-		//				Name:    "div",
-		//			},
-		//			Body:     nil,
-		//			ClosePos: off + 4,
-		//		},
-		//	},
-		//},
-		//{
-		//	in: `</div>`,
-		//	out: []ast.Stmt{
-		//		&ast.EndTag{
-		//			OpenPos: off,
-		//			Name: &ast.Ident{
-		//				NamePos: off + 2,
-		//				Name:    "div",
-		//			},
-		//			ClosePos: off + 5,
-		//		},
-		//	},
-		//},
+		{
+			in: `<div>`,
+			out: []ast.Stmt{
+				&ast.OpenTag{
+					OpenPos: off,
+					Name: &ast.Ident{
+						NamePos: off + 1,
+						Name:    "div",
+					},
+					Body:     nil,
+					ClosePos: off + 4,
+				},
+			},
+			errOk: true,
+		},
+		{
+			in: `</div>`,
+			out: []ast.Stmt{
+				&ast.EndTag{
+					OpenPos: off,
+					Name: &ast.Ident{
+						NamePos: off + 2,
+						Name:    "div",
+					},
+					ClosePos: off + 5,
+				},
+			},
+			errOk: true,
+		},
 		{
 			in: `"test"`,
 			out: []ast.Stmt{
@@ -354,7 +333,7 @@ func TestTgoBasicSyntax(t *testing.T) {
 
 		fs := token.NewFileSet()
 		f, err := ParseFile(fs, "test.go", inStr, SkipObjectResolution)
-		if err != nil {
+		if err != nil && !tt.errOk {
 			t.Errorf("%v: unexpected error: %v", inStr, err)
 		}
 
