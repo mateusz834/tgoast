@@ -52,10 +52,10 @@ func (p *printer) elementBlockStmt(b *ast.ElementBlockStmt) {
 		oneline = true
 	}
 	p.stmtList(b.Body, indent, false, oneline)
-	if !oneline {
-		p.linebreak(p.lineFor(b.EndTag.Pos()), 1, ignore, true)
-	} else {
+	if oneline {
 		p.print(noExtraLinebreak)
+	} else {
+		p.linebreak(p.lineFor(b.EndTag.Pos()), 1, ignore, true)
 	}
 
 	p.endtag(b.EndTag)
