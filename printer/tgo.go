@@ -1,8 +1,6 @@
 package printer
 
 import (
-	"fmt"
-
 	"github.com/mateusz834/tgoast/ast"
 	"github.com/mateusz834/tgoast/token"
 )
@@ -53,7 +51,6 @@ func (p *printer) elementBlockStmt(b *ast.ElementBlockStmt) {
 		indent = 0
 		oneline = true
 	}
-	fmt.Printf("oneline: %v %v\n", b.OpenTag.Name, oneline)
 	p.stmtList(b.Body, indent, false, oneline)
 	if !oneline {
 		p.linebreak(p.lineFor(b.EndTag.Pos()), 1, ignore, true)
@@ -175,7 +172,6 @@ func (p *printer) isOneline(b *ast.ElementBlockStmt) bool {
 		hasStringNodes := false
 		hasTagNodes := false
 		for _, v := range list {
-			fmt.Printf("v: %#v\n", v)
 			switch v := v.(type) {
 			case *ast.ExprStmt:
 				switch v := v.X.(type) {
