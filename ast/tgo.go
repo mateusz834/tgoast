@@ -7,20 +7,22 @@ import (
 func walkTgo(v Visitor, node Node) bool {
 	switch n := node.(type) {
 	case *ElementBlockStmt:
-		v.Visit(n.OpenTag)
+		Walk(v, n.OpenTag)
 		walkStmtList(v, n.Body)
-		v.Visit(n.EndTag)
+		Walk(v, n.EndTag)
 		return true
 	case *OpenTag:
-		v.Visit(n.Name)
+		Walk(v, n.Name)
 		walkStmtList(v, n.Body)
 		return true
 	case *EndTag:
-		v.Visit(n.Name)
+		Walk(v, n.Name)
 		return true
 	case *AttributeStmt:
-		v.Visit(n.AttrName)
-		v.Visit(n.Value)
+		Walk(v, n.AttrName)
+		if n.Value != nil {
+			Walk(v, n.Value)
+		}
 		return true
 	case *TemplateLiteralExpr:
 		for _, x := range n.Parts {
