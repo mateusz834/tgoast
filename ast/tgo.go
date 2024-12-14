@@ -1,19 +1,28 @@
 package ast
 
-import "github.com/mateusz834/tgoast/token"
+import (
+	"github.com/mateusz834/tgoast/token"
+)
 
 func walkTgo(v Visitor, node Node) bool {
 	switch n := node.(type) {
-	case *OpenTagStmt:
-		v.Visit(n.Name)
+	case *ElementBlockStmt:
+		Walk(v, n.OpenTag)
+		walkStmtList(v, n.Body)
+		Walk(v, n.EndTag)
+		return true
+	case *OpenTag:
+		Walk(v, n.Name)
 		walkStmtList(v, n.Body)
 		return true
-	case *EndTagStmt:
-		v.Visit(n.Name)
+	case *EndTag:
+		Walk(v, n.Name)
 		return true
 	case *AttributeStmt:
-		v.Visit(n.AttrName)
-		v.Visit(n.Value)
+		Walk(v, n.AttrName)
+		if n.Value != nil {
+			Walk(v, n.Value)
+		}
 		return true
 	case *TemplateLiteralExpr:
 		for _, x := range n.Parts {
@@ -29,14 +38,20 @@ func walkTgo(v Visitor, node Node) bool {
 }
 
 type (
-	OpenTagStmt struct {
+	ElementBlockStmt struct {
+		OpenTag *OpenTag
+		Body    []Stmt
+		EndTag  *EndTag
+	}
+
+	OpenTag struct {
 		OpenPos  token.Pos // position of the "<" sign.
 		Name     *Ident
 		Body     []Stmt
 		ClosePos token.Pos // position of the ">" sign.
 	}
 
-	EndTagStmt struct {
+	EndTag struct {
 		OpenPos  token.Pos // position of the "</" sign.
 		Name     *Ident
 		ClosePos token.Pos // position of the ">" sign.
@@ -51,17 +66,20 @@ type (
 	}
 )
 
-func (s *OpenTagStmt) Pos() token.Pos   { return s.OpenPos }
-func (s *EndTagStmt) Pos() token.Pos    { return s.OpenPos }
-func (s *AttributeStmt) Pos() token.Pos { return s.StartPos }
+func (s *OpenTag) Pos() token.Pos          { return s.OpenPos }
+func (s *EndTag) Pos() token.Pos           { return s.OpenPos }
+func (s *ElementBlockStmt) Pos() token.Pos { return s.OpenTag.Pos() }
+func (s *AttributeStmt) Pos() token.Pos    { return s.StartPos }
 
-func (s *OpenTagStmt) End() token.Pos   { return s.ClosePos + 1 }
-func (s *EndTagStmt) End() token.Pos    { return s.ClosePos + 1 }
-func (s *AttributeStmt) End() token.Pos { return s.EndPos + 1 }
+func (s *OpenTag) End() token.Pos          { return s.ClosePos + 1 }
+func (s *EndTag) End() token.Pos           { return s.ClosePos + 1 }
+func (s *ElementBlockStmt) End() token.Pos { return s.EndTag.End() }
+func (s *AttributeStmt) End() token.Pos    { return s.EndPos + 1 }
 
-func (s *OpenTagStmt) stmtNode()   {}
-func (s *EndTagStmt) stmtNode()    {}
-func (s *AttributeStmt) stmtNode() {}
+func (s *OpenTag) stmtNode()          {}
+func (s *EndTag) stmtNode()           {}
+func (s *ElementBlockStmt) stmtNode() {}
+func (s *AttributeStmt) stmtNode()    {}
 
 type TemplateLiteralExpr struct {
 	OpenPos  token.Pos // positon of the oppening '"'.

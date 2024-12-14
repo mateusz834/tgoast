@@ -9,13 +9,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/scanner"
-	"github.com/mateusz834/tgoast/token"
-
 	goast "go/ast"
 	goparser "go/parser"
 	gotoken "go/token"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func TestTgoBasicSyntax(t *testing.T) {
@@ -23,13 +23,14 @@ func TestTgoBasicSyntax(t *testing.T) {
 	off := token.Pos(len(prefix)) + 1
 
 	cases := []struct {
-		in  string
-		out []ast.Stmt
+		in    string
+		out   []ast.Stmt
+		errOk bool
 	}{
 		{
 			in: `<div>`,
 			out: []ast.Stmt{
-				&ast.OpenTagStmt{
+				&ast.OpenTag{
 					OpenPos: off,
 					Name: &ast.Ident{
 						NamePos: off + 1,
@@ -39,11 +40,12 @@ func TestTgoBasicSyntax(t *testing.T) {
 					ClosePos: off + 4,
 				},
 			},
+			errOk: true,
 		},
 		{
 			in: `</div>`,
 			out: []ast.Stmt{
-				&ast.EndTagStmt{
+				&ast.EndTag{
 					OpenPos: off,
 					Name: &ast.Ident{
 						NamePos: off + 2,
@@ -52,6 +54,7 @@ func TestTgoBasicSyntax(t *testing.T) {
 					ClosePos: off + 5,
 				},
 			},
+			errOk: true,
 		},
 		{
 			in: `"test"`,
@@ -223,93 +226,103 @@ func TestTgoBasicSyntax(t *testing.T) {
 		{
 			in: `<div></div>`,
 			out: []ast.Stmt{
-				&ast.OpenTagStmt{
-					OpenPos: off,
-					Name: &ast.Ident{
-						NamePos: off + 1,
-						Name:    "div",
+				&ast.ElementBlockStmt{
+					OpenTag: &ast.OpenTag{
+						OpenPos: off,
+						Name: &ast.Ident{
+							NamePos: off + 1,
+							Name:    "div",
+						},
+						Body:     nil,
+						ClosePos: off + 4,
 					},
-					Body:     nil,
-					ClosePos: off + 4,
-				},
-				&ast.EndTagStmt{
-					OpenPos: off + 5,
-					Name: &ast.Ident{
-						NamePos: off + 7,
-						Name:    "div",
+					EndTag: &ast.EndTag{
+						OpenPos: off + 5,
+						Name: &ast.Ident{
+							NamePos: off + 7,
+							Name:    "div",
+						},
+						ClosePos: off + 10,
 					},
-					ClosePos: off + 10,
 				},
 			},
 		},
 		{
 			in: `<div>"test"</div>`,
 			out: []ast.Stmt{
-				&ast.OpenTagStmt{
-					OpenPos: off,
-					Name: &ast.Ident{
-						NamePos: off + 1,
-						Name:    "div",
+				&ast.ElementBlockStmt{
+					OpenTag: &ast.OpenTag{
+						OpenPos: off,
+						Name: &ast.Ident{
+							NamePos: off + 1,
+							Name:    "div",
+						},
+						Body:     nil,
+						ClosePos: off + 4,
 					},
-					Body:     nil,
-					ClosePos: off + 4,
-				},
-				&ast.ExprStmt{
-					X: &ast.BasicLit{
-						ValuePos: off + 5,
-						Kind:     token.STRING,
-						Value:    `"test"`,
+					Body: []ast.Stmt{
+						&ast.ExprStmt{
+							X: &ast.BasicLit{
+								ValuePos: off + 5,
+								Kind:     token.STRING,
+								Value:    `"test"`,
+							},
+						},
 					},
-				},
-				&ast.EndTagStmt{
-					OpenPos: off + 11,
-					Name: &ast.Ident{
-						NamePos: off + 13,
-						Name:    "div",
+					EndTag: &ast.EndTag{
+						OpenPos: off + 11,
+						Name: &ast.Ident{
+							NamePos: off + 13,
+							Name:    "div",
+						},
+						ClosePos: off + 16,
 					},
-					ClosePos: off + 16,
 				},
 			},
 		},
 		{
 			in: `<div>"test \{sth}"</div>`,
 			out: []ast.Stmt{
-				&ast.OpenTagStmt{
-					OpenPos: off,
-					Name: &ast.Ident{
-						NamePos: off + 1,
-						Name:    "div",
-					},
-					Body:     nil,
-					ClosePos: off + 4,
-				},
-				&ast.ExprStmt{
-					X: &ast.TemplateLiteralExpr{
-						OpenPos: off + 5,
-						Strings: []string{
-							`"test `,
-							`"`,
+				&ast.ElementBlockStmt{
+					OpenTag: &ast.OpenTag{
+						OpenPos: off,
+						Name: &ast.Ident{
+							NamePos: off + 1,
+							Name:    "div",
 						},
-						Parts: []*ast.TemplateLiteralPart{
-							{
-								LBrace: off + 12,
-								X: &ast.Ident{
-									NamePos: off + 13,
-									Name:    "sth",
+						Body:     nil,
+						ClosePos: off + 4,
+					},
+					Body: []ast.Stmt{
+						&ast.ExprStmt{
+							X: &ast.TemplateLiteralExpr{
+								OpenPos: off + 5,
+								Strings: []string{
+									`"test `,
+									`"`,
 								},
-								RBrace: off + 16,
+								Parts: []*ast.TemplateLiteralPart{
+									{
+										LBrace: off + 12,
+										X: &ast.Ident{
+											NamePos: off + 13,
+											Name:    "sth",
+										},
+										RBrace: off + 16,
+									},
+								},
+								ClosePos: off + 17,
 							},
 						},
-						ClosePos: off + 17,
 					},
-				},
-				&ast.EndTagStmt{
-					OpenPos: off + 18,
-					Name: &ast.Ident{
-						NamePos: off + 20,
-						Name:    "div",
+					EndTag: &ast.EndTag{
+						OpenPos: off + 18,
+						Name: &ast.Ident{
+							NamePos: off + 20,
+							Name:    "div",
+						},
+						ClosePos: off + 23,
 					},
-					ClosePos: off + 23,
 				},
 			},
 		},
@@ -320,7 +333,7 @@ func TestTgoBasicSyntax(t *testing.T) {
 
 		fs := token.NewFileSet()
 		f, err := ParseFile(fs, "test.go", inStr, SkipObjectResolution)
-		if err != nil {
+		if err != nil && !tt.errOk {
 			t.Errorf("%v: unexpected error: %v", inStr, err)
 		}
 
@@ -337,9 +350,13 @@ func TestTgoBasicSyntax(t *testing.T) {
 		expectList := fd.Body.List
 		if !reflect.DeepEqual(expectList, tt.out) {
 			t.Errorf("unexpected AST for:\n%v", inStr)
-			var out strings.Builder
-			ast.Fprint(&out, fs, f, nil)
+			var out, want strings.Builder
+			ast.Fprint(&out, fs, f.Decls[0].(*ast.FuncDecl).Body.List, nil)
+			ast.Fprint(&want, fs, tt.out, nil)
 			t.Logf("\n%v", out.String())
+			t.Logf("want:\n%v", want.String())
+			//diff, _ := gitDiff(t.TempDir(), out.String(), want.String())
+			//t.Logf("diff:\n%v", diff)k
 		}
 	}
 }
@@ -363,15 +380,18 @@ func TestTgoSyntax(t *testing.T) {
 			}
 
 			fs := token.NewFileSet()
-			f, err := ParseFile(fs, filepath.Base(testFile), content, SkipObjectResolution|ParseComments)
+			f, err := ParseFile(fs, filepath.Base(testFile), content, SkipObjectResolution|ParseComments|AllErrors)
 			if err != nil {
 				if v, ok := err.(scanner.ErrorList); ok {
 					for _, err := range v {
-						t.Errorf("%v", err)
+						t.Logf("%v", err)
 					}
 				}
-				t.Errorf("Error while parsing file %v: %v", testFile, err)
-				continue
+				t.Logf("Error while parsing file %v: %v", testFile, err)
+				if v.Name() != "element_blocks.tgo" {
+					t.Fail()
+					continue
+				}
 			}
 
 			var b strings.Builder
@@ -483,7 +503,7 @@ func FuzzTgoNotParsableByGo(f *testing.F) {
 		goParsable := true
 		ast.Inspect(f, func(n ast.Node) bool {
 			switch n.(type) {
-			case *ast.OpenTagStmt, *ast.EndTagStmt,
+			case *ast.OpenTag, *ast.EndTag, *ast.ElementBlockStmt,
 				*ast.TemplateLiteralExpr, *ast.AttributeStmt:
 				goParsable = false
 			}

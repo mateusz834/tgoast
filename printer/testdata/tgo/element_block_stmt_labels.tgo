@@ -1,0 +1,37 @@
+package templates
+
+func test() {
+	L:
+	<div>
+	</div>
+}
+
+func test() {
+	<div>
+		L:
+	</div>
+}
+
+func test() {
+L:
+	<div>
+	</div>
+}
+
+func test() {
+	<div>
+	L:
+	</div>
+}
+
+func test() {
+L:
+	{
+	}
+}
+
+func test() {
+	{
+	L:
+	}
+}

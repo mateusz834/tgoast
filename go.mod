@@ -1,3 +1,3 @@
 module github.com/mateusz834/tgoast
 
-go 1.22.3
+go 1.23.0

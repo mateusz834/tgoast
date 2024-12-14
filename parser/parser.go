@@ -67,6 +67,9 @@ type parser struct {
 	nestLev int
 
 	templateLit []*ast.TemplateLiteralExpr
+
+	openTags      []ast.OpenTag
+	openTagsIndex int
 }
 
 func (p *parser) init(fset *token.FileSet, filename string, src []byte, mode Mode) {
@@ -1407,6 +1410,8 @@ func (p *parser) parseStmtList() (list []ast.Stmt) {
 	for p.tok != token.CASE && p.tok != token.DEFAULT && p.tok != token.RBRACE && p.tok != token.EOF {
 		list = append(list, p.parseStmt())
 	}
+
+	list = p.combineElemmentBlocks(list)
 
 	return
 }
@@ -2924,6 +2929,7 @@ func (p *parser) parseFile() *ast.File {
 	if p.mode&DeclarationErrors != 0 {
 		declErr = p.error
 	}
+
 	if p.mode&SkipObjectResolution == 0 {
 		resolveFile(f, p.file, declErr)
 	}

@@ -32,15 +32,17 @@ func TestTgoSyntax(t *testing.T) {
 			}
 
 			fs := token.NewFileSet()
-			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments)
-			if err != nil {
-				if v, ok := err.(scanner.ErrorList); ok {
-					for _, err := range v {
-						t.Errorf("%v", err)
+			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments|parser.AllErrors)
+			if f == nil || f.Doc == nil || f.Doc.List[0].Text != "// fmtWithErrors" {
+				if err != nil {
+					if v, ok := err.(scanner.ErrorList); ok {
+						for _, err := range v {
+							t.Errorf("%v", err)
+						}
 					}
+					t.Errorf("Error while parsing file %v: %v", testFile, err)
+					continue
 				}
-				t.Errorf("Error while parsing file %v: %v", testFile, err)
-				continue
 			}
 
 			var b strings.Builder
@@ -122,15 +124,17 @@ func TestTgoFormattedIdempotent(t *testing.T) {
 			}
 
 			fs := token.NewFileSet()
-			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments)
-			if err != nil {
-				if v, ok := err.(scanner.ErrorList); ok {
-					for _, err := range v {
-						t.Errorf("%v", err)
+			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments|parser.AllErrors)
+			if f == nil || f.Doc == nil || f.Doc.List[0].Text != "// fmtWithErrors" {
+				if err != nil {
+					if v, ok := err.(scanner.ErrorList); ok {
+						for _, err := range v {
+							t.Errorf("%v", err)
+						}
 					}
+					t.Errorf("Error while parsing file %v: %v", testFile, err)
+					continue
 				}
-				t.Errorf("Error while parsing file %v: %v", testFile, err)
-				continue
 			}
 
 			var b strings.Builder

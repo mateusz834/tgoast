@@ -1191,66 +1191,24 @@ func (p *printer) expr(x ast.Expr) {
 // Print the statement list indented, but without a newline after the last statement.
 // Extra line breaks between statements in the source are respected but at most one
 // empty line is printed between statements.
-func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
+func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace, oneLineTag bool) {
 	if nindent > 0 {
 		p.print(indent)
 	}
 	var line int
 	i := 0
-
-	var (
-		forceNextNewline = false
-		tagOneLine       = make([]bool, 1, 32)
-	)
-
-	openPair, endPair, oneline := p.tagIndent(list)
-
 	for _, s := range list {
 		// ignore empty statements (was issue 3466)
 		if _, isEmpty := s.(*ast.EmptyStmt); !isEmpty {
 			// nindent == 0 only for lists of switch/select case clauses;
 			// in those cases each clause is a new section
-			if len(p.output) > 0 && (!tagOneLine[len(tagOneLine)-1] || forceNextNewline) {
+			if len(p.output) > 0 && !oneLineTag {
 				// only print line break if we are not at the beginning of the output
 				// (i.e., we are not printing only a partial program)
 				p.linebreak(p.lineFor(s.Pos()), 1, ignore, i == 0 || nindent == 0 || p.linesFrom(line) > 0)
 			}
-
-			if v, ok := unlabel(s).(*ast.EndTagStmt); ok {
-				if _, ok := endPair[v]; ok {
-					p.print(unindent)
-					forceNextNewline = !tagOneLine[len(tagOneLine)-1]
-					tagOneLine = tagOneLine[:len(tagOneLine)-1]
-					if forceNextNewline && p.commentBefore(p.posFor(s.Pos())) {
-						p.linebreak(p.lineFor(s.Pos()), 0, ignore, false)
-					} else if !forceNextNewline {
-						p.print(noExtraLinebreak)
-					}
-				}
-			} else if v, ok := unlabel(s).(*ast.OpenTagStmt); ok {
-				if _, ok := openPair[v]; ok {
-					forceNextNewline = false
-					_, ok := oneline[v]
-					tagOneLine = append(tagOneLine, ok)
-				}
-			}
-
 			p.recordLine(&line)
-			// TODO: should the nextIsRBrace arg also consider somehow end tags? What is broken currently?
 			p.stmt(s, nextIsRBrace && i == len(list)-1)
-
-			if v, ok := unlabel(s).(*ast.EndTagStmt); ok && !forceNextNewline {
-				if _, ok := endPair[v]; ok {
-					p.print(noExtraLinebreak)
-				}
-			}
-
-			if v, ok := unlabel(s).(*ast.OpenTagStmt); ok {
-				if _, ok := openPair[v]; ok {
-					p.print(indent)
-				}
-			}
-
 			// labeled statements put labels on a separate line, but here
 			// we only care about the start line of the actual statement
 			// without label - correct line for each label
@@ -1274,7 +1232,7 @@ func (p *printer) stmtList(list []ast.Stmt, nindent int, nextIsRBrace bool) {
 func (p *printer) block(b *ast.BlockStmt, nindent int) {
 	p.setPos(b.Lbrace)
 	p.print(token.LBRACE)
-	p.stmtList(b.List, nindent, true)
+	p.stmtList(b.List, nindent, true, false)
 	p.linebreak(p.lineFor(b.Rbrace), 1, ignore, true)
 	p.setPos(b.Rbrace)
 	p.print(token.RBRACE)
@@ -1519,7 +1477,7 @@ func (p *printer) stmt(stmt ast.Stmt, nextIsRBrace bool) {
 		}
 		p.setPos(s.Colon)
 		p.print(token.COLON)
-		p.stmtList(s.Body, 1, nextIsRBrace)
+		p.stmtList(s.Body, 1, nextIsRBrace, false)
 
 	case *ast.SwitchStmt:
 		p.print(token.SWITCH)
@@ -1547,7 +1505,7 @@ func (p *printer) stmt(stmt ast.Stmt, nextIsRBrace bool) {
 		}
 		p.setPos(s.Colon)
 		p.print(token.COLON)
-		p.stmtList(s.Body, 1, nextIsRBrace)
+		p.stmtList(s.Body, 1, nextIsRBrace, false)
 
 	case *ast.SelectStmt:
 		p.print(token.SELECT, blank)
@@ -1586,9 +1544,11 @@ func (p *printer) stmt(stmt ast.Stmt, nextIsRBrace bool) {
 		p.expr(stripParens(s.X))
 		p.print(blank)
 		p.block(s.Body, 1)
-	case *ast.OpenTagStmt:
+	case *ast.ElementBlockStmt:
+		p.elementBlockStmt(s)
+	case *ast.OpenTag:
 		p.opentag(s)
-	case *ast.EndTagStmt:
+	case *ast.EndTag:
 		p.endtag(s)
 	case *ast.AttributeStmt:
 		p.attr(s)
@@ -1869,7 +1829,7 @@ func (p *printer) nodeSize(n ast.Node, maxSize int) (size int) {
 	// in RawFormat
 	cfg := Config{Mode: RawFormat}
 	var counter sizeCounter
-	if err := cfg.fprint(&counter, p.fset, n, p.nodeSizes, p.hasNewline); err != nil {
+	if err := cfg.fprint(&counter, p.fset, n, p.nodeSizes); err != nil {
 		return
 	}
 	if counter.size <= maxSize && !counter.hasNewline {
@@ -1934,7 +1894,7 @@ func (p *printer) funcBody(headerSize int, sep whiteSpace, b *ast.BlockStmt) {
 
 	hasTgoNode := slices.ContainsFunc(b.List, func(n ast.Stmt) bool {
 		switch n := n.(type) {
-		case *ast.OpenTagStmt, *ast.EndTagStmt, *ast.AttributeStmt:
+		case *ast.OpenTag, *ast.EndTag, *ast.ElementBlockStmt, *ast.AttributeStmt:
 			return true
 		case *ast.ExprStmt:
 			x, isBasicLit := n.X.(*ast.BasicLit)

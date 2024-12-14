@@ -96,7 +96,6 @@ type printer struct {
 	cachedPos  token.Pos
 	cachedLine int // line corresponding to cachedPos
 
-	hasNewline   map[*ast.OpenTagStmt]bool
 	inStartTag   bool
 	inEndTag     bool
 	tagStartLine int
@@ -1190,7 +1189,7 @@ func (p *printer) printNode(node any) error {
 				p.indent = 1
 			}
 		}
-		p.stmtList(n, 0, false)
+		p.stmtList(n, 0, false, false)
 	case []ast.Decl:
 		p.declList(n)
 	case *ast.File:
@@ -1357,7 +1356,7 @@ var printerPool = sync.Pool{
 	},
 }
 
-func newPrinter(cfg *Config, fset *token.FileSet, nodeSizes map[ast.Node]int, hasNewline map[*ast.OpenTagStmt]bool) *printer {
+func newPrinter(cfg *Config, fset *token.FileSet, nodeSizes map[ast.Node]int) *printer {
 	p := printerPool.Get().(*printer)
 	*p = printer{
 		Config:    *cfg,
@@ -1368,8 +1367,6 @@ func newPrinter(cfg *Config, fset *token.FileSet, nodeSizes map[ast.Node]int, ha
 		nodeSizes: nodeSizes,
 		cachedPos: -1,
 		output:    p.output[:0],
-
-		hasNewline: hasNewline,
 	}
 	return p
 }
@@ -1384,9 +1381,9 @@ func (p *printer) free() {
 }
 
 // fprint implements Fprint and takes a nodesSizes map for setting up the printer state.
-func (cfg *Config) fprint(output io.Writer, fset *token.FileSet, node any, nodeSizes map[ast.Node]int, hasNewline map[*ast.OpenTagStmt]bool) (err error) {
+func (cfg *Config) fprint(output io.Writer, fset *token.FileSet, node any, nodeSizes map[ast.Node]int) (err error) {
 	// print node
-	p := newPrinter(cfg, fset, nodeSizes, hasNewline)
+	p := newPrinter(cfg, fset, nodeSizes)
 	defer p.free()
 	if err = p.printNode(node); err != nil {
 		return
@@ -1448,7 +1445,7 @@ type CommentedNode struct {
 // The node type must be *[ast.File], *[CommentedNode], [][ast.Decl], [][ast.Stmt],
 // or assignment-compatible to [ast.Expr], [ast.Decl], [ast.Spec], or [ast.Stmt].
 func (cfg *Config) Fprint(output io.Writer, fset *token.FileSet, node any) error {
-	return cfg.fprint(output, fset, node, make(map[ast.Node]int), make(map[*ast.OpenTagStmt]bool))
+	return cfg.fprint(output, fset, node, make(map[ast.Node]int))
 }
 
 // Fprint "pretty-prints" an AST node to output.
