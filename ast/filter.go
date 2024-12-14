@@ -5,7 +5,7 @@
 package ast
 
 import (
-	"sort"
+	"slices"
 
 	"github.com/mateusz834/tgoast/token"
 )
@@ -358,7 +358,7 @@ func MergePackageFiles(pkg *Package, mode MergeMode) *File {
 			maxPos = f.FileEnd
 		}
 	}
-	sort.Strings(filenames)
+	slices.Sort(filenames)
 
 	// Collect package comments from all package files into a single
 	// CommentGroup - the collected package documentation. In general

@@ -1689,6 +1689,8 @@ func (p *parser) parseElementList() (list []ast.Expr) {
 }
 
 func (p *parser) parseLiteralValue(typ ast.Expr) ast.Expr {
+	defer decNestLev(incNestLev(p))
+
 	if p.trace {
 		defer un(trace(p, "LiteralValue"))
 	}
@@ -2929,7 +2931,6 @@ func (p *parser) parseFile() *ast.File {
 	if p.mode&DeclarationErrors != 0 {
 		declErr = p.error
 	}
-
 	if p.mode&SkipObjectResolution == 0 {
 		resolveFile(f, p.file, declErr)
 	}

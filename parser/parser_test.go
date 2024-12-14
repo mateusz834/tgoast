@@ -599,10 +599,11 @@ var parseDepthTests = []struct {
 	{name: "chan2", format: "package main; var x «<-chan »int"},
 	{name: "interface", format: "package main; var x «interface { M() «int» }»", scope: true, scopeMultiplier: 2}, // Scopes: InterfaceType, FuncType
 	{name: "map", format: "package main; var x «map[int]»int"},
-	{name: "slicelit", format: "package main; var x = «[]any{«»}»", parseMultiplier: 2},             // Parser nodes: UnaryExpr, CompositeLit
-	{name: "arraylit", format: "package main; var x = «[1]any{«nil»}»", parseMultiplier: 2},         // Parser nodes: UnaryExpr, CompositeLit
-	{name: "structlit", format: "package main; var x = «struct{x any}{«nil»}»", parseMultiplier: 2}, // Parser nodes: UnaryExpr, CompositeLit
-	{name: "maplit", format: "package main; var x = «map[int]any{1:«nil»}»", parseMultiplier: 2},    // Parser nodes: CompositeLit, KeyValueExpr
+	{name: "slicelit", format: "package main; var x = []any{«[]any{«»}»}", parseMultiplier: 3},      // Parser nodes: UnaryExpr, CompositeLit
+	{name: "arraylit", format: "package main; var x = «[1]any{«nil»}»", parseMultiplier: 3},         // Parser nodes: UnaryExpr, CompositeLit
+	{name: "structlit", format: "package main; var x = «struct{x any}{«nil»}»", parseMultiplier: 3}, // Parser nodes: UnaryExpr, CompositeLit
+	{name: "maplit", format: "package main; var x = «map[int]any{1:«nil»}»", parseMultiplier: 3},    // Parser nodes: CompositeLit, KeyValueExpr
+	{name: "element", format: "package main; var x = struct{x any}{x: «{«»}»}"},
 	{name: "dot", format: "package main; var x = «x.»x"},
 	{name: "index", format: "package main; var x = x«[1]»"},
 	{name: "slice", format: "package main; var x = x«[1:2]»"},
@@ -799,5 +800,26 @@ func TestGoVersion(t *testing.T) {
 				t.Errorf("%s: GoVersion = %q, want %q", fset.Position(f.Pos()), f.GoVersion, want)
 			}
 		}
+	}
+}
+
+func TestIssue57490(t *testing.T) {
+	src := `package p; func f() { var x struct` // program not correctly terminated
+	fset := token.NewFileSet()
+	file, err := ParseFile(fset, "", src, 0)
+	if err == nil {
+		t.Fatalf("syntax error expected, but no error reported")
+	}
+
+	// Because of the syntax error, the end position of the function declaration
+	// is past the end of the file's position range.
+	funcEnd := file.Decls[0].End()
+
+	// Offset(funcEnd) must not panic (to test panic, set debug=true in token package)
+	// (panic: offset 35 out of bounds [0, 34] (position 36 out of bounds [1, 35]))
+	tokFile := fset.File(file.Pos())
+	offset := tokFile.Offset(funcEnd)
+	if offset != tokFile.Size() {
+		t.Fatalf("offset = %d, want %d", offset, tokFile.Size())
 	}
 }

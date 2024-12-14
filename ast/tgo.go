@@ -8,12 +8,12 @@ func walkTgo(v Visitor, node Node) bool {
 	switch n := node.(type) {
 	case *ElementBlockStmt:
 		Walk(v, n.OpenTag)
-		walkStmtList(v, n.Body)
+		walkList(v, n.Body)
 		Walk(v, n.EndTag)
 		return true
 	case *OpenTag:
 		Walk(v, n.Name)
-		walkStmtList(v, n.Body)
+		walkList(v, n.Body)
 		return true
 	case *EndTag:
 		Walk(v, n.Name)

@@ -6,27 +6,19 @@ package ast
 
 import (
 	"bytes"
+	"cmp"
 	"fmt"
-	"sort"
+	"slices"
 	"strings"
 
 	"github.com/mateusz834/tgoast/token"
 )
 
-type byPos []*CommentGroup
-
-func (a byPos) Len() int           { return len(a) }
-func (a byPos) Less(i, j int) bool { return a[i].Pos() < a[j].Pos() }
-func (a byPos) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-
 // sortComments sorts the list of comment groups in source order.
 func sortComments(list []*CommentGroup) {
-	// TODO(gri): Does it make sense to check for sorted-ness
-	//            first (because we know that sorted-ness is
-	//            very likely)?
-	if orderedList := byPos(list); !sort.IsSorted(orderedList) {
-		sort.Sort(orderedList)
-	}
+	slices.SortFunc(list, func(a, b *CommentGroup) int {
+		return cmp.Compare(a.Pos(), b.Pos())
+	})
 }
 
 // A CommentMap maps an AST node to a list of comment groups
@@ -65,11 +57,19 @@ func nodeList(n Node) []Node {
 		list = append(list, n)
 		return true
 	})
+
 	// Note: The current implementation assumes that Inspect traverses the
 	//       AST in depth-first and thus _source_ order. If AST traversal
 	//       does not follow source order, the sorting call below will be
 	//       required.
-	// sort.Sort(byInterval(list))
+	// slices.Sort(list, func(a, b Node) int {
+	//       r := cmp.Compare(a.Pos(), b.Pos())
+	//       if r != 0 {
+	//               return r
+	//       }
+	//       return cmp.Compare(a.End(), b.End())
+	// })
+
 	return list
 }
 
@@ -311,7 +311,13 @@ func (cmap CommentMap) String() string {
 	for node := range cmap {
 		nodes = append(nodes, node)
 	}
-	sort.Sort(byInterval(nodes))
+	slices.SortFunc(nodes, func(a, b Node) int {
+		r := cmp.Compare(a.Pos(), b.Pos())
+		if r != 0 {
+			return r
+		}
+		return cmp.Compare(a.End(), b.End())
+	})
 
 	var buf strings.Builder
 	fmt.Fprintln(&buf, "CommentMap {")
