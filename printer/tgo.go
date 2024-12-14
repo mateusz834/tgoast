@@ -51,7 +51,7 @@ func (p *printer) elementBlockStmt(b *ast.ElementBlockStmt) {
 		indent = 0
 		oneline = true
 	}
-	p.stmtList(b.Body, indent, false, oneline)
+	p.stmtList(b.Body, indent, true, oneline)
 	if oneline {
 		p.print(noExtraLinebreak)
 	} else {

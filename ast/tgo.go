@@ -68,12 +68,12 @@ type (
 
 func (s *OpenTag) Pos() token.Pos          { return s.OpenPos }
 func (s *EndTag) Pos() token.Pos           { return s.OpenPos }
-func (s *ElementBlockStmt) Pos() token.Pos { return s.OpenTag.OpenPos }
+func (s *ElementBlockStmt) Pos() token.Pos { return s.OpenTag.Pos() }
 func (s *AttributeStmt) Pos() token.Pos    { return s.StartPos }
 
 func (s *OpenTag) End() token.Pos          { return s.ClosePos + 1 }
 func (s *EndTag) End() token.Pos           { return s.ClosePos + 1 }
-func (s *ElementBlockStmt) End() token.Pos { return s.EndTag.ClosePos + 1 }
+func (s *ElementBlockStmt) End() token.Pos { return s.EndTag.End() }
 func (s *AttributeStmt) End() token.Pos    { return s.EndPos + 1 }
 
 func (s *OpenTag) stmtNode()          {}
