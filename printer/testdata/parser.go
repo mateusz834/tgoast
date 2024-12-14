@@ -11,9 +11,10 @@ package parser
 
 import (
 	"fmt"
-	"go/ast"
-	"go/scanner"
-	"go/token"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // The mode parameter to the Parse* functions is a set of flags (or 0).

@@ -7,15 +7,16 @@ package printer
 
 import (
 	"fmt"
-	"go/ast"
 	"go/build/constraint"
-	"go/token"
 	"io"
 	"os"
 	"strings"
 	"sync"
 	"text/tabwriter"
 	"unicode"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 const (
@@ -100,7 +101,7 @@ func (p *printer) internalError(msg ...any) {
 	if debug {
 		fmt.Print(p.pos.String() + ": ")
 		fmt.Println(msg...)
-		panic("go/printer")
+		panic("github.com/mateusz834/tgoast/printer")
 	}
 }
 

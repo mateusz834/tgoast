@@ -9,13 +9,14 @@
 package printer
 
 import (
-	"go/ast"
-	"go/token"
 	"math"
 	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // Formatting issues:
