@@ -42,10 +42,17 @@ func (p *parser) combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 	outer:
 		switch unlabeledStmt := unlabeledStmt.(type) {
 		case *ast.OpenTag:
+			if !unlabeledStmt.ClosePos.IsValid() {
+				continue
+			}
 			appendStmts(list[last:i])
 			last = i + 1
 			openTagDepth = append(openTagDepth, openTagData{openTagIndex: i})
 		case *ast.EndTag:
+			if !unlabeledStmt.ClosePos.IsValid() {
+				continue
+			}
+
 			for j, lastOpenTagData := range slices.Backward(openTagDepth) {
 				openTag := list[lastOpenTagData.openTagIndex]
 				lastLabeledOpen, unlabeledOpenTag := unlabelAs[*ast.OpenTag](openTag)
@@ -65,10 +72,7 @@ func (p *parser) combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 						body = append(body, v.body...)
 					}
 
-					for _, stmt := range list[last:i] {
-						body = append(body, stmt)
-					}
-
+					body = append(body, list[last:i]...)
 					last = i + 1
 
 					openTagDepth = openTagDepth[:j]
