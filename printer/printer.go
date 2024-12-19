@@ -827,7 +827,6 @@ func (p *printer) intersperseComments(next token.Position, tok token.Token) (wro
 				p.writeByte(' ', 1)
 			}
 		}
-
 		return p.writeCommentSuffix(needsLinebreak)
 	}
 

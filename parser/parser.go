@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/internal/typeparams"
+	"github.com/mateusz834/tgoast/internal/go/typeparams"
 	"github.com/mateusz834/tgoast/scanner"
 	"github.com/mateusz834/tgoast/token"
 )
