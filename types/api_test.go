@@ -3109,3 +3109,28 @@ func setGotypesalias(t *testing.T, enable bool) {
 		gotypesalias.Set("0")
 	}
 }
+
+const src = `package main
+
+func main() {
+	<div
+	>
+		"a"
+	</div>
+}
+`
+
+func TestTest(t *testing.T) {
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, "test.tgo", src, parser.SkipObjectResolution|parser.ParseComments)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cfg := Config{}
+	p, err := cfg.Check("test", fset, []*ast.File{f}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(p)
+}

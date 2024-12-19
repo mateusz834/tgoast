@@ -93,6 +93,9 @@ const (
 	// additional context information
 	finalSwitchCase
 	inTypeSwitch
+
+	inOpenTag
+	inTgoFunc
 )
 
 func (check *Checker) simpleStmt(s ast.Stmt) {
@@ -404,7 +407,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		var code Code
 		switch x.mode {
 		default:
-			if kind == statement {
+			if kind == statement || (ctxt&inTgoFunc != 0 && ctxt&inOpenTag == 0) {
 				return
 			}
 			msg = "is not used"
@@ -838,6 +841,38 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		inner |= breakOk | continueOk
 		check.rangeStmt(inner, s)
 
+	case *ast.ElementBlockStmt:
+		check.stmt(inner, s.OpenTag)
+		check.openScope(s, "ElementBlockStmt")
+		check.stmtList(inner, s.Body)
+		check.closeScope()
+		check.stmt(inner, s.EndTag)
+	case *ast.OpenTag:
+		if ctxt&inTgoFunc == 0 {
+			check.error(s, MisplacedTag, "open tag inside of an non-tgo func")
+		}
+		if ctxt&inOpenTag != 0 {
+			check.error(s, MisplacedTag, "open tag inside of a tag")
+		}
+
+		check.openScope(s, "OpenTag")
+		defer check.closeScope()
+
+		check.stmtList(inner|inOpenTag, s.Body)
+	case *ast.EndTag:
+		if ctxt&inTgoFunc == 0 {
+			check.error(s, MisplacedTag, "open tag inside of an non-tgo func")
+		}
+		if ctxt&inOpenTag != 0 {
+			check.error(s, MisplacedTag, "end tag inside of a tag")
+		}
+	case *ast.AttributeStmt:
+		if ctxt&inTgoFunc == 0 {
+			check.error(s, MisplacedAttribute, "attribute inside of an non-tgo func")
+		}
+		if ctxt&inOpenTag == 0 {
+			check.error(s, MisplacedAttribute, "attribute not inside of a tag")
+		}
 	default:
 		check.error(s, InvalidSyntaxTree, "invalid statement")
 	}
