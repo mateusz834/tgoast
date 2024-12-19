@@ -33,14 +33,6 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"go/ast"
-	"go/importer"
-	"go/parser"
-	"go/scanner"
-	"go/token"
-	"internal/buildcfg"
-	"internal/testenv"
-	"internal/types/errors"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -50,7 +42,16 @@ import (
 	"strings"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/internal/buildcfg"
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 var (
@@ -137,7 +138,7 @@ func testFiles(t *testing.T, filenames []string, srcs [][]byte, manual bool, opt
 	// Alias types are enabled by default
 	testFilesImpl(t, filenames, srcs, manual, opts...)
 	if !manual {
-		t.Setenv("GODEBUG", "gotypesalias=0")
+		setGotypesalias(t, false)
 		testFilesImpl(t, filenames, srcs, manual, opts...)
 	}
 }
@@ -208,7 +209,7 @@ func testFilesImpl(t *testing.T, filenames []string, srcs [][]byte, manual bool,
 
 	// By default, gotypesalias is not set.
 	if gotypesalias != "" {
-		t.Setenv("GODEBUG", "gotypesalias="+gotypesalias)
+		setGotypesalias(t, gotypesalias == "1")
 	}
 
 	// Provide Config.Info with all maps so that info recording is tested.
@@ -425,11 +426,11 @@ func TestCheck(t *testing.T) {
 	buildcfg.Experiment.RangeFunc = true
 
 	DefPredeclaredTestFuncs()
-	testDirFiles(t, "../../internal/types/testdata/check", false)
+	testDirFiles(t, "../internal/types/testdata/check", false)
 }
-func TestSpec(t *testing.T)      { testDirFiles(t, "../../internal/types/testdata/spec", false) }
-func TestExamples(t *testing.T)  { testDirFiles(t, "../../internal/types/testdata/examples", false) }
-func TestFixedbugs(t *testing.T) { testDirFiles(t, "../../internal/types/testdata/fixedbugs", false) }
+func TestSpec(t *testing.T)      { testDirFiles(t, "../internal/types/testdata/spec", false) }
+func TestExamples(t *testing.T)  { testDirFiles(t, "../internal/types/testdata/examples", false) }
+func TestFixedbugs(t *testing.T) { testDirFiles(t, "../internal/types/testdata/fixedbugs", false) }
 func TestLocal(t *testing.T)     { testDirFiles(t, "testdata/local", false) }
 
 func testDirFiles(t *testing.T, dir string, manual bool) {

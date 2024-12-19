@@ -7,7 +7,7 @@
 
 package types
 
-import "go/token"
+import "github.com/mateusz834/tgoast/token"
 
 // validType verifies that the given type does not "expand" indefinitely
 // producing a cycle in the type graph.

@@ -11,7 +11,8 @@ package types
 
 import (
 	"bytes"
-	"go/token"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // Internal use of LookupFieldOrMethod: If the obj result is a method

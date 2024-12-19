@@ -5,12 +5,13 @@
 package scanner
 
 import (
-	"go/token"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 var fset = token.NewFileSet()

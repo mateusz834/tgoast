@@ -6,10 +6,11 @@ package types
 
 import (
 	"fmt"
-	"go/ast"
-	"go/token"
 	"go/version"
-	"internal/goversion"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/internal/goversion"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // A goVersion is a Go language version string of the form "go1.%d"

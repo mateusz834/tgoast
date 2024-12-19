@@ -5,10 +5,11 @@
 package types_test
 
 import (
-	"internal/testenv"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/internal/testenv"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 const filename = "<src>"

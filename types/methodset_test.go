@@ -8,10 +8,10 @@ import (
 	"strings"
 	"testing"
 
-	"go/ast"
-	"go/parser"
-	"go/token"
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+	. "github.com/mateusz834/tgoast/types"
 )
 
 func TestNewMethodSet(t *testing.T) {

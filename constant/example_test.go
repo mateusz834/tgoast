@@ -6,10 +6,11 @@ package constant_test
 
 import (
 	"fmt"
-	"go/constant"
-	"go/token"
 	"math"
 	"slices"
+
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func Example_complexNumbers() {

@@ -7,10 +7,11 @@ package types_test
 import (
 	"errors"
 	"fmt"
-	"go/importer"
-	"go/types"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/types"
 )
 
 func checkMono(t *testing.T, body string) error {

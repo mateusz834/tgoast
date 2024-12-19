@@ -7,8 +7,8 @@
 package types
 
 import (
-	"go/ast"
-	"go/token"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // isTerminating reports if s is a terminating statement.

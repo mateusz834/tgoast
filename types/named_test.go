@@ -5,11 +5,12 @@
 package types_test
 
 import (
-	"go/ast"
-	"go/token"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 func BenchmarkNamed(b *testing.B) {

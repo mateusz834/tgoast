@@ -7,10 +7,10 @@
 package types
 
 import (
-	"go/ast"
-	"go/constant"
-	"go/internal/typeparams"
-	. "internal/types/errors"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/internal/go/typeparams"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
 )
 
 // If e is a valid function instantiation, indexExpr returns true.

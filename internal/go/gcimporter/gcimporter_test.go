@@ -7,7 +7,6 @@ package gcimporter_test
 import (
 	"bytes"
 	"fmt"
-	"internal/testenv"
 	"os"
 	"os/exec"
 	"path"
@@ -17,14 +16,17 @@ import (
 	"testing"
 	"time"
 
-	"go/ast"
-	"go/build"
-	"go/importer"
-	"go/parser"
-	"go/token"
-	"go/types"
+	"github.com/mateusz834/tgoast/internal/testenv"
 
-	. "go/internal/gcimporter"
+	"go/build"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
+
+	. "github.com/mateusz834/tgoast/internal/go/gcimporter"
 )
 
 func TestMain(m *testing.M) {

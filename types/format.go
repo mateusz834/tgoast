@@ -9,10 +9,11 @@ package types
 import (
 	"bytes"
 	"fmt"
-	"go/ast"
-	"go/token"
 	"strconv"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func sprintf(fset *token.FileSet, qf Qualifier, tpSubscripts bool, format string, args ...any) string {

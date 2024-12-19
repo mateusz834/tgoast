@@ -9,13 +9,14 @@ package printer
 
 import (
 	"bytes"
-	"go/ast"
-	"go/parser"
-	"go/token"
 	"io"
 	"log"
 	"os"
 	"testing"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 var (

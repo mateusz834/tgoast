@@ -13,9 +13,10 @@ package types
 import (
 	"errors"
 	"fmt"
-	"go/token"
-	"internal/buildcfg"
-	. "internal/types/errors"
+
+	"github.com/mateusz834/tgoast/internal/buildcfg"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // A genericType implements access to its type parameters.

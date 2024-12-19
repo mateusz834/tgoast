@@ -9,8 +9,9 @@ package types
 import (
 	"bytes"
 	"fmt"
-	"go/ast"
-	"go/internal/typeparams"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/internal/go/typeparams"
 )
 
 // ExprString returns the (possibly shortened) string representation for x.

@@ -10,10 +10,11 @@
 package types
 
 import (
-	"go/constant"
-	"go/token"
-	. "internal/types/errors"
 	"math"
+
+	"github.com/mateusz834/tgoast/constant"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // overflow checks that the constant x is representable by its type.

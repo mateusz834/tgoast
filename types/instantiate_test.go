@@ -7,9 +7,10 @@
 package types_test
 
 import (
-	. "go/types"
 	"strings"
 	"testing"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 func TestInstantiateEquality(t *testing.T) {

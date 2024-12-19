@@ -9,12 +9,13 @@ import (
 	"bytes"
 	"debug/elf"
 	"fmt"
-	"go/types"
-	"internal/xcoff"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/mateusz834/tgoast/internal/xcoff"
+	"github.com/mateusz834/tgoast/types"
 )
 
 // A PackageInit describes an imported package that needs initialization.

@@ -6,10 +6,11 @@ package gccgoimporter
 
 import (
 	"bytes"
-	"go/types"
 	"strings"
 	"testing"
 	"text/scanner"
+
+	"github.com/mateusz834/tgoast/types"
 )
 
 var typeParserTests = []struct {

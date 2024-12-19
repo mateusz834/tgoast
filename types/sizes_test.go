@@ -7,11 +7,12 @@
 package types_test
 
 import (
-	"go/ast"
-	"go/importer"
-	"go/types"
-	"internal/testenv"
 	"testing"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/types"
 )
 
 // findStructType typechecks src and returns the first struct type encountered.

@@ -8,9 +8,9 @@
 package types
 
 import (
-	"go/ast"
-	"go/token"
-	. "internal/types/errors"
+	"github.com/mateusz834/tgoast/ast"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // This file implements a check to validate that a Go package doesn't

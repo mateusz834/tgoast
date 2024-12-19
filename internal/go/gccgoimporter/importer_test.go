@@ -5,14 +5,15 @@
 package gccgoimporter
 
 import (
-	"go/types"
-	"internal/testenv"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"testing"
+
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/types"
 )
 
 type importerTest struct {

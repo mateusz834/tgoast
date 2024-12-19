@@ -11,16 +11,17 @@ import (
 	"errors"
 	"fmt"
 	"go/build"
-	"go/token"
-	"go/types"
-	"internal/pkgbits"
-	"internal/saferio"
 	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"sync"
+
+	"github.com/mateusz834/tgoast/internal/pkgbits"
+	"github.com/mateusz834/tgoast/internal/saferio"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 // debugging/development support

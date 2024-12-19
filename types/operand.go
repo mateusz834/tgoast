@@ -12,10 +12,11 @@ package types
 import (
 	"bytes"
 	"fmt"
-	"go/ast"
-	"go/constant"
-	"go/token"
-	. "internal/types/errors"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // An operandMode specifies the (addressing) mode of an operand.

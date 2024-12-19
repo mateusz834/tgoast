@@ -10,10 +10,10 @@
 package types
 
 import (
-	"go/ast"
-	"go/constant"
-	"go/token"
-	. "internal/types/errors"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // builtin type-checks a call to the built-in specified by id and

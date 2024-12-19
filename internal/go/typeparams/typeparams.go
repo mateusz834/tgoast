@@ -5,8 +5,8 @@
 package typeparams
 
 import (
-	"go/ast"
-	"go/token"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func PackIndexExpr(x ast.Expr, lbrack token.Pos, exprs []ast.Expr, rbrack token.Pos) ast.Expr {

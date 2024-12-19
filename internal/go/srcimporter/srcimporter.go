@@ -8,11 +8,7 @@ package srcimporter // import "go/internal/srcimporter"
 
 import (
 	"fmt"
-	"go/ast"
 	"go/build"
-	"go/parser"
-	"go/token"
-	"go/types"
 	"io"
 	"os"
 	"os/exec"
@@ -20,6 +16,11 @@ import (
 	"strings"
 	"sync"
 	_ "unsafe" // for go:linkname
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 // An Importer provides the context for importing packages from source code.
@@ -265,5 +266,5 @@ func (p *Importer) joinPath(elem ...string) string {
 	return filepath.Join(elem...)
 }
 
-//go:linkname setUsesCgo go/types.srcimporter_setUsesCgo
+//go:linkname setUsesCgo github.com/mateusz834/tgoast/types.srcimporter_setUsesCgo
 func setUsesCgo(conf *types.Config)

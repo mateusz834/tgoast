@@ -10,11 +10,12 @@ package types
 import (
 	"bytes"
 	"fmt"
-	"go/constant"
-	"go/token"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // An Object describes a named language entity such as a package,

@@ -17,12 +17,13 @@ package parser
 
 import (
 	"fmt"
-	"go/ast"
 	"go/build/constraint"
-	"go/internal/typeparams"
-	"go/scanner"
-	"go/token"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/internal/go/typeparams"
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // The parser structure holds the parser's internal state.

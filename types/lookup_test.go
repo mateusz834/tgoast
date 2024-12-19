@@ -5,13 +5,14 @@
 package types_test
 
 import (
-	"go/importer"
-	"go/token"
 	"path/filepath"
 	"runtime"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 // BenchmarkLookupFieldOrMethod measures types.LookupFieldOrMethod performance.

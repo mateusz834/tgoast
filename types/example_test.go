@@ -17,16 +17,17 @@ package types_test
 
 import (
 	"fmt"
-	"go/ast"
-	"go/format"
-	"go/importer"
-	"go/parser"
-	"go/token"
-	"go/types"
 	"log"
 	"regexp"
 	"slices"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/format"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 // ExampleScope prints the tree of Scopes of a package created from a

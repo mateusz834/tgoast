@@ -5,12 +5,13 @@
 package gcimporter
 
 import (
-	"go/token"
-	"go/types"
-	"internal/godebug"
-	"internal/pkgbits"
 	"slices"
 	"strings"
+
+	"github.com/mateusz834/tgoast/internal/godebug"
+	"github.com/mateusz834/tgoast/internal/pkgbits"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 // A pkgReader holds the shared state for reading a unified IR package

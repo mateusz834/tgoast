@@ -14,7 +14,7 @@ import (
 	"os"
 	"testing"
 
-	. "go/types"
+	. "github.com/mateusz834/tgoast/types"
 )
 
 var (

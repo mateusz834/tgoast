@@ -5,10 +5,11 @@
 package types
 
 import (
-	"go/ast"
-	"go/token"
-	. "internal/types/errors"
 	"strconv"
+
+	"github.com/mateusz834/tgoast/ast"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // ----------------------------------------------------------------------------
