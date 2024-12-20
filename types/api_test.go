@@ -3113,10 +3113,7 @@ func setGotypesalias(t *testing.T, enable bool) {
 const src = `package main
 
 func main() {
-	<div
-	>
-		"a"
-	</div>
+	"\{a}"
 }
 `
 
