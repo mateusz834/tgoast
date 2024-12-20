@@ -39,7 +39,7 @@ func (check *Checker) funcBody(decl *declInfo, name string, sig *Signature, body
 	}
 	check.indent = 0
 
-	check.stmtList(0, body.List)
+	check.stmtList(inTgoFunc, body.List)
 
 	if check.hasLabel {
 		check.labels(body)
@@ -404,6 +404,10 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		var code Code
 		switch x.mode {
 		default:
+			if v, ok := s.X.(*ast.BasicLit); ok && v.Kind == token.STRING &&
+				ctxt&inTgoFunc != 0 && ctxt&inOpenTag == 0 {
+				return
+			}
 			if kind == statement {
 				return
 			}

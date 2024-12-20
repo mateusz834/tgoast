@@ -1470,6 +1470,13 @@ func (check *Checker) exprInternal(T *target, x *operand, e ast.Expr, hint Type)
 		// performance issue because we only reach here for composite literal
 		// types, which are comparatively rare.
 
+	case *ast.TemplateLiteralExpr:
+		x.mode = novalue
+		x.expr = e
+		for _, v := range e.Parts {
+			check.use(v.X)
+		}
+		return statement
 	default:
 		panic(fmt.Sprintf("%s: unknown expression type %T", check.fset.Position(e.Pos()), e))
 	}
