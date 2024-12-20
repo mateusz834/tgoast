@@ -21,7 +21,8 @@ func (check *Checker) isTerminating(s ast.Stmt, label string) bool {
 
 	case *ast.BadStmt, *ast.DeclStmt, *ast.EmptyStmt, *ast.SendStmt,
 		*ast.IncDecStmt, *ast.AssignStmt, *ast.GoStmt, *ast.DeferStmt,
-		*ast.RangeStmt:
+		*ast.RangeStmt, *ast.ElementBlockStmt, *ast.OpenTag, *ast.EndTag,
+		*ast.AttributeStmt:
 		// no chance
 
 	case *ast.LabeledStmt:
