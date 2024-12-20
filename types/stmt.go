@@ -39,7 +39,15 @@ func (check *Checker) funcBody(decl *declInfo, name string, sig *Signature, body
 	}
 	check.indent = 0
 
-	check.stmtList(inTgoFunc, body.List)
+	var ctxt stmtContext
+	if sig.params.Len() > 0 && sig.results.Len() == 1 {
+		if sig.params.At(0).Type() == check.tgoCtx &&
+			sig.results.At(0).Type() == Universe.Lookup("error").Type() {
+			ctxt |= inTgoFunc
+		}
+	}
+
+	check.stmtList(ctxt, body.List)
 
 	if check.hasLabel {
 		check.labels(body)

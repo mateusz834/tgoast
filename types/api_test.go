@@ -3110,24 +3110,54 @@ func setGotypesalias(t *testing.T, enable bool) {
 	}
 }
 
-const src = `package main
+const src = `package test
 
-func main() {
-	"\{a}"
+import "github.com/mateusz834/tgo"
+
+func test(tgo.Ctx) error {
+	<div>
+		"aa"
+		test(nil)
+	</div>
 }
 `
 
 func TestTest(t *testing.T) {
 	fset := token.NewFileSet()
+
+	const tgoModuleSrc = "package tgo\ntype Ctx struct{}\ntype Error = error"
+	tgoModuleFile, err := parser.ParseFile(fset, "tgo.go", tgoModuleSrc, parser.SkipObjectResolution)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tgoPkg, err := new(Config).Check("github.com/mateusz834/tgoast", fset, []*ast.File{tgoModuleFile}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	f, err := parser.ParseFile(fset, "test.tgo", src, parser.SkipObjectResolution|parser.ParseComments)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	cfg := Config{}
+	cfg := Config{
+		Importer: funcImporter(func(path string) (*Package, error) {
+			if path == "github.com/mateusz834/tgo" {
+				return tgoPkg, nil
+			}
+			return nil, errors.New("package not found")
+		}),
+	}
 	p, err := cfg.Check("test", fset, []*ast.File{f}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Log(p)
+}
+
+type funcImporter func(path string) (*Package, error)
+
+func (f funcImporter) Import(path string) (*Package, error) {
+	return f(path)
 }
