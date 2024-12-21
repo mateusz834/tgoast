@@ -181,7 +181,8 @@ type Checker struct {
 	// debugging
 	indent int // indentation for tracing
 
-	tgoCtx Type
+	tgoCtx                 Type
+	tgoDynamicWriteAllowed Type
 }
 
 // addDeclDep adds the dependency edge (check.decl -> to) if check.decl exists

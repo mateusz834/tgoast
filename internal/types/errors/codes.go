@@ -1483,6 +1483,8 @@ const (
 	// newer Go release.
 	TooNew
 
+	MisplacedTemplateLiteral
+
 	MisplacedAttribute
 
 	MisplacedTag

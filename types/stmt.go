@@ -375,6 +375,23 @@ L:
 // 	return
 // }
 
+func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
+	for _, v := range v.Parts {
+		var o operand
+		check.expr(nil, &o, v.X)
+		if check.tgoDynamicWriteAllowed != nil {
+			tp := NewTypeParam(NewTypeName(nopos, check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
+			infered := check.infer(v, []*TypeParam{tp}, nil, NewTuple(NewVar(nopos, check.pkg, "t", tp)), []*operand{&o}, false, nil)
+			assert(len(infered) == 1)
+			cause := ""
+			implements := check.implements(v.Pos(), infered[0], check.tgoDynamicWriteAllowed, true, &cause)
+			if !implements {
+				check.errorf(&o, Test, "%s", cause)
+			}
+		}
+	}
+}
+
 // stmt typechecks statement s.
 func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 	// statements must end with the same top scope as they started with
@@ -406,6 +423,17 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		check.stmt(ctxt, s.Stmt)
 
 	case *ast.ExprStmt:
+		if v, ok := s.X.(*ast.TemplateLiteralExpr); ok {
+			if ctxt&inTgoFunc == 0 {
+				check.error(s, MisplacedTemplateLiteral, "template literal inside of an non-tgo func")
+			}
+			if ctxt&inOpenTag != 0 {
+				check.error(s, MisplacedTemplateLiteral, "template literal inside of an tag")
+			}
+			check.templateLiteralExpr(v)
+			return
+		}
+
 		// spec: "With the exception of specific built-in functions,
 		// function and method calls and receive operations can appear
 		// in statement context. Such statements may be parenthesized."
@@ -873,7 +901,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		check.stmtList(inner|inOpenTag, s.Body)
 	case *ast.EndTag:
 		if ctxt&inTgoFunc == 0 {
-			check.error(s, MisplacedTag, "open tag inside of an non-tgo func")
+			check.error(s, MisplacedTag, "end tag inside of an non-tgo func")
 		}
 		if ctxt&inOpenTag != 0 {
 			check.error(s, MisplacedTag, "end tag inside of a tag")
@@ -884,6 +912,16 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		}
 		if ctxt&inOpenTag == 0 {
 			check.error(s, MisplacedAttribute, "attribute not inside of a tag")
+		}
+		switch v := s.Value.(type) {
+		case *ast.TemplateLiteralExpr:
+			check.templateLiteralExpr(v)
+		case *ast.BasicLit:
+			if v.Kind != token.STRING {
+				check.error(s, InvalidSyntaxTree, "invalid TemplateLiteralExpr value")
+			}
+		default:
+			check.error(s, InvalidSyntaxTree, "invalid TemplateLiteralExpr value")
 		}
 	default:
 		check.error(s, InvalidSyntaxTree, "invalid statement")

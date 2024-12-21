@@ -3112,20 +3112,27 @@ func setGotypesalias(t *testing.T, enable bool) {
 
 const src = `package test
 
-import "github.com/mateusz834/tgo"
-
-func test(tgo.Ctx) error {
+func test[T int|float64]() error {
 	<div>
-		"aa"
-		test(nil)
+		"\{*new(T)}"
 	</div>
+	return nil
 }
 `
 
 func TestTest(t *testing.T) {
 	fset := token.NewFileSet()
 
-	const tgoModuleSrc = "package tgo\ntype Ctx struct{}\ntype Error = error"
+	const tgoModuleSrc = `package tgo
+type Ctx struct{}
+type Error = error
+type UnsafeHTML string
+type DynamicWriteAllowed interface {
+	string|UnsafeHTML|int|uint
+}
+func DynamicWrite[T DynamicWriteAllowed](t T) {
+}
+`
 	tgoModuleFile, err := parser.ParseFile(fset, "tgo.go", tgoModuleSrc, parser.SkipObjectResolution)
 	if err != nil {
 		t.Fatal(err)
@@ -3142,6 +3149,9 @@ func TestTest(t *testing.T) {
 	}
 
 	cfg := Config{
+		Error: func(err error) {
+			t.Logf("err: %v\n", err)
+		},
 		Importer: funcImporter(func(path string) (*Package, error) {
 			if path == "github.com/mateusz834/tgo" {
 				return tgoPkg, nil
