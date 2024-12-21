@@ -1482,4 +1482,10 @@ const (
 	// errors. The solution is to rebuild the application with a
 	// newer Go release.
 	TooNew
+
+	MisplacedTemplateLiteral
+
+	MisplacedAttribute
+
+	MisplacedTag
 )
