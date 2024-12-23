@@ -95,3 +95,23 @@ func _(tgo.Ctx) error {
 	</div>
 	return nil
 }
+
+func _(tgo.Ctx) error {
+	var t func(tgo.Ctx) error
+	<div
+		t = func(tgo.Ctx) error {
+			@ /* ERROR "attribute is not allowed outside a tag" */ attr="value"
+			<div
+				@attr="value"
+			>
+				"test"
+				"\{"test"}"
+				@ /* ERROR "attribute is not allowed outside a tag" */ attr="value"
+			</div>
+			return nil
+		}
+	>
+	</div>
+	_ = t
+	return nil
+}
