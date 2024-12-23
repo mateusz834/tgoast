@@ -3112,10 +3112,18 @@ func setGotypesalias(t *testing.T, enable bool) {
 
 const src = `package test
 
-func test[T int|float64]() error {
-	<div>
-		"\{*new(T)}"
-	</div>
+import "github.com/mateusz834/tgo"
+
+func test(tgo.Ctx) error {
+	for {
+		<div
+			@class="some-nice-div"
+		>
+		for _, v := range "aa" {
+			"\{v}"
+		}
+		</div>
+	}
 	return nil
 }
 `
@@ -3128,7 +3136,7 @@ type Ctx struct{}
 type Error = error
 type UnsafeHTML string
 type DynamicWriteAllowed interface {
-	string|UnsafeHTML|int|uint
+	string|UnsafeHTML|int|uint|rune
 }
 func DynamicWrite[T DynamicWriteAllowed](t T) {
 }

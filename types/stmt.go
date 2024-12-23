@@ -101,6 +101,10 @@ const (
 	// additional context information
 	finalSwitchCase
 	inTypeSwitch
+
+	inOpenTag
+	inTgoFunc
+	inElementBlockStmtBody
 )
 
 func (check *Checker) simpleStmt(s ast.Stmt) {
@@ -422,7 +426,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 	case *ast.ExprStmt:
 		if v, ok := s.X.(*ast.TemplateLiteralExpr); ok {
 			if ctxt&inTgoFunc == 0 {
-				check.error(s, MisplacedTemplateLiteral, "template literal inside of an non-tgo func")
+				check.error(s, MisplacedTemplateLiteral, "template literal is not allowed inside a non-tgo function")
 			}
 			if ctxt&inOpenTag != 0 {
 				check.error(s, MisplacedTemplateLiteral, "template literal inside of an tag")
@@ -583,10 +587,18 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		case token.BREAK:
 			if ctxt&breakOk == 0 {
 				check.error(s, MisplacedBreak, "break not in for, switch, or select statement")
+			} else if ctxt&inOpenTag != 0 {
+				check.error(s, MisplacedBreak, "cannot break insinde of a open tag")
+			} else if ctxt&inElementBlockStmtBody != 0 {
+				check.error(s, MisplacedBreak, "break escapes end tag")
 			}
 		case token.CONTINUE:
 			if ctxt&continueOk == 0 {
 				check.error(s, MisplacedContinue, "continue not in for statement")
+			} else if ctxt&inOpenTag != 0 {
+				check.error(s, MisplacedContinue, "cannot continue insinde of a open tag")
+			} else if ctxt&inElementBlockStmtBody != 0 {
+				check.error(s, MisplacedContinue, "continue escapes end tag")
 			}
 		case token.FALLTHROUGH:
 			if ctxt&fallthroughOk == 0 {
@@ -881,15 +893,15 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 	case *ast.ElementBlockStmt:
 		check.stmt(inner, s.OpenTag)
 		check.openScope(s, "ElementBlockStmt")
-		check.stmtList(inner, s.Body)
+		check.stmtList(inner|inElementBlockStmtBody, s.Body)
 		check.closeScope()
 		check.stmt(inner, s.EndTag)
 	case *ast.OpenTag:
 		if ctxt&inTgoFunc == 0 {
-			check.error(s, MisplacedTag, "open tag inside of an non-tgo func")
+			check.error(s, MisplacedTag, "open tag is not allowed inside a non-tgo function")
 		}
 		if ctxt&inOpenTag != 0 {
-			check.error(s, MisplacedTag, "open tag inside of a tag")
+			check.error(s, MisplacedTag, "tag is not allowed inside a tag")
 		}
 
 		check.openScope(s, "OpenTag")
@@ -898,17 +910,17 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		check.stmtList(inner|inOpenTag, s.Body)
 	case *ast.EndTag:
 		if ctxt&inTgoFunc == 0 {
-			check.error(s, MisplacedTag, "end tag inside of an non-tgo func")
+			check.error(s, MisplacedTag, "end tag is not allowed inside a non-tgo function")
 		}
 		if ctxt&inOpenTag != 0 {
-			check.error(s, MisplacedTag, "end tag inside of a tag")
+			check.error(s, MisplacedTag, "end tag is not allowed inside a tag")
 		}
 	case *ast.AttributeStmt:
 		if ctxt&inTgoFunc == 0 {
-			check.error(s, MisplacedAttribute, "attribute inside of an non-tgo func")
+			check.error(s, MisplacedTag, "attribute is not allowed inside a non-tgo function")
 		}
 		if ctxt&inOpenTag == 0 {
-			check.error(s, MisplacedAttribute, "attribute not inside of a tag")
+			check.error(s, MisplacedAttribute, "attribute is not allowed outside a tag")
 		}
 		switch v := s.Value.(type) {
 		case *ast.TemplateLiteralExpr:

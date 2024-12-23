@@ -1488,4 +1488,6 @@ const (
 	MisplacedAttribute
 
 	MisplacedTag
+
+	JumpOverEndTag
 )

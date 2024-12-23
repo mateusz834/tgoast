@@ -37,11 +37,34 @@ func commentMap(src []byte, rx *regexp.Regexp) (res map[int][]comment) {
 	s.Init(file, src, nil, scanner.ScanComments)
 	var prev token.Pos // position of last non-comment, non-semicolon token
 
+	depth := make([]int, 0, 16)
 	for {
-		pos, tok, lit := s.Scan()
+		var (
+			pos token.Pos
+			tok token.Token
+			lit string
+		)
+
+		if len(depth) != 0 && depth[len(depth)-1] == 0 {
+			depth = depth[:len(depth)-1]
+			pos, tok, lit = s.TemplateLiteralContinue()
+		} else {
+			pos, tok, lit = s.Scan()
+		}
+
 		switch tok {
 		case token.EOF:
 			return
+		case token.LBRACE:
+			if len(depth) != 0 {
+				depth[len(depth)-1]++
+			}
+		case token.RBRACE:
+			if len(depth) != 0 {
+				depth[len(depth)-1]--
+			}
+		case token.STRING_TEMPLATE:
+			depth = append(depth, 1)
 		case token.COMMENT:
 			if lit[1] == '*' {
 				lit = lit[:len(lit)-2] // strip trailing */
@@ -55,15 +78,14 @@ func commentMap(src []byte, rx *regexp.Regexp) (res map[int][]comment) {
 				}
 				res[p.Line] = append(res[p.Line], err)
 			}
+			continue
 		case token.SEMICOLON:
 			// ignore automatically inserted semicolon
 			if lit == "\n" {
 				continue
 			}
-			fallthrough
-		default:
-			prev = pos
 		}
+		prev = pos
 	}
 }
 
