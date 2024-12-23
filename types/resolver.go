@@ -194,7 +194,7 @@ func (check *Checker) importPackage(at positioner, path, dir string) *Package {
 		}
 	}
 
-	if path == "github.com/mateusz834/tgo" {
+	if path == "github.com/mateusz834/tgo" && imp.Complete() {
 		check.tgoCtx = imp.Scope().Lookup("Ctx").Type()
 		check.tgoDynamicWriteAllowed = imp.Scope().Lookup("DynamicWriteAllowed").Type()
 	}
