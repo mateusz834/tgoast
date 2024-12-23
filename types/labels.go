@@ -84,7 +84,7 @@ func (b *block) gotoTarget(name string) *ast.LabeledStmt {
 func (b *block) enclosingTarget(name string) (*ast.LabeledStmt, int) {
 	for s := b; s != nil; s = s.parent {
 		if t := s.lstmt; t != nil && t.Label.Name == name {
-			return t, b.count
+			return t, s.count
 		}
 	}
 	return nil, -1
@@ -109,7 +109,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 	b := &block{parent: parent, lstmt: lstmt}
 	if tgoTag {
 		b.enterTgoTag()
-		defer b.enterTgoTag()
+		defer b.exitTgoTag()
 	}
 
 	var (
@@ -294,7 +294,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 		case *ast.ElementBlockStmt:
 			stmtBranches(s.OpenTag)
 
-			escapingJmps := check.blockBranches(all, b, lstmt, s.Body, true)
+			escapingJmps := check.blockBranches(all, b, nil, s.Body, true)
 
 			for _, jmp := range escapingJmps {
 				check.softErrorf(
@@ -305,8 +305,10 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 					check.fset.Position(s.EndTag.Pos()).Line,
 				)
 			}
+
 			fwdJumps = append(fwdJumps, escapingJmps...)
 		case *ast.OpenTag:
+			// TODO: should we pass nil/
 			blockBranches(lstmt, s.Body)
 		}
 	}

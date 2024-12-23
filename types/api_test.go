@@ -3115,13 +3115,12 @@ const src = `package test
 import "github.com/mateusz834/tgo"
 
 func test(tgo.Ctx) error {
+outer:
 	for {
-		<div
-			@class="some-nice-div"
-		>
-		for _, v := range "aa" {
-			"\{v}"
-		}
+		<div>
+			for {
+				break outer
+			}
 		</div>
 	}
 	return nil
