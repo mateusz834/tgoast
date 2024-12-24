@@ -115,3 +115,14 @@ func _(tgo.Ctx) error {
 	_ = t
 	return nil
 }
+
+func _(tgo.Ctx) error {
+	<div
+		{
+			< /* ERROR "tag is not allowed inside a tag" */ div>
+			</ /* ERROR "tag is not allowed inside a tag" */ div>
+		}
+	>
+	</div>
+	return nil
+}
