@@ -326,7 +326,6 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 
 			fwdJumps = append(fwdJumps, escapingJmps...)
 		case *ast.OpenTag:
-			// TODO: should we pass nil/
 			blockBranches(lstmt, s.Body)
 		}
 	}
