@@ -58,7 +58,8 @@ type block struct {
 func (b *block) insert(s *ast.LabeledStmt) {
 	name := s.Label.Name
 	if debug {
-		assert(b.gotoTarget(name) == nil)
+		l, _ := b.gotoTarget(name)
+		assert(l == nil)
 	}
 	labels := b.labels
 	if labels == nil {
@@ -70,13 +71,13 @@ func (b *block) insert(s *ast.LabeledStmt) {
 
 // gotoTarget returns the labeled statement in the current
 // or an enclosing block with the given label name, or nil.
-func (b *block) gotoTarget(name string) *ast.LabeledStmt {
+func (b *block) gotoTarget(name string) (*ast.LabeledStmt, int) {
 	for s := b; s != nil; s = s.parent {
 		if t := s.labels[name]; t != nil {
-			return t
+			return t, s.count
 		}
 	}
-	return nil
+	return nil, -1
 }
 
 // enclosingTarget returns the innermost enclosing labeled
@@ -217,7 +218,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 					check.errorf(s.Label, MisplacedLabel, "invalid break label %s", name)
 					return
 				} else if tagDepth != 0 {
-					check.errorf(s.Label, MisplacedLabel, "invalid break label %s exits body tag", name)
+					check.errorf(s.Label, MisplacedLabel, "break %s prevents reaching the end tag", name)
 				}
 
 			case token.CONTINUE:
@@ -236,14 +237,24 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 					check.errorf(s.Label, MisplacedLabel, "invalid continue label %s", name)
 					return
 				} else if tagDepth != 0 {
-					check.errorf(s.Label, MisplacedLabel, "invalid continue label %s exits body tag", name)
+					check.errorf(s.Label, MisplacedLabel, "continue %s prevents reaching the end tag", name)
 				}
 
 			case token.GOTO:
-				if b.gotoTarget(name) == nil {
+				l, cnt := b.gotoTarget(name)
+				if l == nil {
 					// label may be declared later - add branch to forward jumps
 					fwdJumps = append(fwdJumps, s)
 					return
+				}
+
+				if cnt != 0 {
+					check.softErrorf(
+						s.Label,
+						JumpOverEndTag,
+						"goto %s prevents reaching the end tag",
+						s.Label.Name,
+					)
 				}
 
 			default:
@@ -300,9 +311,8 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 				check.softErrorf(
 					jmp.Label,
 					JumpOverEndTag,
-					"goto %s jumps over end tag at line %d",
+					"goto %s prevents reaching the end tag",
 					jmp.Label.Name,
-					check.fset.Position(s.EndTag.Pos()).Line,
 				)
 			}
 

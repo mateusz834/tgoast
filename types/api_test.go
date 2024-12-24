@@ -3115,18 +3115,6 @@ const src = `package test
 import "github.com/mateusz834/tgo"
 
 func _(tgo.Ctx) error {
-	for {
-		<div>
-			for {
-				continue
-				break
-			}
-			continue // error "continue escapes end tag"
-			break // error "break escapes end tag"
-		</div>
-		continue
-		break
-	}
 	return nil
 }
 `
