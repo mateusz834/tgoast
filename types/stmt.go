@@ -591,9 +591,9 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		case token.BREAK:
 			if ctxt&breakOk != 0 {
 				if ctxt&breakNotOkElementBlockStmt != 0 {
-					check.error(s, MisplacedBreak, "break escapes end tag")
+					check.error(s, MisplacedBreak, "break prevents reaching the end tag")
 				} else if ctxt&breakNotOkOpenTag != 0 {
-					check.error(s, MisplacedBreak, "break not allowed in in open tag")
+					check.error(s, MisplacedBreak, "break not allowed in open tag")
 				}
 			}
 			if ctxt&breakOk == 0 {
@@ -602,9 +602,9 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		case token.CONTINUE:
 			if ctxt&continueOk != 0 {
 				if ctxt&continueNotOkElementBlockStmt != 0 {
-					check.error(s, MisplacedBreak, "continue escapes end tag")
+					check.error(s, MisplacedBreak, "continue prevents reaching the end tag")
 				} else if ctxt&continueNotOkOpenTag != 0 {
-					check.error(s, MisplacedBreak, "continue not allowed in in open tag")
+					check.error(s, MisplacedBreak, "continue not allowed in open tag")
 				}
 			}
 			if ctxt&continueOk == 0 {
