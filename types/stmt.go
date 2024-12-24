@@ -104,7 +104,11 @@ const (
 
 	inOpenTag
 	inTgoFunc
-	inElementBlockStmtBody
+
+	breakNotOkOpenTag
+	continueNotOkOpenTag
+	breakNotOkElementBlockStmt
+	continueNotOkElementBlockStmt
 )
 
 func (check *Checker) simpleStmt(s ast.Stmt) {
@@ -585,20 +589,26 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		}
 		switch s.Tok {
 		case token.BREAK:
+			if ctxt&breakOk != 0 {
+				if ctxt&breakNotOkElementBlockStmt != 0 {
+					check.error(s, MisplacedBreak, "break escapes end tag")
+				} else if ctxt&breakNotOkOpenTag != 0 {
+					check.error(s, MisplacedBreak, "break not allowed in in open tag")
+				}
+			}
 			if ctxt&breakOk == 0 {
 				check.error(s, MisplacedBreak, "break not in for, switch, or select statement")
-			} else if ctxt&inOpenTag != 0 {
-				check.error(s, MisplacedBreak, "cannot break insinde of a open tag")
-			} else if ctxt&inElementBlockStmtBody != 0 {
-				check.error(s, MisplacedBreak, "break escapes end tag")
 			}
 		case token.CONTINUE:
+			if ctxt&continueOk != 0 {
+				if ctxt&continueNotOkElementBlockStmt != 0 {
+					check.error(s, MisplacedBreak, "continue escapes end tag")
+				} else if ctxt&continueNotOkOpenTag != 0 {
+					check.error(s, MisplacedBreak, "continue not allowed in in open tag")
+				}
+			}
 			if ctxt&continueOk == 0 {
 				check.error(s, MisplacedContinue, "continue not in for statement")
-			} else if ctxt&inOpenTag != 0 {
-				check.error(s, MisplacedContinue, "cannot continue insinde of a open tag")
-			} else if ctxt&inElementBlockStmtBody != 0 {
-				check.error(s, MisplacedContinue, "continue escapes end tag")
 			}
 		case token.FALLTHROUGH:
 			if ctxt&fallthroughOk == 0 {
@@ -646,7 +656,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		}
 
 	case *ast.SwitchStmt:
-		inner |= breakOk
+		inner = breakOk | (inner &^ (breakNotOkElementBlockStmt | breakNotOkOpenTag))
 		check.openScope(s, "switch")
 		defer check.closeScope()
 
@@ -692,7 +702,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		}
 
 	case *ast.TypeSwitchStmt:
-		inner |= breakOk | inTypeSwitch
+		inner = breakOk | inTypeSwitch | (inner &^ (breakNotOkElementBlockStmt | breakNotOkOpenTag))
 		check.openScope(s, "type switch")
 		defer check.closeScope()
 
@@ -817,7 +827,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		}
 
 	case *ast.SelectStmt:
-		inner |= breakOk
+		inner = breakOk | (inner &^ (breakNotOkElementBlockStmt | breakNotOkOpenTag))
 
 		check.multipleDefaults(s.Body.List)
 
@@ -862,7 +872,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		}
 
 	case *ast.ForStmt:
-		inner |= breakOk | continueOk
+		inner = breakOk | continueOk | (inner &^ (breakNotOkElementBlockStmt | continueNotOkElementBlockStmt | breakNotOkOpenTag | continueNotOkOpenTag))
 		check.openScope(s, "for")
 		defer check.closeScope()
 
@@ -887,13 +897,13 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		check.stmt(inner, s.Body)
 
 	case *ast.RangeStmt:
-		inner |= breakOk | continueOk
+		inner = breakOk | continueOk | (inner &^ (breakNotOkElementBlockStmt | continueNotOkElementBlockStmt | breakNotOkOpenTag | continueNotOkOpenTag))
 		check.rangeStmt(inner, s)
 
 	case *ast.ElementBlockStmt:
 		check.stmt(inner, s.OpenTag)
 		check.openScope(s, "ElementBlockStmt")
-		check.stmtList(inner|inElementBlockStmtBody, s.Body)
+		check.stmtList(inner|breakNotOkElementBlockStmt|continueNotOkElementBlockStmt, s.Body)
 		check.closeScope()
 		check.stmt(inner, s.EndTag)
 	case *ast.OpenTag:
@@ -907,7 +917,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		check.openScope(s, "OpenTag")
 		defer check.closeScope()
 
-		check.stmtList(inner|inOpenTag, s.Body)
+		check.stmtList(inner|inOpenTag|breakNotOkOpenTag|continueNotOkOpenTag, s.Body)
 	case *ast.EndTag:
 		if ctxt&inTgoFunc == 0 {
 			check.error(s, MisplacedTag, "end tag is not allowed inside a non-tgo function")
