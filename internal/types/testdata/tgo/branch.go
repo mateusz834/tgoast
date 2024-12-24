@@ -255,7 +255,7 @@ func _(tgo.Ctx) error {
 	a:
 		@attr="value"
 	>
-		goto a /* ERROR "goto a jumps into block" */ /* ERROR "goto a prevents reaching the end tag" */
+		goto a /* ERROR "goto a jumps into block" */
 	</div>
 	goto a // ERROR "goto a jumps into block"
 	return nil
@@ -263,8 +263,7 @@ func _(tgo.Ctx) error {
 
 func _(tgo.Ctx) error {
 	<div>
-		// TODO this  error is not quite right
-		goto a /* ERROR "goto a jumps into block" */ /* ERROR "goto a prevents reaching the end tag" */
+		goto a // ERROR "goto a jumps into block"
 		<div>
 		a:
 		</div>
@@ -285,6 +284,60 @@ func _(tgo.Ctx) error {
 func _(tgo.Ctx) error {
 	<div>
 	a:
+		<div>
+		goto a // ERROR "goto a prevents reaching the end tag"
+		</div>
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	<div
+	a:
+		@attr="value"
+		goto a
+	>
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+a:
+	<div>
+		<div>
+		goto a // ERROR "goto a prevents reaching the end tag"
+		</div>
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	<div>
+		<div>
+		goto a // ERROR "goto a prevents reaching the end tag"
+		</div>
+	</div>
+a:
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	<div>
+		<div>
+			<div>
+			goto a // ERROR "goto a prevents reaching the end tag"
+			goto b // ERROR "goto b prevents reaching the end tag"
+			</div>
+		</div>
+		b:
+	</div>
+a:
+	return nil
+}
+
+func _(tgo.Ctx) error {
+a:
+	<div>
 		<div>
 		goto a // ERROR "goto a prevents reaching the end tag"
 		</div>

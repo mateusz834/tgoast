@@ -3115,6 +3115,12 @@ const src = `package test
 import "github.com/mateusz834/tgo"
 
 func _(tgo.Ctx) error {
+	<div>
+		<div>
+		goto a // ERROR "goto a prevents reaching the end tag"
+		</div>
+	</div>
+a:
 	return nil
 }
 `
