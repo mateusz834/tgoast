@@ -157,6 +157,51 @@ func _(tgo.Ctx) error {
 			default:
 				continue // ERROR "continue escapes end tag"
 			}
+			switch any(nil).(type) {
+			case nil:
+				break
+			default:
+				continue // ERROR "continue escapes end tag"
+			}
+		</div>
+	}
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	<div>
+	outer:
+		for {
+			continue outer
+			break outer
+		}
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+outer:
+	for {
+		<div>
+			continue outer // ERROR "invalid continue label outer exits body tag"
+			break outer // ERROR "invalid break label outer exits body tag"
+		</div>
+	}
+	return nil
+}
+
+func _(tgo.Ctx) error {
+outer:
+	for {
+		<div>
+			for {
+				continue
+				break
+			}
+			for {
+				continue outer // ERROR "invalid continue label outer exits body tag"
+				break outer // ERROR "invalid break label outer exits body tag"
+			}
 		</div>
 	}
 	return nil
