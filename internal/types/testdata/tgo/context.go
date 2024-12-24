@@ -120,7 +120,7 @@ func _(tgo.Ctx) error {
 	<div
 		{
 			< /* ERROR "tag is not allowed inside a tag" */ div>
-			</ /* ERROR "tag is not allowed inside a tag" */ div>
+			</ /* ERROR "end tag is not allowed inside a tag" */ div>
 		}
 	>
 	</div>
