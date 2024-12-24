@@ -88,3 +88,76 @@ outer:
 	}
 	return nil
 }
+
+func _(tgo.Ctx) error {
+	<div>
+		for {
+			continue
+			break
+		}
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	for {
+		<div>
+			continue // ERROR "continue escapes end tag"
+			break // ERROR "break escapes end tag"
+		</div>
+	}
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	<div>
+		continue // ERROR "continue not in for statement"
+		break // ERROR "break not in for, switch, or select statement"
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	<div
+		for {
+			continue
+			break
+		}
+	>
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	for {
+		<div>
+			for {
+				continue
+				break
+			}
+			continue // ERROR "continue escapes end tag"
+			break // ERROR "break escapes end tag"
+		</div>
+		continue
+		break
+	}
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	for {
+		<div>
+			for {
+				continue
+				break
+			}
+			switch "a" {
+			case "a":
+				break
+			default:
+				continue // ERROR "continue escapes end tag"
+			}
+		</div>
+	}
+	return nil
+}

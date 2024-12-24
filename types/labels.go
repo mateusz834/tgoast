@@ -262,6 +262,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 			}
 
 		case *ast.BlockStmt:
+			// TODO: I have a feeling that something might be wrong with this handling.
 			blockBranches(lstmt, s.List)
 
 		case *ast.IfStmt:
