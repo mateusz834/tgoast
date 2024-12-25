@@ -386,11 +386,18 @@ func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
 		check.expr(nil, &o, v.X)
 		if check.tgoDynamicWriteAllowed != nil {
 			tp := NewTypeParam(NewTypeName(nopos, check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
-			infered := check.infer(v, []*TypeParam{tp}, nil, NewTuple(NewVar(nopos, check.pkg, "t", tp)), []*operand{&o}, false, nil)
-			assert(len(infered) == 1)
+			err := check.newError(CannotInferTypeArgs)
+			targs := check.infer(v, []*TypeParam{tp}, nil, NewTuple(NewVar(nopos, check.pkg, "t", tp)), []*operand{&o}, false, err)
+			if targs == nil {
+				if !err.empty() {
+					check.errorf(err.posn(), CannotInferTypeArgs, "%s", err.msg())
+				}
+				return
+			}
 			cause := ""
-			implements := check.implements(v.Pos(), infered[0], check.tgoDynamicWriteAllowed, true, &cause)
+			implements := check.implements(v.Pos(), targs[0], check.tgoDynamicWriteAllowed, true, &cause)
 			if !implements {
+				// TODO: error code.
 				check.errorf(&o, Test, "%s", cause)
 			}
 		}
