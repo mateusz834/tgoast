@@ -147,7 +147,7 @@ outer:
 			}
 		</div>
 	}
-	return nil // TODO: panics when removed
+	return nil
 }
 
 func _(tgo.Ctx) error {
