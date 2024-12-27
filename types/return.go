@@ -115,7 +115,7 @@ func hasBreak(s ast.Stmt, label string, implicit bool) bool {
 
 	case *ast.BadStmt, *ast.DeclStmt, *ast.EmptyStmt, *ast.ExprStmt,
 		*ast.SendStmt, *ast.IncDecStmt, *ast.AssignStmt, *ast.GoStmt,
-		*ast.DeferStmt, *ast.ReturnStmt:
+		*ast.DeferStmt, *ast.ReturnStmt, *ast.EndTag, *ast.AttributeStmt:
 		// no chance
 
 	case *ast.LabeledStmt:
@@ -170,6 +170,10 @@ func hasBreak(s ast.Stmt, label string, implicit bool) bool {
 		if label != "" && hasBreak(s.Body, label, false) {
 			return true
 		}
+	case *ast.ElementBlockStmt:
+		return hasBreakList(s.Body, label, implicit) || hasBreakList(s.OpenTag.Body, label, implicit)
+	case *ast.OpenTag:
+		return hasBreakList(s.Body, label, implicit)
 	}
 
 	return false

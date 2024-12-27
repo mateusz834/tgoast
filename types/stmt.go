@@ -946,6 +946,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 			if v.Kind != token.STRING {
 				check.error(s, InvalidSyntaxTree, "invalid TemplateLiteralExpr value")
 			}
+		case nil:
 		default:
 			check.error(s, InvalidSyntaxTree, "invalid TemplateLiteralExpr value")
 		}

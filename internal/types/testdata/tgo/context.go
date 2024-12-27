@@ -10,6 +10,7 @@ func _() {
 	< /* ERROR "open tag is not allowed inside a non-tgo function" */ div
 		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr="value"
 		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr="\{"value"}"
+		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr
 	>
 	</ /* ERROR "end tag is not allowed inside a non-tgo function" */ div>
 }
@@ -22,6 +23,7 @@ var _ = func() {
 	< /* ERROR "open tag is not allowed inside a non-tgo function" */ div
 		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr="value"
 		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr="\{"value"}"
+		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr
 	>
 	</ /* ERROR "end tag is not allowed inside a non-tgo function" */ div>
 }
@@ -34,6 +36,8 @@ func _(tgo.Ctx) error {
 	<br>
 	<div
 		@attr="value"
+		@attr="\{1}"
+		@attr
 	>
 	</div>
 
@@ -58,6 +62,8 @@ var _ = func(tgo.Ctx) error {
 	<br>
 	<div
 		@attr="value"
+		@attr="\{1}"
+		@attr
 	>
 	</div>
 	return nil
@@ -85,12 +91,18 @@ func _(tgo.Ctx) error {
 
 func _(tgo.Ctx) error {
 	@ /* ERROR "attribute is not allowed outside a tag" */ attr="value"
+	@ /* ERROR "attribute is not allowed outside a tag" */ attr="{1}"
+	@ /* ERROR "attribute is not allowed outside a tag" */ attr
 	<div>
 		@ /* ERROR "attribute is not allowed outside a tag" */ attr="value"
+		@ /* ERROR "attribute is not allowed outside a tag" */ attr="{1}"
+		@ /* ERROR "attribute is not allowed outside a tag" */ attr
 	</div>
 	<div>
 		<div>
 			@ /* ERROR "attribute is not allowed outside a tag" */ attr="value"
+			@ /* ERROR "attribute is not allowed outside a tag" */ attr="{1}"
+			@ /* ERROR "attribute is not allowed outside a tag" */ attr
 		</div>
 	</div>
 	return nil
