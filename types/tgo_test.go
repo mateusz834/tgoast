@@ -28,21 +28,28 @@ import (
 // we should have a check that checks wheter error is indeed not nil, if nil the we return
 // an error, that notes that (or panic?)
 //
-//var errUnclosoedNotNilReturn = errors.New("")
+//var ErrUnclosedTag = errors.New("unclosed tag")
 //
 //func ErrorReturn(err error) error {
 //	if err == nil {
-//		return errUnclosoedNotNilReturn
-//	}
+//		return ErrUnclosedTag
+//  }
 //	return err
 //}
 // and a vet? that detects such return nil? We are not able to detect that in transpiler.
 // Nil can be:
 // const nil = true
-// somwhere else (in different file).
+// somwhere else (in a different file).
 
-// TODO: Doctype.
-// TODO: HTML comments.
+// TODO: Doctype plus some "type-checking" for it (so that it must be first?). Think about that.
+// TODO: HTML comments (what if someone wants to render
+// something dynamicaly in a comment :), do we want to support that somehow?)
+//	<!--"comment"-> Quotes???
+
+// TODO: script/style tags (and figure out whether there are other tags that need this).
+// in those we need to only accept html.UnsafeHTML in template literals?
+// Even without any other string "sth\{html.UnsafeHTML("test")}", the problem also is
+// that "\{"<div>"}" is going too work fine (no explicit conversion required).
 
 func TestTgoTest(t *testing.T) {
 	const src = `package test
