@@ -143,48 +143,6 @@ func testFiles(t *testing.T, filenames []string, srcs [][]byte, manual bool, opt
 	}
 }
 
-var tgo = func() *Package {
-	const tgoModuleSrc = `package tgo
-type Ctx struct{}
-type Error = error
-type UnsafeHTML string
-type DynamicWriteAllowed interface {
-	string|UnsafeHTML|int|uint|rune
-}
-func DynamicWrite[T DynamicWriteAllowed](t T) {
-}
-`
-	tgoModuleFile, err := parser.ParseFile(fset, "tgo.go", tgoModuleSrc, parser.SkipObjectResolution)
-	if err != nil {
-		panic(err)
-	}
-
-	tgoPkg, err := new(Config).Check("github.com/mateusz834/tgoast", fset, []*ast.File{tgoModuleFile}, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	return tgoPkg
-}()
-
-type tgoDefaultImporter struct {
-	i ImporterFrom
-}
-
-func (f *tgoDefaultImporter) Import(path string) (*Package, error) {
-	if path == "github.com/mateusz834/tgo" {
-		return tgo, nil
-	}
-	return f.i.Import(path)
-}
-
-func (f *tgoDefaultImporter) ImportFrom(path, dir string, mode ImportMode) (*Package, error) {
-	if path == "github.com/mateusz834/tgo" {
-		return tgo, nil
-	}
-	return f.i.ImportFrom(path, dir, mode)
-}
-
 func testFilesImpl(t *testing.T, filenames []string, srcs [][]byte, manual bool, opts ...func(*Config)) {
 	if len(filenames) == 0 {
 		t.Fatal("no source files")
@@ -528,8 +486,4 @@ func testPkg(t *testing.T, filenames []string, manual bool) {
 		srcs[i] = src
 	}
 	testFiles(t, filenames, srcs, manual)
-}
-
-func TestTgo(t *testing.T) {
-	testDirFiles(t, "../internal/types/testdata/tgo", false)
 }
