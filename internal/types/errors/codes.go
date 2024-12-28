@@ -1490,4 +1490,6 @@ const (
 	MisplacedTag
 
 	JumpOverEndTag
+
+	MisplacedReturn
 )
