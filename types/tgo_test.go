@@ -17,8 +17,11 @@ import (
 // this probably should also propagate to the scanner scanner.AllowTgo
 // so, that Tgo is opt-in, and there wouldn't be any differences in errors
 // or the AST for code that uses our fork, but witout opting in.
-
-// TODO: possible to return nil inside of a ElementBlockStmt, OpenTag.
+// and fuzz whether in non-tgo mode, the forked *non-tgo" modoe parser
+// prooduces the same AST and errors and same thing with the scanner.
+// But this fuzz, needs to only run on the same version of Go as the fork.
+// So a runtime.GoVersion check, but for CI it should fail in that case, so we
+// know when we are not running it?
 
 func TestTgoTest(t *testing.T) {
 	const src = `package test

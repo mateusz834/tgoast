@@ -104,6 +104,7 @@ const (
 
 	inOpenTag
 	inTgoFunc
+	inElementBody
 
 	breakNotOkOpenTag
 	continueNotOkOpenTag
@@ -565,6 +566,12 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		check.suspendedCall("defer", s.Call)
 
 	case *ast.ReturnStmt:
+		if ctxt&inOpenTag != 0 {
+			check.error(s, MisplacedReturn, "invalid return in open tag")
+		}
+		if ctxt&inElementBody != 0 {
+			check.error(s, MisplacedReturn, "invalid return in element body")
+		}
 		res := check.sig.results
 		// Return with implicit results allowed for function with named results.
 		// (If one is named, all are named.)
@@ -910,7 +917,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 	case *ast.ElementBlockStmt:
 		check.stmt(inner, s.OpenTag)
 		check.openScope(s, "ElementBlockStmt")
-		check.stmtList(inner|breakNotOkElementBlockStmt|continueNotOkElementBlockStmt, s.Body)
+		check.stmtList(inner|inElementBody|breakNotOkElementBlockStmt|continueNotOkElementBlockStmt, s.Body)
 		check.closeScope()
 		check.stmt(inner, s.EndTag)
 	case *ast.OpenTag:
