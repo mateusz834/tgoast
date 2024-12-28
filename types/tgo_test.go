@@ -23,6 +23,27 @@ import (
 // So a runtime.GoVersion check, but for CI it should fail in that case, so we
 // know when we are not running it?
 
+// TODO: better support for return's, we should allow returing non-nils from
+// whithin inside of a tag. But this (not nil) is a runtime property, wheter something is nil
+// we should have a check that checks wheter error is indeed not nil, if nil the we return
+// an error, that notes that (or panic?)
+//
+//var errUnclosoedNotNilReturn = errors.New("")
+//
+//func ErrorReturn(err error) error {
+//	if err == nil {
+//		return errUnclosoedNotNilReturn
+//	}
+//	return err
+//}
+// and a vet? that detects such return nil? We are not able to detect that in transpiler.
+// Nil can be:
+// const nil = true
+// somwhere else (in different file).
+
+// TODO: Doctype.
+// TODO: HTML comments.
+
 func TestTgoTest(t *testing.T) {
 	const src = `package test
 
