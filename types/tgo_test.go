@@ -48,8 +48,13 @@ import (
 
 // TODO: script/style tags (and figure out whether there are other tags that need this).
 // in those we need to only accept html.UnsafeHTML in template literals?
-// Even without any other string "sth\{html.UnsafeHTML("test")}", the problem also is
+// Even without any other string "sth\{html.UnsafeHTML("test")}" ("sth" disallowed), the problem also is
 // that "\{"<div>"}" is going too work fine (no explicit conversion required).
+
+// TODO: disallow import "C" (cgo) for tgo files. This has to be restricted at the transpiler level, so that
+// go/packages (with go list) does not transform (transpiled files) into special "cgo" files.
+// go/packages should also return an error, when it sees a tgo file with import "C" and it should enforce
+// that the corresponding go file (of a tgo file) does not also have cgo.
 
 func TestTgoTest(t *testing.T) {
 	const src = `package test
@@ -57,8 +62,11 @@ func TestTgoTest(t *testing.T) {
 import "github.com/mateusz834/tgo"
 
 func _(tgo.Ctx) error {
-	<div>
+	<div
+		@attr="value"
+	>
 		<div>
+			"\{"some string"}, \{123}"
 		</div>
 	</div>
 	return nil
