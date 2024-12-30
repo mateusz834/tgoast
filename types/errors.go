@@ -8,11 +8,12 @@ package types
 
 import (
 	"fmt"
-	"go/ast"
-	"go/token"
-	. "internal/types/errors"
 	"runtime"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func assert(p bool) {

@@ -10,10 +10,11 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"internal/saferio"
 	"io"
 	"os"
 	"strings"
+
+	"github.com/mateusz834/tgoast/internal/saferio"
 )
 
 // SectionHeader holds information about an XCOFF section header.

@@ -6,10 +6,27 @@ package buildcfg
 
 import (
 	"fmt"
+	"os"
 	"reflect"
+	"runtime"
 	"strings"
 
-	"internal/goexperiment"
+	"github.com/mateusz834/tgoast/internal/goexperiment"
+)
+
+func envOr(key, value string) string {
+	if x := os.Getenv(key); x != "" {
+		return x
+	}
+	return value
+}
+
+var Error error
+
+const (
+	GOOS                = runtime.GOOS
+	GOARCH              = runtime.GOARCH
+	defaultGOEXPERIMENT = ""
 )
 
 // ExperimentFlags represents a set of GOEXPERIMENT flags relative to a baseline

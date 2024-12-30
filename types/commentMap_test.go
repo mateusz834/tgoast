@@ -6,11 +6,12 @@ package types_test
 
 import (
 	"fmt"
-	"go/scanner"
-	"go/token"
 	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
 )
 
 type comment struct {

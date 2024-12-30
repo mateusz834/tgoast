@@ -12,15 +12,16 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"go/constant"
-	"go/token"
-	"go/types"
-	"internal/saferio"
 	"io"
 	"math"
 	"math/big"
 	"slices"
 	"strings"
+
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/internal/saferio"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 type intReader struct {

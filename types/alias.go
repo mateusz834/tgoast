@@ -9,7 +9,8 @@ package types
 
 import (
 	"fmt"
-	"go/token"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // An Alias represents an alias type.

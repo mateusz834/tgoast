@@ -6,17 +6,18 @@ package errors_test
 
 import (
 	"fmt"
-	"go/ast"
-	"go/constant"
-	"go/importer"
-	"go/parser"
-	"go/token"
-	"internal/testenv"
 	"reflect"
 	"strings"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 func TestErrorCodeExamples(t *testing.T) {

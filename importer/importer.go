@@ -7,13 +7,14 @@ package importer
 
 import (
 	"go/build"
-	"go/internal/gccgoimporter"
-	"go/internal/gcimporter"
-	"go/internal/srcimporter"
-	"go/token"
-	"go/types"
 	"io"
 	"runtime"
+
+	"github.com/mateusz834/tgoast/internal/go/gccgoimporter"
+	"github.com/mateusz834/tgoast/internal/go/gcimporter"
+	"github.com/mateusz834/tgoast/internal/go/srcimporter"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 // A Lookup function returns a reader to access package data for

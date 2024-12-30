@@ -7,12 +7,6 @@ package types_test
 import (
 	"errors"
 	"fmt"
-	"go/ast"
-	"go/importer"
-	"go/parser"
-	"go/token"
-	"internal/goversion"
-	"internal/testenv"
 	"reflect"
 	"regexp"
 	"slices"
@@ -20,7 +14,14 @@ import (
 	"sync"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/internal/goversion"
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 // nopos indicates an unknown position
@@ -3097,9 +3098,14 @@ func TestAnyHijacking_Lookup(t *testing.T) {
 }
 
 func setGotypesalias(t *testing.T, enable bool) {
+	before := gotypesalias.Value()
+	t.Cleanup(func() {
+		gotypesalias.Set(before)
+	})
+
 	if enable {
-		t.Setenv("GODEBUG", "gotypesalias=1")
+		gotypesalias.Set("1")
 	} else {
-		t.Setenv("GODEBUG", "gotypesalias=0")
+		gotypesalias.Set("0")
 	}
 }

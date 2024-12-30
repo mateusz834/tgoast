@@ -10,9 +10,9 @@
 package types
 
 import (
-	"go/ast"
-	"go/constant"
-	"go/token"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/token"
 )
 
 const isTypes2 = false

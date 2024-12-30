@@ -8,17 +8,18 @@ package types_test
 
 import (
 	"fmt"
-	"go/ast"
-	"go/importer"
-	"go/parser"
-	"go/token"
-	"internal/testenv"
 	"regexp"
 	"slices"
 	"strings"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 func TestIssue5770(t *testing.T) {
@@ -998,7 +999,7 @@ type A = []int
 type S struct{ A }
 `
 
-	t.Setenv("GODEBUG", "gotypesalias=1")
+	setGotypesalias(t, true)
 	pkg := mustTypecheck(src, nil, nil)
 
 	S := pkg.Scope().Lookup("S")
@@ -1142,7 +1143,7 @@ type (
 	T A
 )`
 
-	t.Setenv("GODEBUG", "gotypesalias=1")
+	setGotypesalias(t, true)
 	pkg := mustTypecheck(src, nil, nil)
 	T := pkg.Scope().Lookup("T").(*TypeName)
 	got := T.String() // this must not panic (was issue)

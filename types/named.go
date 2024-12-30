@@ -8,10 +8,11 @@
 package types
 
 import (
-	"go/token"
 	"strings"
 	"sync"
 	"sync/atomic"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // Type-checking Named types is subtle, because they may be recursively

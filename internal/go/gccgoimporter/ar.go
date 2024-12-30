@@ -9,10 +9,11 @@ import (
 	"debug/elf"
 	"errors"
 	"fmt"
-	"internal/xcoff"
 	"io"
 	"strconv"
 	"strings"
+
+	"github.com/mateusz834/tgoast/internal/xcoff"
 )
 
 // Magic strings for different archive file formats.

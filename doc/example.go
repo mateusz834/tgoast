@@ -8,15 +8,16 @@ package doc
 
 import (
 	"cmp"
-	"go/ast"
-	"go/token"
-	"internal/lazyregexp"
 	"path"
 	"slices"
 	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/internal/lazyregexp"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // An Example represents an example function found in a test source file.

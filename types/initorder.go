@@ -10,8 +10,9 @@ package types
 import (
 	"container/heap"
 	"fmt"
-	. "internal/types/errors"
 	"sort"
+
+	. "github.com/mateusz834/tgoast/internal/types/errors"
 )
 
 // initOrder computes the Info.InitOrder for package variables.

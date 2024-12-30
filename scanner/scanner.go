@@ -10,11 +10,12 @@ package scanner
 import (
 	"bytes"
 	"fmt"
-	"go/token"
 	"path/filepath"
 	"strconv"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // An ErrorHandler may be provided to [Scanner.Init]. If a syntax error is

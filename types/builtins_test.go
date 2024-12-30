@@ -9,10 +9,11 @@ package types_test
 
 import (
 	"fmt"
-	"go/ast"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 var builtinCalls = []struct {

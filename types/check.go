@@ -8,13 +8,14 @@ package types
 
 import (
 	"fmt"
-	"go/ast"
-	"go/constant"
-	"go/token"
-	"internal/godebug"
-	. "internal/types/errors"
 	"strings"
 	"sync/atomic"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/internal/godebug"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // nopos, noposn indicate an unknown position

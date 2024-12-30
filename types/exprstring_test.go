@@ -5,10 +5,11 @@
 package types_test
 
 import (
-	"go/parser"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/parser"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 var testExprs = []testEntry{

@@ -8,11 +8,12 @@ import (
 	"bytes"
 	"crypto/md5"
 	"encoding/binary"
-	"go/constant"
 	"io"
 	"math/big"
 	"runtime"
 	"strings"
+
+	"github.com/mateusz834/tgoast/constant"
 )
 
 // currentVersion is the current version number.

@@ -6,9 +6,10 @@ package types
 
 import (
 	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/token"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // Eval returns the type and, if constant, the value for the

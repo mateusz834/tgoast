@@ -5,12 +5,13 @@
 package doc
 
 import (
-	"go/parser"
-	"go/token"
 	"reflect"
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func TestImportGroupStarts(t *testing.T) {

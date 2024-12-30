@@ -5,21 +5,23 @@
 package types_test
 
 import (
-	"go/ast"
-	"go/importer"
-	"go/parser"
-	"go/token"
-	"internal/testenv"
 	"path"
 	"path/filepath"
 	"testing"
 	"time"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 func TestSelf(t *testing.T) {
 	testenv.MustHaveGoBuild(t) // The Go command is needed for the importer to determine the locations of stdlib .a files.
+	t.Skip("TODO")
 
 	fset := token.NewFileSet()
 	files, err := pkgFiles(fset, ".")

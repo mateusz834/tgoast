@@ -6,15 +6,16 @@ package types
 
 import (
 	"fmt"
-	"go/ast"
-	"go/constant"
-	"go/internal/typeparams"
-	"go/token"
-	. "internal/types/errors"
 	"sort"
 	"strconv"
 	"strings"
 	"unicode"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/internal/go/typeparams"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // A declInfo describes a package-level const, type, var, or func declaration.

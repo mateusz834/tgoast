@@ -9,9 +9,10 @@ package types_test
 
 import (
 	"go/build"
-	"internal/testenv"
 	"os"
 	"testing"
+
+	"github.com/mateusz834/tgoast/internal/testenv"
 )
 
 func TestMain(m *testing.M) {

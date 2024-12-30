@@ -7,12 +7,13 @@
 package types
 
 import (
-	"go/ast"
-	"go/constant"
-	"go/token"
-	"internal/buildcfg"
-	. "internal/types/errors"
 	"sort"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/internal/buildcfg"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func (check *Checker) funcBody(decl *declInfo, name string, sig *Signature, body *ast.BlockStmt, iota constant.Value) {

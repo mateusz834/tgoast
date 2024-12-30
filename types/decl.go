@@ -6,11 +6,12 @@ package types
 
 import (
 	"fmt"
-	"go/ast"
-	"go/constant"
-	"go/token"
-	"internal/buildcfg"
-	. "internal/types/errors"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/internal/buildcfg"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func (check *Checker) declare(scope *Scope, id *ast.Ident, obj Object, pos token.Pos) {

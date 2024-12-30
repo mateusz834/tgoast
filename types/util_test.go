@@ -11,7 +11,7 @@
 package types
 
 import (
-	"go/token"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func CmpPos(p, q token.Pos) int { return cmpPos(p, q) }

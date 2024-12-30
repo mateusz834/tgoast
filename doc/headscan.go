@@ -18,15 +18,16 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go/doc"
-	"go/parser"
-	"go/token"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
+
+	"github.com/mateusz834/tgoast/doc"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 var (

@@ -7,14 +7,15 @@ package gccgoimporter
 import (
 	"errors"
 	"fmt"
-	"go/constant"
-	"go/token"
-	"go/types"
 	"io"
 	"strconv"
 	"strings"
 	"text/scanner"
 	"unicode/utf8"
+
+	"github.com/mateusz834/tgoast/constant"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 type parser struct {

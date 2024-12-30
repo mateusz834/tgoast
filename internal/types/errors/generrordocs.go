@@ -16,17 +16,18 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"go/ast"
-	"go/importer"
-	"go/parser"
-	"go/token"
 	"log"
 	"os"
 	"path"
 	"strings"
 	"text/template"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 func main() {

@@ -6,12 +6,13 @@ package importer
 
 import (
 	"go/build"
-	"go/token"
-	"internal/testenv"
 	"io"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func TestMain(m *testing.M) {

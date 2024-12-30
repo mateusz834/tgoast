@@ -7,10 +7,12 @@ package doc
 
 import (
 	"fmt"
-	"go/ast"
-	"go/doc/comment"
-	"go/token"
 	"strings"
+
+	"go/doc/comment"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // Package is the documentation for an entire package.

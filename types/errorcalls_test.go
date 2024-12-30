@@ -5,10 +5,11 @@
 package types_test
 
 import (
-	"go/ast"
-	"go/token"
 	"strconv"
 	"testing"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/token"
 )
 
 const (

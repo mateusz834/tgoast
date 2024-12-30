@@ -7,17 +7,18 @@ package doc_test
 import (
 	"bytes"
 	"fmt"
-	"go/ast"
-	"go/doc"
-	"go/format"
-	"go/parser"
-	"go/token"
-	"internal/diff"
-	"internal/txtar"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/doc"
+	"github.com/mateusz834/tgoast/format"
+	"github.com/mateusz834/tgoast/internal/diff"
+	"github.com/mateusz834/tgoast/internal/txtar"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func TestExamples(t *testing.T) {

@@ -5,8 +5,9 @@
 package gccgoimporter
 
 import (
-	"go/types"
 	"testing"
+
+	"github.com/mateusz834/tgoast/types"
 )
 
 // importablePackages is a list of packages that we verify that we can

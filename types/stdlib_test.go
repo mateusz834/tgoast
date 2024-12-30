@@ -10,13 +10,7 @@ package types_test
 import (
 	"errors"
 	"fmt"
-	"go/ast"
 	"go/build"
-	"go/importer"
-	"go/parser"
-	"go/scanner"
-	"go/token"
-	"internal/testenv"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -25,7 +19,14 @@ import (
 	"testing"
 	"time"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 // The cmd/*/internal packages may have been deleted as part of a binary

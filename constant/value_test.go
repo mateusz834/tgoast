@@ -6,11 +6,12 @@ package constant
 
 import (
 	"fmt"
-	"go/token"
 	"math"
 	"math/big"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 var intTests = []string{

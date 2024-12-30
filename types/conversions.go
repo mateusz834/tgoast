@@ -10,9 +10,10 @@
 package types
 
 import (
-	"go/constant"
-	. "internal/types/errors"
 	"unicode"
+
+	"github.com/mateusz834/tgoast/constant"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
 )
 
 // conversion type-checks the conversion T(x).

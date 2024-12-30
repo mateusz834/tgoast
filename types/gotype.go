@@ -83,18 +83,19 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go/ast"
 	"go/build"
-	"go/importer"
-	"go/parser"
-	"go/scanner"
-	"go/token"
-	"go/types"
 	"io"
 	"os"
 	"path/filepath"
 	"sync"
 	"time"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 var (

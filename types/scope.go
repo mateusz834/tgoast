@@ -11,11 +11,12 @@ package types
 
 import (
 	"fmt"
-	"go/token"
 	"io"
 	"sort"
 	"strings"
 	"sync"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // A Scope maintains a set of objects and links to its containing

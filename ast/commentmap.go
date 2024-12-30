@@ -8,9 +8,10 @@ import (
 	"bytes"
 	"cmp"
 	"fmt"
-	"go/token"
 	"slices"
 	"strings"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // sortComments sorts the list of comment groups in source order.

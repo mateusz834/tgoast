@@ -8,10 +8,6 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/printer"
-	"go/token"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -19,6 +15,11 @@ import (
 	"strings"
 	"testing"
 	"text/template"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/printer"
+	"github.com/mateusz834/tgoast/token"
 )
 
 var update = flag.Bool("update", false, "update golden (.out) files")

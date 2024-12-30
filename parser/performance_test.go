@@ -5,9 +5,10 @@
 package parser
 
 import (
-	"go/token"
 	"os"
 	"testing"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 var src = readFile("../printer/nodes.go")

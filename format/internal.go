@@ -11,11 +11,12 @@ package format
 
 import (
 	"bytes"
-	"go/ast"
-	"go/parser"
-	"go/printer"
-	"go/token"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/printer"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // parse parses src, which was read from the named file,

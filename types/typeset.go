@@ -8,10 +8,11 @@
 package types
 
 import (
-	"go/token"
-	. "internal/types/errors"
 	"sort"
 	"strings"
+
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // ----------------------------------------------------------------------------

@@ -13,7 +13,6 @@ package constant
 
 import (
 	"fmt"
-	"go/token"
 	"math"
 	"math/big"
 	"math/bits"
@@ -21,6 +20,8 @@ import (
 	"strings"
 	"sync"
 	"unicode/utf8"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 //go:generate stringer -type Kind

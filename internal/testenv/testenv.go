@@ -15,9 +15,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"internal/cfg"
-	"internal/goarch"
-	"internal/platform"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -26,6 +23,10 @@ import (
 	"strings"
 	"sync"
 	"testing"
+
+	"github.com/mateusz834/tgoast/internal/cfg"
+	"github.com/mateusz834/tgoast/internal/goarch"
+	"github.com/mateusz834/tgoast/internal/platform"
 )
 
 // Save the original environment during init for use in checks. A test

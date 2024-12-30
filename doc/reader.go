@@ -7,15 +7,16 @@ package doc
 import (
 	"cmp"
 	"fmt"
-	"go/ast"
-	"go/token"
-	"internal/lazyregexp"
 	"path"
 	"slices"
 	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/internal/lazyregexp"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // ----------------------------------------------------------------------------

@@ -7,11 +7,12 @@ package printer_test
 import (
 	"bytes"
 	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/printer"
-	"go/token"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/parser"
+	"github.com/mateusz834/tgoast/printer"
+	"github.com/mateusz834/tgoast/token"
 )
 
 func parseFunc(filename, functionname string) (fun *ast.FuncDecl, fset *token.FileSet) {

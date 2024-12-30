@@ -7,11 +7,12 @@
 package types
 
 import (
-	"go/ast"
-	"go/internal/typeparams"
-	"go/token"
-	. "internal/types/errors"
 	"strings"
+
+	"github.com/mateusz834/tgoast/ast"
+	"github.com/mateusz834/tgoast/internal/go/typeparams"
+	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/mateusz834/tgoast/token"
 )
 
 // funcInst type-checks a function instantiation.

@@ -6,11 +6,12 @@ package types_test
 
 import (
 	"fmt"
-	"internal/testenv"
 	"strings"
 	"testing"
 
-	. "go/types"
+	"github.com/mateusz834/tgoast/internal/testenv"
+
+	. "github.com/mateusz834/tgoast/types"
 )
 
 func TestIsAlias(t *testing.T) {
@@ -114,7 +115,7 @@ func TestObjectString(t *testing.T) {
 	for i, test := range testObjects {
 		t.Run(fmt.Sprint(i), func(t *testing.T) {
 			if test.alias {
-				t.Setenv("GODEBUG", "gotypesalias=1")
+				setGotypesalias(t, true)
 			}
 
 			src := "package p; " + test.src

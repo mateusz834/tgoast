@@ -11,8 +11,9 @@ package types
 
 import (
 	"fmt"
-	"go/token"
 	"strings"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // If enableReverseTypeInference is set, uninstantiated and

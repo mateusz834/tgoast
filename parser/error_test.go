@@ -24,13 +24,14 @@ package parser
 
 import (
 	"flag"
-	"go/scanner"
-	"go/token"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/mateusz834/tgoast/scanner"
+	"github.com/mateusz834/tgoast/token"
 )
 
 var traceErrs = flag.Bool("trace_errs", false, "whether to enable tracing for error tests")

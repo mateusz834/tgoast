@@ -6,9 +6,10 @@ package ast
 
 import (
 	"cmp"
-	"go/token"
 	"slices"
 	"strconv"
+
+	"github.com/mateusz834/tgoast/token"
 )
 
 // SortImports sorts runs of consecutive import lines in import blocks in f.

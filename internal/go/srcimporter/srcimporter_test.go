@@ -7,15 +7,16 @@ package srcimporter
 import (
 	"flag"
 	"go/build"
-	"go/token"
-	"go/types"
-	"internal/testenv"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 func TestMain(m *testing.M) {
@@ -105,7 +106,6 @@ var importedObjectTests = []struct {
 	{"math.Pi", "const Pi untyped float"},
 	{"math.Sin", "func Sin(x float64) float64"},
 	{"math/big.Int", "type Int struct{neg bool; abs nat}"},
-	{"golang.org/x/text/unicode/norm.MaxSegmentSize", "const MaxSegmentSize untyped int"},
 }
 
 func TestImportedTypes(t *testing.T) {

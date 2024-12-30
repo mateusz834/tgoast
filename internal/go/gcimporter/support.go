@@ -8,10 +8,11 @@ package gcimporter
 
 import (
 	"fmt"
-	"go/token"
-	"go/types"
-	"internal/pkgbits"
 	"sync"
+
+	"github.com/mateusz834/tgoast/internal/pkgbits"
+	"github.com/mateusz834/tgoast/token"
+	"github.com/mateusz834/tgoast/types"
 )
 
 func assert(b bool) {
