@@ -2,59 +2,15 @@ package types_test
 
 import (
 	"maps"
-	"sync"
 	"testing"
 
 	"github.com/mateusz834/tgoast/ast"
 	"github.com/mateusz834/tgoast/importer"
+	"github.com/mateusz834/tgoast/internal/tgoimporter"
 	"github.com/mateusz834/tgoast/parser"
 	"github.com/mateusz834/tgoast/token"
 	. "github.com/mateusz834/tgoast/types"
 )
-
-// TODO: only ".tgo" files might contain "tgo nodes".
-// maybe that should be part of the parser? With a flag parser.AllowTgo,
-// this probably should also propagate to the scanner scanner.AllowTgo
-// so, that Tgo is opt-in, and there wouldn't be any differences in errors
-// or the AST for code that uses our fork, but witout opting in.
-// and fuzz whether in non-tgo mode, the forked *non-tgo" modoe parser
-// prooduces the same AST and errors and same thing with the scanner.
-// But this fuzz, needs to only run on the same version of Go as the fork.
-// So a runtime.GoVersion check, but for CI it should fail in that case, so we
-// know when we are not running it?
-
-// TODO: better support for return's, we should allow returing non-nils from
-// whithin inside of a tag. But this (not nil) is a runtime property, wheter something is nil
-// we should have a check that checks wheter error is indeed not nil, if nil the we return
-// an error, that notes that (or panic?)
-//
-//var ErrUnclosedTag = errors.New("unclosed tag")
-//
-//func ErrorReturn(err error) error {
-//	if err == nil {
-//		return ErrUnclosedTag
-//  }
-//	return err
-//}
-// and a vet? that detects such return nil? We are not able to detect that in transpiler.
-// Nil can be:
-// const nil = true
-// somwhere else (in a different file).
-
-// TODO: Doctype plus some "type-checking" for it (so that it must be first?). Think about that.
-// TODO: HTML comments (what if someone wants to render
-// something dynamicaly in a comment :), do we want to support that somehow?)
-//	<!--"comment"-> Quotes???
-
-// TODO: script/style tags (and figure out whether there are other tags that need this).
-// in those we need to only accept html.UnsafeHTML in template literals?
-// Even without any other string "sth\{html.UnsafeHTML("test")}" ("sth" disallowed), the problem also is
-// that "\{"<div>"}" is going too work fine (no explicit conversion required).
-
-// TODO: disallow import "C" (cgo) for tgo files. This has to be restricted at the transpiler level, so that
-// go/packages (with go list) does not transform (transpiled files) into special "cgo" files.
-// go/packages should also return an error, when it sees a tgo file with import "C" and it should enforce
-// that the corresponding go file (of a tgo file) does not also have cgo.
 
 func TestTgoTest(t *testing.T) {
 	const src = `package test
@@ -83,7 +39,7 @@ func _(tgo.Ctx) error {
 		Error: func(err error) {
 			t.Logf("err: %v\n", err)
 		},
-		Importer: &tgoDefaultImporter{importer.Default().(ImporterFrom)},
+		Importer: &tgoimporter.TgoDefaultImporter{I: importer.Default().(ImporterFrom)},
 	}
 	p, err := cfg.Check("test", fset, []*ast.File{f}, nil)
 	if err != nil {
@@ -138,7 +94,7 @@ func test(tgo.Ctx) error {
 		Scopes:     map[ast.Node]*Scope{},
 	}
 
-	cfg := Config{Importer: &tgoDefaultImporter{importer.Default().(ImporterFrom)}}
+	cfg := Config{Importer: &tgoimporter.TgoDefaultImporter{I: importer.Default().(ImporterFrom)}}
 	pkg, err := cfg.Check("pkg", fset, []*ast.File{f}, &infos)
 	if err != nil {
 		t.Fatal(err)
@@ -267,47 +223,3 @@ func test(tgo.Ctx) error {
 
 	_ = pkg
 }
-
-type tgoDefaultImporter struct {
-	i ImporterFrom
-}
-
-func (f *tgoDefaultImporter) Import(path string) (*Package, error) {
-	if path == "github.com/mateusz834/tgo" {
-		return tgoPkg()
-	}
-	return f.i.Import(path)
-}
-
-func (f *tgoDefaultImporter) ImportFrom(path, dir string, mode ImportMode) (*Package, error) {
-	if path == "github.com/mateusz834/tgo" {
-		return tgoPkg()
-	}
-	return f.i.ImportFrom(path, dir, mode)
-}
-
-// TODO: test that proves (only for CI) that this is the same as in the tgo repo.
-var tgoPkg = sync.OnceValues(func() (*Package, error) {
-	const tgoModuleSrc = `package tgo
-type Ctx struct{}
-type Error = error
-type UnsafeHTML string
-type DynamicWriteAllowed interface {
-	string|UnsafeHTML|int|uint|rune
-}
-func DynamicWrite[T DynamicWriteAllowed](t T) {
-}
-`
-	fset := token.NewFileSet()
-	tgoModuleFile, err := parser.ParseFile(fset, "tgo.go", tgoModuleSrc, parser.SkipObjectResolution)
-	if err != nil {
-		return nil, err
-	}
-
-	tgoPkg, err := new(Config).Check("github.com/mateusz834/tgoast", fset, []*ast.File{tgoModuleFile}, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return tgoPkg, nil
-})

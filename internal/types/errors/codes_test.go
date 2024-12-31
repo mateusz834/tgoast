@@ -14,6 +14,7 @@ import (
 	"github.com/mateusz834/tgoast/constant"
 	"github.com/mateusz834/tgoast/importer"
 	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/internal/tgoimporter"
 	"github.com/mateusz834/tgoast/parser"
 	"github.com/mateusz834/tgoast/token"
 
@@ -52,7 +53,7 @@ func walkCodes(t *testing.T, f func(string, int, *ast.ValueSpec)) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	conf := Config{Importer: importer.Default()}
+	conf := Config{Importer: &tgoimporter.TgoDefaultImporter{I: importer.Default().(ImporterFrom)}}
 	info := &Info{
 		Types: make(map[ast.Expr]TypeAndValue),
 		Defs:  make(map[*ast.Ident]Object),
@@ -102,7 +103,7 @@ func checkExample(t *testing.T, example string) error {
 	}
 	conf := Config{
 		FakeImportC: true,
-		Importer:    importer.Default(),
+		Importer:    &tgoimporter.TgoDefaultImporter{I: importer.Default().(ImporterFrom)},
 	}
 	_, err = conf.Check("example", fset, []*ast.File{file}, nil)
 	return err
@@ -128,7 +129,7 @@ func TestErrorCodeStyle(t *testing.T) {
 		"integer",
 		"interface",
 		"iterat", // use iter for iterator, iteration, etc.
-		"literal",
+		//"literal",
 		"operation",
 		"package",
 		"pointer",

@@ -89,3 +89,24 @@ func _(tgo.Ctx) error {
 	"\{tgo.unsafeHTML /* ERROR "undefined: tgo.unsafeHTML" */ ("test")}"
 	return nil
 }
+
+func f1[T tgo.DynamicWriteAllowed]() T {
+	return *new(T)
+}
+
+func f2[T int|string]() T {
+	return *new(T)
+}
+
+type strWrapperType string
+
+func f3[T strWrapperType|string]() T {
+	return *new(T)
+}
+
+func _(tgo.Ctx) error {
+	"\{f1 /* ERROR "in call to f1, cannot infer T" */ ()}"
+	"\{f2 /* ERROR "in call to f2, cannot infer T" */ ()}"
+	"\{f3 /* ERROR "in call to f3, cannot infer T" */ ()}"
+	return nil
+}

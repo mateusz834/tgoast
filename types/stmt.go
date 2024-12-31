@@ -387,19 +387,20 @@ func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
 		check.expr(nil, &o, v.X)
 		if check.tgoDynamicWriteAllowed != nil {
 			tp := NewTypeParam(NewTypeName(nopos, check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
-			err := check.newError(CannotInferTypeArgs)
+			err := check.newError(InvalidTemplateLiteralType)
 			targs := check.infer(v, []*TypeParam{tp}, nil, NewTuple(NewVar(nopos, check.pkg, "t", tp)), []*operand{&o}, false, err)
 			if targs == nil {
 				if !err.empty() {
-					check.errorf(err.posn(), CannotInferTypeArgs, "%s", err.msg())
+					// TODO: is this reachable? Figure a case out and add a test case, otherwise panic.
+					err.report()
+					return
 				}
 				return
 			}
 			cause := ""
 			implements := check.implements(v.Pos(), targs[0], check.tgoDynamicWriteAllowed, true, &cause)
 			if !implements {
-				// TODO: error code.
-				check.errorf(&o, Test, "%s", cause)
+				check.errorf(&o, InvalidTemplateLiteralType, "%s", cause)
 			}
 		}
 	}
@@ -605,7 +606,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		case token.BREAK:
 			if ctxt&breakOk != 0 {
 				if ctxt&breakNotOkElementBlockStmt != 0 {
-					check.error(s, MisplacedBreak, "break prevents reaching the end tag")
+					check.error(s, JumpOverEndTag, "break prevents reaching the end tag")
 				} else if ctxt&breakNotOkOpenTag != 0 {
 					check.error(s, MisplacedBreak, "break not allowed in open tag")
 				}
@@ -616,7 +617,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		case token.CONTINUE:
 			if ctxt&continueOk != 0 {
 				if ctxt&continueNotOkElementBlockStmt != 0 {
-					check.error(s, MisplacedBreak, "continue prevents reaching the end tag")
+					check.error(s, JumpOverEndTag, "continue prevents reaching the end tag")
 				} else if ctxt&continueNotOkOpenTag != 0 {
 					check.error(s, MisplacedBreak, "continue not allowed in open tag")
 				}
@@ -941,7 +942,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		}
 	case *ast.AttributeStmt:
 		if ctxt&inTgoFunc == 0 {
-			check.error(s, MisplacedTag, "attribute is not allowed inside a non-tgo function")
+			check.error(s, MisplacedAttribute, "attribute is not allowed inside a non-tgo function")
 		}
 		if ctxt&inOpenTag == 0 {
 			check.error(s, MisplacedAttribute, "attribute is not allowed outside a tag")

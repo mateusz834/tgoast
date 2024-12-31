@@ -223,7 +223,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 					check.errorf(s.Label, MisplacedLabel, "invalid break label %s", name)
 					return
 				} else if tagDepth != 0 {
-					check.errorf(s.Label, MisplacedLabel, "break %s prevents reaching the end tag", name)
+					check.errorf(s.Label, JumpOverEndTag, "break %s prevents reaching the end tag", name)
 				}
 
 			case token.CONTINUE:
@@ -242,7 +242,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 					check.errorf(s.Label, MisplacedLabel, "invalid continue label %s", name)
 					return
 				} else if tagDepth != 0 {
-					check.errorf(s.Label, MisplacedLabel, "continue %s prevents reaching the end tag", name)
+					check.errorf(s.Label, JumpOverEndTag, "continue %s prevents reaching the end tag", name)
 				}
 
 			case token.GOTO:
