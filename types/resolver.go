@@ -194,6 +194,11 @@ func (check *Checker) importPackage(at positioner, path, dir string) *Package {
 		}
 	}
 
+	if path == "github.com/mateusz834/tgo" && imp.Complete() {
+		check.tgoCtx = imp.Scope().Lookup("Ctx").Type()
+		check.tgoDynamicWriteAllowed = imp.Scope().Lookup("DynamicWriteAllowed").Type()
+	}
+
 	// package should be complete or marked fake, but be cautious
 	if imp.complete || imp.fake {
 		check.impMap[key] = imp

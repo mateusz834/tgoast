@@ -1482,4 +1482,112 @@ const (
 	// errors. The solution is to rebuild the application with a
 	// newer Go release.
 	TooNew
+
+	// MisplacedTemplateLiteral occurs when a template literal
+	// is misplaced, either inside of an non-tgo func or inside of a tag.
+	//
+	// Example:
+	// func f() {
+	//		"\{1}"
+	// }
+	//
+	// Example:
+	// import "github.com/mateusz834/tgo"
+	//
+	// func f(tgo.Ctx) error {
+	//		<div
+	//			"\{1}"
+	// 		>
+	//		</div>
+	// }
+	MisplacedTemplateLiteral
+
+	// MisplacedAttribute occurs when an attribute is misplaced,
+	// either inside of a non-tgo func or not inside of a tag.
+	//
+	// Example:
+	// import "github.com/mateusz834/tgo"
+	//
+	// func f(tgo.Ctx) error {
+	//		<div>
+	//			@attr="value"
+	//		</div>
+	// }
+	//
+	// Example:
+	// func f() {
+	//		@attr="value"
+	// }
+	MisplacedAttribute
+
+	// MisplacedTag occurs when an open or end tag is misplaced,
+	// either inside of a non-tgo func or inside of a tag.
+	//
+	// Example:
+	// func f() {
+	//		<div>
+	//		</div>
+	// }
+	//
+	// Example:
+	// import "github.com/mateusz834/tgo"
+	//
+	// func f(tgo.Ctx) error {
+	//		<div
+	//			{
+	//				<div>
+	//				</div>
+	//			}
+	//		>
+	//		</div>
+	// }
+	MisplacedTag
+
+	// JumpOverEndTag occurs when a goto, continue or break would
+	// cause an end tag not to be reached.
+	//
+	// Example:
+	// import "github.com/mateusz834/tgo"
+	//
+	// func f(tgo.Ctx) error {
+	// a:
+	//		<div>
+	//			goto a
+	//		</div>
+	// }
+	//
+	// Example:
+	// import "github.com/mateusz834/tgo"
+	//
+	// func f(tgo.Ctx) error {
+	//		for {
+	//			<div>
+	//				break
+	//			</div>
+	//		}
+	// }
+	JumpOverEndTag
+
+	// MisplacedReturn occurs when a return would cause an end tag
+	// not to be rached.
+	// Example:
+	// import "github.com/mateusz834/tgo"
+	//
+	// func f(tgo.Ctx) error {
+	//		<div>
+	//			return nil
+	//		</div>
+	// }
+	MisplacedReturn
+
+	// InvalidTemplateLiteralType occurs when a template literal part contains
+	// an unexpected type.
+	///
+	// Example:
+	// import "github.com/mateusz834/tgo"
+	//
+	// func f(tgo.Ctx) error {
+	//		"\{1.1}"
+	// }
+	InvalidTemplateLiteralType
 )

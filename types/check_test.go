@@ -46,6 +46,7 @@ import (
 	"github.com/mateusz834/tgoast/importer"
 	"github.com/mateusz834/tgoast/internal/buildcfg"
 	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/mateusz834/tgoast/internal/tgoimporter"
 	"github.com/mateusz834/tgoast/internal/types/errors"
 	"github.com/mateusz834/tgoast/parser"
 	"github.com/mateusz834/tgoast/scanner"
@@ -165,7 +166,7 @@ func testFilesImpl(t *testing.T, filenames []string, srcs [][]byte, manual bool,
 	// set up typechecker
 	var conf Config
 	*boolFieldAddr(&conf, "_Trace") = manual && testing.Verbose()
-	conf.Importer = importer.Default()
+	conf.Importer = &tgoimporter.TgoDefaultImporter{I: importer.Default().(ImporterFrom)}
 	conf.Error = func(err error) {
 		if *haltOnError {
 			defer panic(err)

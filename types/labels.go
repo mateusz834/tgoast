@@ -15,7 +15,7 @@ func (check *Checker) labels(body *ast.BlockStmt) {
 	// set of all labels in this body
 	all := NewScope(nil, body.Pos(), body.End(), "label")
 
-	fwdJumps := check.blockBranches(all, nil, nil, body.List)
+	fwdJumps := check.blockBranches(all, nil, nil, body.List, false)
 
 	// If there are any forward jumps left, no label was found for
 	// the corresponding goto statements. Either those labels were
@@ -24,7 +24,7 @@ func (check *Checker) labels(body *ast.BlockStmt) {
 	for _, jmp := range fwdJumps {
 		var msg string
 		var code Code
-		name := jmp.Label.Name
+		name := jmp.branchStmt.Label.Name
 		if alt := all.Lookup(name); alt != nil {
 			msg = "goto %s jumps into block"
 			code = JumpIntoBlock
@@ -33,7 +33,7 @@ func (check *Checker) labels(body *ast.BlockStmt) {
 			msg = "label %s not declared"
 			code = UndeclaredLabel
 		}
-		check.errorf(jmp.Label, code, msg, name)
+		check.errorf(jmp.branchStmt.Label, code, msg, name)
 	}
 
 	// spec: "It is illegal to define a label that is never used."
@@ -50,6 +50,7 @@ type block struct {
 	parent *block                      // enclosing block
 	lstmt  *ast.LabeledStmt            // labeled statement to which this block belongs, or nil
 	labels map[string]*ast.LabeledStmt // allocated lazily
+	count  int
 }
 
 // insert records a new label declaration for the current block.
@@ -57,7 +58,8 @@ type block struct {
 func (b *block) insert(s *ast.LabeledStmt) {
 	name := s.Label.Name
 	if debug {
-		assert(b.gotoTarget(name) == nil)
+		l, _ := b.gotoTarget(name)
+		assert(l == nil)
 	}
 	labels := b.labels
 	if labels == nil {
@@ -69,35 +71,56 @@ func (b *block) insert(s *ast.LabeledStmt) {
 
 // gotoTarget returns the labeled statement in the current
 // or an enclosing block with the given label name, or nil.
-func (b *block) gotoTarget(name string) *ast.LabeledStmt {
+func (b *block) gotoTarget(name string) (*ast.LabeledStmt, int) {
 	for s := b; s != nil; s = s.parent {
 		if t := s.labels[name]; t != nil {
-			return t
+			return t, s.count
 		}
 	}
-	return nil
+	return nil, -1
 }
 
 // enclosingTarget returns the innermost enclosing labeled
 // statement with the given label name, or nil.
-func (b *block) enclosingTarget(name string) *ast.LabeledStmt {
+func (b *block) enclosingTarget(name string) (*ast.LabeledStmt, int) {
 	for s := b; s != nil; s = s.parent {
 		if t := s.lstmt; t != nil && t.Label.Name == name {
-			return t
+			return t, s.count
 		}
 	}
-	return nil
+	return nil, -1
+}
+
+func (b *block) enterTgoTag() {
+	for s := b; s != nil; s = s.parent {
+		s.count++
+	}
+}
+
+func (b *block) exitTgoTag() {
+	for s := b; s != nil; s = s.parent {
+		s.count--
+	}
+}
+
+type branchStmt struct {
+	branchStmt    *ast.BranchStmt
+	escapedEndTag bool
 }
 
 // blockBranches processes a block's statement list and returns the set of outgoing forward jumps.
 // all is the scope of all declared labels, parent the set of labels declared in the immediately
 // enclosing block, and lstmt is the labeled statement this block is associated with (or nil).
-func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.LabeledStmt, list []ast.Stmt) []*ast.BranchStmt {
+func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.LabeledStmt, list []ast.Stmt, tgoTag bool) []branchStmt {
 	b := &block{parent: parent, lstmt: lstmt}
+	if tgoTag {
+		b.enterTgoTag()
+		defer b.exitTgoTag()
+	}
 
 	var (
 		varDeclPos         token.Pos
-		fwdJumps, badJumps []*ast.BranchStmt
+		fwdJumps, badJumps []branchStmt
 	)
 
 	// All forward jumps jumping over a variable declaration are possibly
@@ -111,7 +134,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 	jumpsOverVarDecl := func(jmp *ast.BranchStmt) bool {
 		if varDeclPos.IsValid() {
 			for _, bad := range badJumps {
-				if jmp == bad {
+				if jmp == bad.branchStmt {
 					return true
 				}
 			}
@@ -122,7 +145,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 	blockBranches := func(lstmt *ast.LabeledStmt, list []ast.Stmt) {
 		// Unresolved forward jumps inside the nested block
 		// become forward jumps in the current block.
-		fwdJumps = append(fwdJumps, check.blockBranches(all, b, lstmt, list)...)
+		fwdJumps = append(fwdJumps, check.blockBranches(all, b, lstmt, list, false)...)
 	}
 
 	var stmtBranches func(ast.Stmt)
@@ -151,13 +174,13 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 				// resolve matching forward jumps and remove them from fwdJumps
 				i := 0
 				for _, jmp := range fwdJumps {
-					if jmp.Label.Name == name {
+					if jmp.branchStmt.Label.Name == name {
 						// match
 						lbl.used = true
-						check.recordUse(jmp.Label, lbl)
-						if jumpsOverVarDecl(jmp) {
+						check.recordUse(jmp.branchStmt.Label, lbl)
+						if jumpsOverVarDecl(jmp.branchStmt) {
 							check.softErrorf(
-								jmp.Label,
+								jmp.branchStmt.Label,
 								JumpOverDecl,
 								"goto %s jumps over variable declaration at line %d",
 								name,
@@ -166,7 +189,6 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 							// ok to continue
 						}
 					} else {
-						// no match - record new forward jump
 						fwdJumps[i] = jmp
 						i++
 					}
@@ -189,37 +211,55 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 				// "for", "switch", or "select" statement, and that is the one
 				// whose execution terminates."
 				valid := false
-				if t := b.enclosingTarget(name); t != nil {
+				tagDepth := 0
+				if t, cnt := b.enclosingTarget(name); t != nil {
 					switch t.Stmt.(type) {
 					case *ast.SwitchStmt, *ast.TypeSwitchStmt, *ast.SelectStmt, *ast.ForStmt, *ast.RangeStmt:
 						valid = true
+						tagDepth = cnt
 					}
 				}
 				if !valid {
 					check.errorf(s.Label, MisplacedLabel, "invalid break label %s", name)
 					return
+				} else if tagDepth != 0 {
+					check.errorf(s.Label, JumpOverEndTag, "break %s prevents reaching the end tag", name)
 				}
 
 			case token.CONTINUE:
 				// spec: "If there is a label, it must be that of an enclosing
 				// "for" statement, and that is the one whose execution advances."
 				valid := false
-				if t := b.enclosingTarget(name); t != nil {
+				tagDepth := 0
+				if t, cnt := b.enclosingTarget(name); t != nil {
 					switch t.Stmt.(type) {
 					case *ast.ForStmt, *ast.RangeStmt:
 						valid = true
+						tagDepth = cnt
 					}
 				}
 				if !valid {
 					check.errorf(s.Label, MisplacedLabel, "invalid continue label %s", name)
 					return
+				} else if tagDepth != 0 {
+					check.errorf(s.Label, JumpOverEndTag, "continue %s prevents reaching the end tag", name)
 				}
 
 			case token.GOTO:
-				if b.gotoTarget(name) == nil {
+				l, cnt := b.gotoTarget(name)
+				if l == nil {
 					// label may be declared later - add branch to forward jumps
-					fwdJumps = append(fwdJumps, s)
+					fwdJumps = append(fwdJumps, branchStmt{branchStmt: s})
 					return
+				}
+
+				if cnt != 0 {
+					check.softErrorf(
+						s.Label,
+						JumpOverEndTag,
+						"goto %s prevents reaching the end tag",
+						s.Label.Name,
+					)
 				}
 
 			default:
@@ -266,6 +306,27 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 
 		case *ast.RangeStmt:
 			stmtBranches(s.Body)
+
+		case *ast.ElementBlockStmt:
+			stmtBranches(s.OpenTag)
+
+			escapingJmps := check.blockBranches(all, b, nil, s.Body, true)
+
+			for i, jmp := range escapingJmps {
+				if l := all.Lookup(jmp.branchStmt.Label.Name); l == nil && !escapingJmps[i].escapedEndTag {
+					check.softErrorf(
+						jmp.branchStmt.Label,
+						JumpOverEndTag,
+						"goto %s prevents reaching the end tag",
+						jmp.branchStmt.Label.Name,
+					)
+					escapingJmps[i].escapedEndTag = true
+				}
+			}
+
+			fwdJumps = append(fwdJumps, escapingJmps...)
+		case *ast.OpenTag:
+			blockBranches(lstmt, s.Body)
 		}
 	}
 
