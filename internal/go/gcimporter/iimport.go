@@ -18,10 +18,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/mateusz834/tgoast/constant"
-	"github.com/mateusz834/tgoast/internal/saferio"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/constant"
+	"github.com/tgo-lang/lang/internal/saferio"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 type intReader struct {

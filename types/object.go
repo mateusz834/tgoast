@@ -14,8 +14,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/mateusz834/tgoast/constant"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/constant"
+	"github.com/tgo-lang/lang/token"
 )
 
 // An Object describes a named language entity such as a package,

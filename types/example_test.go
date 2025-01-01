@@ -22,12 +22,12 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/format"
-	"github.com/mateusz834/tgoast/importer"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/format"
+	"github.com/tgo-lang/lang/importer"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 // ExampleScope prints the tree of Scopes of a package created from a

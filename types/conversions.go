@@ -12,8 +12,8 @@ package types
 import (
 	"unicode"
 
-	"github.com/mateusz834/tgoast/constant"
-	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/tgo-lang/lang/constant"
+	. "github.com/tgo-lang/lang/internal/types/errors"
 )
 
 // conversion type-checks the conversion T(x).

@@ -5,9 +5,9 @@
 package types
 
 import (
-	"github.com/mateusz834/tgoast/ast"
-	. "github.com/mateusz834/tgoast/internal/types/errors"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	. "github.com/tgo-lang/lang/internal/types/errors"
+	"github.com/tgo-lang/lang/token"
 )
 
 // labels checks correct label use in body.

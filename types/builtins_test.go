@@ -11,9 +11,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/mateusz834/tgoast/ast"
+	"github.com/tgo-lang/lang/ast"
 
-	. "github.com/mateusz834/tgoast/types"
+	. "github.com/tgo-lang/lang/types"
 )
 
 var builtinCalls = []struct {

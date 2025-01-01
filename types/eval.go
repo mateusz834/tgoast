@@ -7,9 +7,9 @@ package types
 import (
 	"fmt"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
 )
 
 // Eval returns the type and, if constant, the value for the

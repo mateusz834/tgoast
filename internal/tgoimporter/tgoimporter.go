@@ -3,10 +3,10 @@ package tgoimporter
 import (
 	"sync"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 type TgoDefaultImporter struct {
@@ -45,7 +45,7 @@ func DynamicWrite[T DynamicWriteAllowed](t T) {
 		return nil, err
 	}
 
-	tgoPkg, err := new(types.Config).Check("github.com/mateusz834/tgoast", fset, []*ast.File{tgoModuleFile}, nil)
+	tgoPkg, err := new(types.Config).Check("github.com/tgo-lang/tgo", fset, []*ast.File{tgoModuleFile}, nil)
 	if err != nil {
 		return nil, err
 	}

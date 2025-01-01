@@ -16,8 +16,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/token"
 )
 
 // Formatting issues:

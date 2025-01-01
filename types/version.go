@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"go/version"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/internal/goversion"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/internal/goversion"
+	"github.com/tgo-lang/lang/token"
 )
 
 // A goVersion is a Go language version string of the form "go1.%d"

@@ -4,12 +4,12 @@ import (
 	"maps"
 	"testing"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/importer"
-	"github.com/mateusz834/tgoast/internal/tgoimporter"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
-	. "github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/importer"
+	"github.com/tgo-lang/lang/internal/tgoimporter"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
+	. "github.com/tgo-lang/lang/types"
 )
 
 func TestTgoTest(t *testing.T) {

@@ -10,10 +10,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/constant"
-	"github.com/mateusz834/tgoast/internal/go/typeparams"
-	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/constant"
+	"github.com/tgo-lang/lang/internal/go/typeparams"
+	. "github.com/tgo-lang/lang/internal/types/errors"
 )
 
 // ident type-checks identifier e and initializes x with the value or type of e.

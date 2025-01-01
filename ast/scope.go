@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // A Scope maintains the set of named language entities declared

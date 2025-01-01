@@ -11,7 +11,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // sortComments sorts the list of comment groups in source order.

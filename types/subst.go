@@ -10,7 +10,7 @@
 package types
 
 import (
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 type substMap map[*TypeParam]Type

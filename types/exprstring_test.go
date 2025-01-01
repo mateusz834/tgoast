@@ -7,9 +7,9 @@ package types_test
 import (
 	"testing"
 
-	"github.com/mateusz834/tgoast/parser"
+	"github.com/tgo-lang/lang/parser"
 
-	. "github.com/mateusz834/tgoast/types"
+	. "github.com/tgo-lang/lang/types"
 )
 
 var testExprs = []testEntry{

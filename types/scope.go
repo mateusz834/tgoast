@@ -16,7 +16,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // A Scope maintains a set of objects and links to its containing

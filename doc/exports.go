@@ -7,8 +7,8 @@
 package doc
 
 import (
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/token"
 )
 
 // filterIdentList removes unexported names from list in place

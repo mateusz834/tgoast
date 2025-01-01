@@ -14,9 +14,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mateusz834/tgoast/internal/testenv"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/internal/testenv"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 func TestMain(m *testing.M) {

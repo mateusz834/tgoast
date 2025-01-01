@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/internal/testenv"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/internal/testenv"
+	"github.com/tgo-lang/lang/token"
 )
 
 func TestMain(m *testing.M) {

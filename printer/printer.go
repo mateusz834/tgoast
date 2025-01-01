@@ -15,8 +15,8 @@ import (
 	"text/tabwriter"
 	"unicode"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/token"
 )
 
 const (
@@ -106,7 +106,7 @@ func (p *printer) internalError(msg ...any) {
 	if debug {
 		fmt.Print(p.pos.String() + ": ")
 		fmt.Println(msg...)
-		panic("github.com/mateusz834/tgoast/printer")
+		panic("github.com/tgo-lang/lang/printer")
 	}
 }
 

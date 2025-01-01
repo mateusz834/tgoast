@@ -13,7 +13,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/mateusz834/tgoast/constant"
+	"github.com/tgo-lang/lang/constant"
 )
 
 // currentVersion is the current version number.

@@ -14,7 +14,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mateusz834/tgoast/format"
+	"github.com/tgo-lang/lang/format"
 )
 
 var debug = flag.Bool("debug", false, "write .src files containing formatting input; for debugging")

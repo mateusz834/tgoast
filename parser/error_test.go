@@ -30,8 +30,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/scanner"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/scanner"
+	"github.com/tgo-lang/lang/token"
 )
 
 var traceErrs = flag.Bool("trace_errs", false, "whether to enable tracing for error tests")

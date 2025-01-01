@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
 )
 
 func TestImportGroupStarts(t *testing.T) {

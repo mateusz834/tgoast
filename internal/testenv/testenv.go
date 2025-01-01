@@ -24,9 +24,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/mateusz834/tgoast/internal/cfg"
-	"github.com/mateusz834/tgoast/internal/goarch"
-	"github.com/mateusz834/tgoast/internal/platform"
+	"github.com/tgo-lang/lang/internal/cfg"
+	"github.com/tgo-lang/lang/internal/goarch"
+	"github.com/tgo-lang/lang/internal/platform"
 )
 
 // Save the original environment during init for use in checks. A test

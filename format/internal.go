@@ -13,10 +13,10 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/printer"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/printer"
+	"github.com/tgo-lang/lang/token"
 )
 
 // parse parses src, which was read from the named file,

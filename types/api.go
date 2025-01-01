@@ -34,10 +34,10 @@ import (
 	"fmt"
 	_ "unsafe" // for linkname
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/constant"
-	. "github.com/mateusz834/tgoast/internal/types/errors"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/constant"
+	. "github.com/tgo-lang/lang/internal/types/errors"
+	"github.com/tgo-lang/lang/token"
 )
 
 // An Error describes a type-checking error; it implements the error interface.

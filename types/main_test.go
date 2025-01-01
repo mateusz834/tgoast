@@ -12,7 +12,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/tgo-lang/lang/internal/testenv"
 )
 
 func TestMain(m *testing.M) {

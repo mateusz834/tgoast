@@ -11,7 +11,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/mateusz834/tgoast/internal/goexperiment"
+	"github.com/tgo-lang/lang/internal/goexperiment"
 )
 
 func envOr(key, value string) string {

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/scanner"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/scanner"
+	"github.com/tgo-lang/lang/token"
 )
 
 type comment struct {

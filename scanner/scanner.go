@@ -15,7 +15,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // An ErrorHandler may be provided to [Scanner.Init]. If a syntax error is

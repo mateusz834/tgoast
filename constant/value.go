@@ -21,7 +21,7 @@ import (
 	"sync"
 	"unicode/utf8"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 //go:generate stringer -type Kind

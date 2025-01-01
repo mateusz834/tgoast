@@ -7,9 +7,9 @@ package types_test
 import (
 	"testing"
 
-	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/tgo-lang/lang/internal/testenv"
 
-	. "github.com/mateusz834/tgoast/types"
+	. "github.com/tgo-lang/lang/types"
 )
 
 const filename = "<src>"

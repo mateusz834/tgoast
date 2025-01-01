@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/importer"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/importer"
+	"github.com/tgo-lang/lang/types"
 )
 
 func checkMono(t *testing.T, body string) error {

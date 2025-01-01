@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/types"
 )
 
 // Information about a specific installation of gccgo.

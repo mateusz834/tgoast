@@ -9,10 +9,10 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/mateusz834/tgoast/importer"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/importer"
+	"github.com/tgo-lang/lang/token"
 
-	. "github.com/mateusz834/tgoast/types"
+	. "github.com/tgo-lang/lang/types"
 )
 
 // BenchmarkLookupFieldOrMethod measures types.LookupFieldOrMethod performance.

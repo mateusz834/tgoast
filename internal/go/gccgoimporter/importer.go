@@ -14,8 +14,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mateusz834/tgoast/internal/xcoff"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/internal/xcoff"
+	"github.com/tgo-lang/lang/types"
 )
 
 // A PackageInit describes an imported package that needs initialization.

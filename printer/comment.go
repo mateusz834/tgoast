@@ -8,7 +8,7 @@ import (
 	"go/doc/comment"
 	"strings"
 
-	"github.com/mateusz834/tgoast/ast"
+	"github.com/tgo-lang/lang/ast"
 )
 
 // formatDocComment reformats the doc comment list,

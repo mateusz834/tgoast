@@ -7,8 +7,8 @@ package parser_test
 import (
 	"fmt"
 
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
 )
 
 func ExampleParseFile() {

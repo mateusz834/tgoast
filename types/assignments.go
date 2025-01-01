@@ -13,8 +13,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mateusz834/tgoast/ast"
-	. "github.com/mateusz834/tgoast/internal/types/errors"
+	"github.com/tgo-lang/lang/ast"
+	. "github.com/tgo-lang/lang/internal/types/errors"
 )
 
 // assignment reports whether x can be assigned to a variable of type T,

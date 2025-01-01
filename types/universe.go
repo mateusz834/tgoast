@@ -12,7 +12,7 @@ package types
 import (
 	"strings"
 
-	"github.com/mateusz834/tgoast/constant"
+	"github.com/tgo-lang/lang/constant"
 )
 
 // The Universe scope contains all predeclared objects of Go.

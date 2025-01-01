@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"sort"
 
-	. "github.com/mateusz834/tgoast/internal/types/errors"
+	. "github.com/tgo-lang/lang/internal/types/errors"
 )
 
 // initOrder computes the Info.InitOrder for package variables.

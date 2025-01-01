@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mateusz834/tgoast/internal/xcoff"
+	"github.com/tgo-lang/lang/internal/xcoff"
 )
 
 // Magic strings for different archive file formats.

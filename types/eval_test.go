@@ -11,15 +11,15 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/importer"
-	"github.com/mateusz834/tgoast/internal/godebug"
-	"github.com/mateusz834/tgoast/internal/testenv"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/importer"
+	"github.com/tgo-lang/lang/internal/godebug"
+	"github.com/tgo-lang/lang/internal/testenv"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 
-	. "github.com/mateusz834/tgoast/types"
+	. "github.com/tgo-lang/lang/types"
 )
 
 func testEval(t *testing.T, fset *token.FileSet, pkg *Package, pos token.Pos, expr string, typ Type, typStr, valStr string) {

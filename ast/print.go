@@ -12,7 +12,7 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // A FieldFilter may be provided to [Fprint] to control the output.

@@ -9,7 +9,7 @@ import (
 	"io"
 	"sort"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // In an [ErrorList], an error is represented by an *Error.

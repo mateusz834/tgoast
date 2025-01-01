@@ -10,11 +10,11 @@ import (
 	"io"
 	"runtime"
 
-	"github.com/mateusz834/tgoast/internal/go/gccgoimporter"
-	"github.com/mateusz834/tgoast/internal/go/gcimporter"
-	"github.com/mateusz834/tgoast/internal/go/srcimporter"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/internal/go/gccgoimporter"
+	"github.com/tgo-lang/lang/internal/go/gcimporter"
+	"github.com/tgo-lang/lang/internal/go/srcimporter"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 // A Lookup function returns a reader to access package data for

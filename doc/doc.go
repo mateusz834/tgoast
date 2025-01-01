@@ -11,8 +11,8 @@ import (
 
 	"go/doc/comment"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/token"
 )
 
 // Package is the documentation for an entire package.

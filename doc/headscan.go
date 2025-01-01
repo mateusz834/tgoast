@@ -25,9 +25,9 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/mateusz834/tgoast/doc"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/doc"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
 )
 
 var (

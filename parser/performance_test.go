@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 var src = readFile("../printer/nodes.go")

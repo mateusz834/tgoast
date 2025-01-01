@@ -14,9 +14,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mateusz834/tgoast/internal/buildcfg"
-	. "github.com/mateusz834/tgoast/internal/types/errors"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/internal/buildcfg"
+	. "github.com/tgo-lang/lang/internal/types/errors"
+	"github.com/tgo-lang/lang/token"
 )
 
 // A genericType implements access to its type parameters.

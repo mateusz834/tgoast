@@ -17,10 +17,10 @@ import (
 	"sync"
 	_ "unsafe" // for go:linkname
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 // An Importer provides the context for importing packages from source code.
@@ -266,5 +266,5 @@ func (p *Importer) joinPath(elem ...string) string {
 	return filepath.Join(elem...)
 }
 
-//go:linkname setUsesCgo github.com/mateusz834/tgoast/types.srcimporter_setUsesCgo
+//go:linkname setUsesCgo github.com/tgo-lang/lang/types.srcimporter_setUsesCgo
 func setUsesCgo(conf *types.Config)

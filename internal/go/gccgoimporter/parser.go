@@ -13,9 +13,9 @@ import (
 	"text/scanner"
 	"unicode/utf8"
 
-	"github.com/mateusz834/tgoast/constant"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/constant"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 type parser struct {

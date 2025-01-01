@@ -9,7 +9,7 @@ import (
 	"slices"
 	"strconv"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // SortImports sorts runs of consecutive import lines in import blocks in f.

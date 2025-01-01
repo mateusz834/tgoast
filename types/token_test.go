@@ -10,7 +10,7 @@ package types
 import (
 	"testing"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 var assignOps = map[token.Token]token.Token{

@@ -7,7 +7,7 @@ package gccgoimporter
 import (
 	"testing"
 
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/types"
 )
 
 // importablePackages is a list of packages that we verify that we can

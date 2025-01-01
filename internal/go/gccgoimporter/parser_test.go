@@ -10,7 +10,7 @@ import (
 	"testing"
 	"text/scanner"
 
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/types"
 )
 
 var typeParserTests = []struct {

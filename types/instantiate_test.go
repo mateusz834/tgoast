@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/mateusz834/tgoast/types"
+	. "github.com/tgo-lang/lang/types"
 )
 
 func TestInstantiateEquality(t *testing.T) {

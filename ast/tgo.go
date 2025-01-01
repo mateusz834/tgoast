@@ -1,7 +1,7 @@
 package ast
 
 import (
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 func walkTgo(v Visitor, node Node) bool {

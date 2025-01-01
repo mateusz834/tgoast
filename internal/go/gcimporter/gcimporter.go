@@ -18,10 +18,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mateusz834/tgoast/internal/pkgbits"
-	"github.com/mateusz834/tgoast/internal/saferio"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/internal/pkgbits"
+	"github.com/tgo-lang/lang/internal/saferio"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 // debugging/development support

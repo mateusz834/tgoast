@@ -13,8 +13,8 @@ import (
 	"testing"
 	"text/template"
 
-	"github.com/mateusz834/tgoast/internal/diff"
-	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/tgo-lang/lang/internal/diff"
+	"github.com/tgo-lang/lang/internal/testenv"
 )
 
 var flagFix = flag.Bool("fix", false, "if true, fix out-of-date generated files")

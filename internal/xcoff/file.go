@@ -14,7 +14,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/mateusz834/tgoast/internal/saferio"
+	"github.com/tgo-lang/lang/internal/saferio"
 )
 
 // SectionHeader holds information about an XCOFF section header.

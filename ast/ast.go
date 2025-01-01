@@ -9,7 +9,7 @@ package ast
 import (
 	"strings"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // ----------------------------------------------------------------------------

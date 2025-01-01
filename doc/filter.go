@@ -4,7 +4,7 @@
 
 package doc
 
-import "github.com/mateusz834/tgoast/ast"
+import "github.com/tgo-lang/lang/ast"
 
 type Filter func(string) bool
 

@@ -8,10 +8,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/mateusz834/tgoast/internal/godebug"
-	"github.com/mateusz834/tgoast/internal/pkgbits"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/internal/godebug"
+	"github.com/tgo-lang/lang/internal/pkgbits"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 )
 
 // A pkgReader holds the shared state for reading a unified IR package

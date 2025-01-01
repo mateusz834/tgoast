@@ -12,9 +12,9 @@ package types
 import (
 	"math"
 
-	"github.com/mateusz834/tgoast/constant"
-	. "github.com/mateusz834/tgoast/internal/types/errors"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/constant"
+	. "github.com/tgo-lang/lang/internal/types/errors"
+	"github.com/tgo-lang/lang/token"
 )
 
 // overflow checks that the constant x is representable by its type.

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/token"
 )
 
 func unlabelAs[T ast.Stmt](labeled ast.Stmt) (lastLabeledStmt *ast.LabeledStmt, unlabeled T) {

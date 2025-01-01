@@ -12,7 +12,7 @@ package types
 import (
 	"bytes"
 
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/token"
 )
 
 // Internal use of LookupFieldOrMethod: If the obj result is a method

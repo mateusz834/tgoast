@@ -11,8 +11,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mateusz834/tgoast/internal/platform"
-	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/tgo-lang/lang/internal/platform"
+	"github.com/tgo-lang/lang/internal/testenv"
 )
 
 func TestHasGoBuild(t *testing.T) {

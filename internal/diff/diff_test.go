@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/mateusz834/tgoast/internal/txtar"
+	"github.com/tgo-lang/lang/internal/txtar"
 )
 
 func clean(text []byte) []byte {

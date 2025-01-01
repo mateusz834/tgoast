@@ -14,8 +14,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/mateusz834/tgoast/constant"
-	"github.com/mateusz834/tgoast/token"
+	"github.com/tgo-lang/lang/constant"
+	"github.com/tgo-lang/lang/token"
 )
 
 // A PkgDecoder provides methods for decoding a package's Unified IR

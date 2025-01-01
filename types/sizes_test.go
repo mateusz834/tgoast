@@ -9,10 +9,10 @@ package types_test
 import (
 	"testing"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/importer"
-	"github.com/mateusz834/tgoast/internal/testenv"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/importer"
+	"github.com/tgo-lang/lang/internal/testenv"
+	"github.com/tgo-lang/lang/types"
 )
 
 // findStructType typechecks src and returns the first struct type encountered.

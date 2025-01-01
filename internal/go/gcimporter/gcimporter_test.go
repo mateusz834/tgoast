@@ -16,17 +16,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mateusz834/tgoast/internal/testenv"
+	"github.com/tgo-lang/lang/internal/testenv"
 
 	"go/build"
 
-	"github.com/mateusz834/tgoast/ast"
-	"github.com/mateusz834/tgoast/importer"
-	"github.com/mateusz834/tgoast/parser"
-	"github.com/mateusz834/tgoast/token"
-	"github.com/mateusz834/tgoast/types"
+	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/importer"
+	"github.com/tgo-lang/lang/parser"
+	"github.com/tgo-lang/lang/token"
+	"github.com/tgo-lang/lang/types"
 
-	. "github.com/mateusz834/tgoast/internal/go/gcimporter"
+	. "github.com/tgo-lang/lang/internal/go/gcimporter"
 )
 
 func TestMain(m *testing.M) {
