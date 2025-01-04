@@ -382,13 +382,13 @@ func TestTgoSyntax(t *testing.T) {
 			fs := token.NewFileSet()
 			f, err := ParseFile(fs, filepath.Base(testFile), content, SkipObjectResolution|ParseComments|AllErrors)
 			if err != nil {
-				if v, ok := err.(scanner.ErrorList); ok {
-					for _, err := range v {
-						t.Logf("%v", err)
-					}
-				}
-				t.Logf("Error while parsing file %v: %v", testFile, err)
 				if v.Name() != "element_blocks.tgo" {
+					if v, ok := err.(scanner.ErrorList); ok {
+						for _, err := range v {
+							t.Logf("%v", err)
+						}
+					}
+					t.Logf("Error while parsing file %v: %v", testFile, err)
 					t.Fail()
 					continue
 				}

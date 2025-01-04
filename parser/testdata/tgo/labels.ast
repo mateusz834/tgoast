@@ -1,0 +1,194 @@
+     0  *ast.File {
+     1  .  Package: labels.tgo:1:1
+     2  .  Name: *ast.Ident {
+     3  .  .  NamePos: labels.tgo:1:9
+     4  .  .  Name: "templates"
+     5  .  }
+     6  .  Decls: []ast.Decl (len = 3) {
+     7  .  .  0: *ast.FuncDecl {
+     8  .  .  .  Name: *ast.Ident {
+     9  .  .  .  .  NamePos: labels.tgo:3:6
+    10  .  .  .  .  Name: "_"
+    11  .  .  .  }
+    12  .  .  .  Type: *ast.FuncType {
+    13  .  .  .  .  Func: labels.tgo:3:1
+    14  .  .  .  .  Params: *ast.FieldList {
+    15  .  .  .  .  .  Opening: labels.tgo:3:7
+    16  .  .  .  .  .  Closing: labels.tgo:3:8
+    17  .  .  .  .  }
+    18  .  .  .  }
+    19  .  .  .  Body: *ast.BlockStmt {
+    20  .  .  .  .  Lbrace: labels.tgo:3:10
+    21  .  .  .  .  List: []ast.Stmt (len = 1) {
+    22  .  .  .  .  .  0: *ast.BlockStmt {
+    23  .  .  .  .  .  .  Lbrace: labels.tgo:4:2
+    24  .  .  .  .  .  .  List: []ast.Stmt (len = 1) {
+    25  .  .  .  .  .  .  .  0: *ast.LabeledStmt {
+    26  .  .  .  .  .  .  .  .  Label: *ast.Ident {
+    27  .  .  .  .  .  .  .  .  .  NamePos: labels.tgo:5:2
+    28  .  .  .  .  .  .  .  .  .  Name: "L"
+    29  .  .  .  .  .  .  .  .  }
+    30  .  .  .  .  .  .  .  .  Colon: labels.tgo:5:3
+    31  .  .  .  .  .  .  .  .  Stmt: *ast.EmptyStmt {
+    32  .  .  .  .  .  .  .  .  .  Semicolon: labels.tgo:6:2
+    33  .  .  .  .  .  .  .  .  .  Implicit: true
+    34  .  .  .  .  .  .  .  .  }
+    35  .  .  .  .  .  .  .  }
+    36  .  .  .  .  .  .  }
+    37  .  .  .  .  .  .  Rbrace: labels.tgo:6:2
+    38  .  .  .  .  .  }
+    39  .  .  .  .  }
+    40  .  .  .  .  Rbrace: labels.tgo:7:1
+    41  .  .  .  }
+    42  .  .  }
+    43  .  .  1: *ast.FuncDecl {
+    44  .  .  .  Name: *ast.Ident {
+    45  .  .  .  .  NamePos: labels.tgo:9:6
+    46  .  .  .  .  Name: "_"
+    47  .  .  .  }
+    48  .  .  .  Type: *ast.FuncType {
+    49  .  .  .  .  Func: labels.tgo:9:1
+    50  .  .  .  .  Params: *ast.FieldList {
+    51  .  .  .  .  .  Opening: labels.tgo:9:7
+    52  .  .  .  .  .  Closing: labels.tgo:9:8
+    53  .  .  .  .  }
+    54  .  .  .  }
+    55  .  .  .  Body: *ast.BlockStmt {
+    56  .  .  .  .  Lbrace: labels.tgo:9:10
+    57  .  .  .  .  List: []ast.Stmt (len = 1) {
+    58  .  .  .  .  .  0: *ast.ElementBlockStmt {
+    59  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+    60  .  .  .  .  .  .  .  OpenPos: labels.tgo:10:2
+    61  .  .  .  .  .  .  .  Name: *ast.Ident {
+    62  .  .  .  .  .  .  .  .  NamePos: labels.tgo:10:3
+    63  .  .  .  .  .  .  .  .  Name: "div"
+    64  .  .  .  .  .  .  .  }
+    65  .  .  .  .  .  .  .  ClosePos: labels.tgo:10:6
+    66  .  .  .  .  .  .  }
+    67  .  .  .  .  .  .  Body: []ast.Stmt (len = 1) {
+    68  .  .  .  .  .  .  .  0: *ast.LabeledStmt {
+    69  .  .  .  .  .  .  .  .  Label: *ast.Ident {
+    70  .  .  .  .  .  .  .  .  .  NamePos: labels.tgo:11:2
+    71  .  .  .  .  .  .  .  .  .  Name: "L"
+    72  .  .  .  .  .  .  .  .  }
+    73  .  .  .  .  .  .  .  .  Colon: labels.tgo:11:3
+    74  .  .  .  .  .  .  .  .  Stmt: *ast.EmptyStmt {
+    75  .  .  .  .  .  .  .  .  .  Semicolon: labels.tgo:12:2
+    76  .  .  .  .  .  .  .  .  .  Implicit: true
+    77  .  .  .  .  .  .  .  .  }
+    78  .  .  .  .  .  .  .  }
+    79  .  .  .  .  .  .  }
+    80  .  .  .  .  .  .  EndTag: *ast.EndTag {
+    81  .  .  .  .  .  .  .  OpenPos: labels.tgo:12:2
+    82  .  .  .  .  .  .  .  Name: *ast.Ident {
+    83  .  .  .  .  .  .  .  .  NamePos: labels.tgo:12:4
+    84  .  .  .  .  .  .  .  .  Name: "div"
+    85  .  .  .  .  .  .  .  }
+    86  .  .  .  .  .  .  .  ClosePos: labels.tgo:12:7
+    87  .  .  .  .  .  .  }
+    88  .  .  .  .  .  }
+    89  .  .  .  .  }
+    90  .  .  .  .  Rbrace: labels.tgo:13:1
+    91  .  .  .  }
+    92  .  .  }
+    93  .  .  2: *ast.FuncDecl {
+    94  .  .  .  Name: *ast.Ident {
+    95  .  .  .  .  NamePos: labels.tgo:15:6
+    96  .  .  .  .  Name: "_"
+    97  .  .  .  }
+    98  .  .  .  Type: *ast.FuncType {
+    99  .  .  .  .  Func: labels.tgo:15:1
+   100  .  .  .  .  Params: *ast.FieldList {
+   101  .  .  .  .  .  Opening: labels.tgo:15:7
+   102  .  .  .  .  .  Closing: labels.tgo:15:8
+   103  .  .  .  .  }
+   104  .  .  .  }
+   105  .  .  .  Body: *ast.BlockStmt {
+   106  .  .  .  .  Lbrace: labels.tgo:15:10
+   107  .  .  .  .  List: []ast.Stmt (len = 1) {
+   108  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   109  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
+   110  .  .  .  .  .  .  .  OpenPos: labels.tgo:16:2
+   111  .  .  .  .  .  .  .  Name: *ast.Ident {
+   112  .  .  .  .  .  .  .  .  NamePos: labels.tgo:16:3
+   113  .  .  .  .  .  .  .  .  Name: "div"
+   114  .  .  .  .  .  .  .  }
+   115  .  .  .  .  .  .  .  Body: []ast.Stmt (len = 1) {
+   116  .  .  .  .  .  .  .  .  0: *ast.LabeledStmt {
+   117  .  .  .  .  .  .  .  .  .  Label: *ast.Ident {
+   118  .  .  .  .  .  .  .  .  .  .  NamePos: labels.tgo:17:2
+   119  .  .  .  .  .  .  .  .  .  .  Name: "L"
+   120  .  .  .  .  .  .  .  .  .  }
+   121  .  .  .  .  .  .  .  .  .  Colon: labels.tgo:17:3
+   122  .  .  .  .  .  .  .  .  .  Stmt: *ast.EmptyStmt {
+   123  .  .  .  .  .  .  .  .  .  .  Semicolon: labels.tgo:18:2
+   124  .  .  .  .  .  .  .  .  .  .  Implicit: true
+   125  .  .  .  .  .  .  .  .  .  }
+   126  .  .  .  .  .  .  .  .  }
+   127  .  .  .  .  .  .  .  }
+   128  .  .  .  .  .  .  .  ClosePos: labels.tgo:18:2
+   129  .  .  .  .  .  .  }
+   130  .  .  .  .  .  .  EndTag: *ast.EndTag {
+   131  .  .  .  .  .  .  .  OpenPos: labels.tgo:19:2
+   132  .  .  .  .  .  .  .  Name: *ast.Ident {
+   133  .  .  .  .  .  .  .  .  NamePos: labels.tgo:19:4
+   134  .  .  .  .  .  .  .  .  Name: "div"
+   135  .  .  .  .  .  .  .  }
+   136  .  .  .  .  .  .  .  ClosePos: labels.tgo:19:7
+   137  .  .  .  .  .  .  }
+   138  .  .  .  .  .  }
+   139  .  .  .  .  }
+   140  .  .  .  .  Rbrace: labels.tgo:20:1
+   141  .  .  .  }
+   142  .  .  }
+   143  .  }
+   144  .  FileStart: labels.tgo:1:1
+   145  .  FileEnd: labels.tgo:31:5
+   146  .  Comments: []*ast.CommentGroup (len = 1) {
+   147  .  .  0: *ast.CommentGroup {
+   148  .  .  .  List: []*ast.Comment (len = 10) {
+   149  .  .  .  .  0: *ast.Comment {
+   150  .  .  .  .  .  Slash: labels.tgo:22:1
+   151  .  .  .  .  .  Text: "// TODO: test these cases (add tests with errors, maybe like the go/types framework):"
+   152  .  .  .  .  }
+   153  .  .  .  .  1: *ast.Comment {
+   154  .  .  .  .  .  Slash: labels.tgo:23:1
+   155  .  .  .  .  .  Text: "//func _() {"
+   156  .  .  .  .  }
+   157  .  .  .  .  2: *ast.Comment {
+   158  .  .  .  .  .  Slash: labels.tgo:24:1
+   159  .  .  .  .  .  Text: "//\tL:"
+   160  .  .  .  .  }
+   161  .  .  .  .  3: *ast.Comment {
+   162  .  .  .  .  .  Slash: labels.tgo:25:1
+   163  .  .  .  .  .  Text: "//\t</div>"
+   164  .  .  .  .  }
+   165  .  .  .  .  4: *ast.Comment {
+   166  .  .  .  .  .  Slash: labels.tgo:26:1
+   167  .  .  .  .  .  Text: "//}"
+   168  .  .  .  .  }
+   169  .  .  .  .  5: *ast.Comment {
+   170  .  .  .  .  .  Slash: labels.tgo:27:1
+   171  .  .  .  .  .  Text: "//"
+   172  .  .  .  .  }
+   173  .  .  .  .  6: *ast.Comment {
+   174  .  .  .  .  .  Slash: labels.tgo:28:1
+   175  .  .  .  .  .  Text: "//func _() {"
+   176  .  .  .  .  }
+   177  .  .  .  .  7: *ast.Comment {
+   178  .  .  .  .  .  Slash: labels.tgo:29:1
+   179  .  .  .  .  .  Text: "//\tL:"
+   180  .  .  .  .  }
+   181  .  .  .  .  8: *ast.Comment {
+   182  .  .  .  .  .  Slash: labels.tgo:30:1
+   183  .  .  .  .  .  Text: "//\t>"
+   184  .  .  .  .  }
+   185  .  .  .  .  9: *ast.Comment {
+   186  .  .  .  .  .  Slash: labels.tgo:31:1
+   187  .  .  .  .  .  Text: "//}"
+   188  .  .  .  .  }
+   189  .  .  .  }
+   190  .  .  }
+   191  .  }
+   192  .  GoVersion: ""
+   193  }

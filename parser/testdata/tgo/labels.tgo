@@ -1,0 +1,31 @@
+package templates
+
+func _() {
+	{
+	L:
+	}
+}
+
+func _() {
+	<div>
+	L:
+	</div>
+}
+
+func _() {
+	<div
+	L:
+	>
+	</div>
+}
+
+// TODO: test these cases (add tests with errors, maybe like the go/types framework):
+//func _() {
+//	L:
+//	</div>
+//}
+//
+//func _() {
+//	L:
+//	>
+//}

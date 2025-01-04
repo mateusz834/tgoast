@@ -230,6 +230,9 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 		return p.parseTgoOpenTag()
 	case token.END_TAG:
 		return p.parseTgoCloseTag()
+	case token.GTR:
+		// a semicolon may be omitted before a closing ">"
+		return &ast.EmptyStmt{Semicolon: p.pos, Implicit: true}
 	case token.STRING_TEMPLATE:
 		lit := p.templateLit[len(p.templateLit)-1]
 		p.templateLit = p.templateLit[:len(p.templateLit)-1]
