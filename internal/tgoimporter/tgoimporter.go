@@ -45,7 +45,7 @@ func DynamicWrite[T DynamicWriteAllowed](t T) {
 		return nil, err
 	}
 
-	tgoPkg, err := new(types.Config).Check("github.com/tgo-lang/tgo", fset, []*ast.File{tgoModuleFile}, nil)
+	tgoPkg, err := new(types.Config).Check("github.com/mateusz834/tgo", fset, []*ast.File{tgoModuleFile}, nil)
 	if err != nil {
 		return nil, err
 	}

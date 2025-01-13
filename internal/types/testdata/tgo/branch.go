@@ -226,7 +226,7 @@ a:
 
 func _(tgo.Ctx) error {
 	<div>
-	goto a // ERROR "goto a prevents reaching the end tag"
+		goto a // ERROR "goto a prevents reaching the end tag"
 	</div>
 a:
 	return nil
@@ -235,7 +235,7 @@ a:
 func _(tgo.Ctx) error {
 a:
 	<div>
-	goto a // ERROR "goto a prevents reaching the end tag"
+		goto a // ERROR "goto a prevents reaching the end tag"
 	</div>
 	return nil
 }
@@ -274,7 +274,7 @@ func _(tgo.Ctx) error {
 func _(tgo.Ctx) error {
 	<div>
 		<div>
-		goto a // ERROR "goto a prevents reaching the end tag"
+			goto a // ERROR "goto a prevents reaching the end tag"
 		</div>
 	a:
 	</div>
@@ -285,7 +285,7 @@ func _(tgo.Ctx) error {
 	<div>
 	a:
 		<div>
-		goto a // ERROR "goto a prevents reaching the end tag"
+			goto a // ERROR "goto a prevents reaching the end tag"
 		</div>
 	</div>
 	return nil
@@ -305,7 +305,7 @@ func _(tgo.Ctx) error {
 a:
 	<div>
 		<div>
-		goto a // ERROR "goto a prevents reaching the end tag"
+			goto a // ERROR "goto a prevents reaching the end tag"
 		</div>
 	</div>
 	return nil
@@ -314,7 +314,7 @@ a:
 func _(tgo.Ctx) error {
 	<div>
 		<div>
-		goto a // ERROR "goto a prevents reaching the end tag"
+			goto a // ERROR "goto a prevents reaching the end tag"
 		</div>
 	</div>
 a:
@@ -325,8 +325,8 @@ func _(tgo.Ctx) error {
 	<div>
 		<div>
 			<div>
-			goto a // ERROR "goto a prevents reaching the end tag"
-			goto b // ERROR "goto b prevents reaching the end tag"
+				goto a // ERROR "goto a prevents reaching the end tag"
+				goto b // ERROR "goto b prevents reaching the end tag"
 			</div>
 		</div>
 		b:
@@ -339,8 +339,26 @@ func _(tgo.Ctx) error {
 a:
 	<div>
 		<div>
-		goto a // ERROR "goto a prevents reaching the end tag"
+			goto a // ERROR "goto a prevents reaching the end tag"
 		</div>
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	<div>
+	a:
+		goto a
+	</div>
+	return nil
+}
+
+func _(tgo.Ctx) error {
+	<div>
+	a:
+		{
+			goto a
+		}
 	</div>
 	return nil
 }

@@ -92,13 +92,13 @@ func (b *block) enclosingTarget(name string) (*ast.LabeledStmt, int) {
 }
 
 func (b *block) enterTgoTag() {
-	for s := b; s != nil; s = s.parent {
+	for s := b.parent; s != nil; s = s.parent {
 		s.count++
 	}
 }
 
 func (b *block) exitTgoTag() {
-	for s := b; s != nil; s = s.parent {
+	for s := b.parent; s != nil; s = s.parent {
 		s.count--
 	}
 }
