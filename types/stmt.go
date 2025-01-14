@@ -42,7 +42,8 @@ func (check *Checker) funcBody(decl *declInfo, name string, sig *Signature, body
 	var ctxt stmtContext
 	if sig.params.Len() > 0 && sig.results.Len() == 1 {
 		if sig.params.At(0).Type() == check.tgoCtx &&
-			sig.results.At(0).Type() == Universe.Lookup("error").Type() {
+			(sig.results.At(0).Type() == Universe.Lookup("error").Type() ||
+				sig.results.At(0).Type() == check.tgoError) {
 			ctxt |= inTgoFunc
 		}
 	}

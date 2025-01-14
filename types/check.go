@@ -183,6 +183,7 @@ type Checker struct {
 
 	tgoCtx                 Type
 	tgoDynamicWriteAllowed Type
+	tgoError               Type
 }
 
 // addDeclDep adds the dependency edge (check.decl -> to) if check.decl exists
