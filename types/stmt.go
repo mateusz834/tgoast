@@ -400,7 +400,7 @@ func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
 			cause := ""
 			implements := check.implements(v.Pos(), targs[0], check.tgoDynamicWriteAllowed, true, &cause)
 			if !implements {
-				check.errorf(&o, InvalidTemplateLiteralType, "%s", cause)
+				check.softErrorf(&o, InvalidTemplateLiteralType, "%s", cause)
 			}
 		}
 	}
