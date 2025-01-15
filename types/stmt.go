@@ -394,9 +394,8 @@ func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
 				if !err.empty() {
 					// TODO: is this reachable? Figure a case out and add a test case, otherwise panic.
 					err.report()
-					return
 				}
-				return
+				continue
 			}
 			cause := ""
 			implements := check.implements(v.Pos(), targs[0], check.tgoDynamicWriteAllowed, true, &cause)
