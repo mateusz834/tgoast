@@ -140,9 +140,9 @@ func _(tgo.Ctx) error {
 }
 
 func _(tgo.Ctx) tgo.Error {
-	var t func(tgo.Error) error
+	var t func(tgo.Ctx) tgo.Error
 	<div
-		t = func(tgo.Error) error {
+		t = func(tgo.Ctx) tgo.Error {
 			@ /* ERROR "attribute is not allowed outside a tag" */ attr="value"
 			<div
 				@attr="value"
