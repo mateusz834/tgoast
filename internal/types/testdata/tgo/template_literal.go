@@ -48,7 +48,7 @@ func _(tgo.Ctx) error {
 }
 
 func _(tgo.Ctx) error {
-	"\{math.MaxUint} \{math.MaxInt}"
+	"\{math /* ERROR "cannot use math.MaxUint (untyped int constant 18446744073709551615) as int value in template literal part (overflows)" */ .MaxUint } \{math.MaxInt}"
 	"\{uint(math.MaxUint)} \{int(math.MaxInt)}"
 	return nil
 }

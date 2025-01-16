@@ -386,6 +386,8 @@ func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
 	for _, v := range v.Parts {
 		var o operand
 		check.expr(nil, &o, v.X)
+
+		// TODO: what if it is nil?
 		if check.tgoDynamicWriteAllowed != nil {
 			tp := NewTypeParam(NewTypeName(nopos, check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
 			err := check.newError(InvalidTemplateLiteralType)
@@ -402,6 +404,8 @@ func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
 			if !implements {
 				check.softErrorf(&o, InvalidTemplateLiteralType, "%s", cause)
 			}
+
+			check.assignment(&o, targs[0], "template literal part")
 		}
 	}
 }
