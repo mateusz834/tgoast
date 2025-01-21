@@ -389,13 +389,12 @@ func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
 
 		// TODO: what if it is nil?
 		if check.tgoDynamicWriteAllowed != nil {
-			tp := NewTypeParam(NewTypeName(nopos, check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
+			tp := NewTypeParam(NewTypeName(v.X.Pos(), check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
 			err := check.newError(InvalidTemplateLiteralType)
-			targs := check.infer(v, []*TypeParam{tp}, nil, NewTuple(NewVar(nopos, check.pkg, "t", tp)), []*operand{&o}, false, err)
+			targs := check.infer(v.X, []*TypeParam{tp}, nil, NewTuple(NewVar(v.X.Pos(), check.pkg, "t", tp)), []*operand{&o}, false, err)
 			if targs == nil {
 				if !err.empty() {
-					// TODO: is this reachable? Figure a case out and add a test case, otherwise panic.
-					err.report()
+					check.errorf(err.posn(), InvalidTemplateLiteralType, "%s", err.msg())
 				}
 				continue
 			}

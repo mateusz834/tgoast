@@ -116,3 +116,8 @@ func _(tgo.Ctx) error {
 	"\{a /* ERROR "undefined: a" */} \{0 /* ERROR "invalid operation: cannot call non-function 0 (untyped int constant)" */ ()}"
 	return nil
 }
+
+func _(tgo.Ctx) error {
+	"\{nil /* ERROR "cannot infer T" */ }"
+	return nil
+}
