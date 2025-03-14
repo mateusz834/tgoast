@@ -43,10 +43,8 @@ import (
 	"testing"
 
 	"github.com/tgo-lang/lang/ast"
-	"github.com/tgo-lang/lang/importer"
 	"github.com/tgo-lang/lang/internal/buildcfg"
 	"github.com/tgo-lang/lang/internal/testenv"
-	"github.com/tgo-lang/lang/internal/tgoimporter"
 	"github.com/tgo-lang/lang/internal/types/errors"
 	"github.com/tgo-lang/lang/parser"
 	"github.com/tgo-lang/lang/scanner"
@@ -166,7 +164,7 @@ func testFilesImpl(t *testing.T, filenames []string, srcs [][]byte, manual bool,
 	// set up typechecker
 	var conf Config
 	*boolFieldAddr(&conf, "_Trace") = manual && testing.Verbose()
-	conf.Importer = &tgoimporter.TgoDefaultImporter{I: importer.Default().(ImporterFrom)}
+	conf.Importer = defaultImporter(fset)
 	conf.Error = func(err error) {
 		if *haltOnError {
 			defer panic(err)
@@ -198,15 +196,10 @@ func testFilesImpl(t *testing.T, filenames []string, srcs [][]byte, manual bool,
 		t.Fatal(err)
 	}
 
-	exp, err := buildcfg.ParseGOEXPERIMENT(runtime.GOOS, runtime.GOARCH, goexperiment)
-	if err != nil {
-		t.Fatal(err)
+	if goexperiment != "" {
+		revert := setGOEXPERIMENT(goexperiment)
+		defer revert()
 	}
-	old := buildcfg.Experiment
-	defer func() {
-		buildcfg.Experiment = old
-	}()
-	buildcfg.Experiment = *exp
 
 	// By default, gotypesalias is not set.
 	if gotypesalias != "" {
@@ -352,6 +345,20 @@ func boolFieldAddr(conf *Config, name string) *bool {
 func stringFieldAddr(conf *Config, name string) *string {
 	v := reflect.Indirect(reflect.ValueOf(conf))
 	return (*string)(v.FieldByName(name).Addr().UnsafePointer())
+}
+
+// setGOEXPERIMENT overwrites the existing buildcfg.Experiment with a new one
+// based on the provided goexperiment string. Calling the result function
+// (typically via defer), reverts buildcfg.Experiment to the prior value.
+// For testing use, only.
+func setGOEXPERIMENT(goexperiment string) func() {
+	exp, err := buildcfg.ParseGOEXPERIMENT(runtime.GOOS, runtime.GOARCH, goexperiment)
+	if err != nil {
+		panic(err)
+	}
+	old := buildcfg.Experiment
+	buildcfg.Experiment = *exp
+	return func() { buildcfg.Experiment = old }
 }
 
 // TestManual is for manual testing of a package - either provided

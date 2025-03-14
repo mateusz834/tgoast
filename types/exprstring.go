@@ -11,7 +11,6 @@ import (
 	"fmt"
 
 	"github.com/tgo-lang/lang/ast"
-	"github.com/tgo-lang/lang/internal/go/typeparams"
 )
 
 // ExprString returns the (possibly shortened) string representation for x.
@@ -72,10 +71,10 @@ func WriteExpr(buf *bytes.Buffer, x ast.Expr) {
 		buf.WriteString(x.Sel.Name)
 
 	case *ast.IndexExpr, *ast.IndexListExpr:
-		ix := typeparams.UnpackIndexExpr(x)
-		WriteExpr(buf, ix.X)
+		ix := unpackIndexedExpr(x)
+		WriteExpr(buf, ix.x)
 		buf.WriteByte('[')
-		writeExprList(buf, ix.Indices)
+		writeExprList(buf, ix.indices)
 		buf.WriteByte(']')
 
 	case *ast.SliceExpr:

@@ -113,15 +113,15 @@ func test(tgo.Ctx) error {
 	t.Run("types", func(t *testing.T) {
 		wantTypes := map[ast.Expr]Type{
 			articleOpenTagAttrTemplateLit.Parts[0].X: Typ[Int],
-			articleOpenTagAttrTemplateLit.Parts[1].X: Typ[UntypedString],
+			articleOpenTagAttrTemplateLit.Parts[1].X: Typ[String],
 			articleTemplateLit.Parts[0].X:            Typ[String],
 			divTemplateLit1.Parts[0].X:               Typ[Int],
 			divTemplateLit2.Parts[0].X:               Typ[String],
 			divTemplateLit2.Parts[1].X:               Typ[Int],
-			divTemplateLit3.Parts[0].X:               Typ[UntypedInt],
-			divTemplateLit3.Parts[1].X:               Typ[UntypedInt],
-			divTemplateLit3.Parts[2].X:               Typ[UntypedString],
-			divTemplateLit3.Parts[3].X:               Typ[UntypedString],
+			divTemplateLit3.Parts[0].X:               Typ[Int],
+			divTemplateLit3.Parts[1].X:               Typ[Int],
+			divTemplateLit3.Parts[2].X:               Typ[String],
+			divTemplateLit3.Parts[3].X:               Typ[String],
 		}
 
 		for k, v := range wantTypes {

@@ -9,7 +9,6 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/tgo-lang/lang/importer"
 	"github.com/tgo-lang/lang/token"
 
 	. "github.com/tgo-lang/lang/types"
@@ -29,7 +28,7 @@ func BenchmarkLookupFieldOrMethod(b *testing.B) {
 	}
 
 	conf := Config{
-		Importer: importer.Default(),
+		Importer: defaultImporter(fset),
 	}
 
 	pkg, err := conf.Check("http", fset, files, nil)

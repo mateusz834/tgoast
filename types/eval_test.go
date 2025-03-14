@@ -12,7 +12,6 @@ import (
 	"testing"
 
 	"github.com/tgo-lang/lang/ast"
-	"github.com/tgo-lang/lang/importer"
 	"github.com/tgo-lang/lang/internal/godebug"
 	"github.com/tgo-lang/lang/internal/testenv"
 	"github.com/tgo-lang/lang/parser"
@@ -189,7 +188,7 @@ func TestEvalPos(t *testing.T) {
 		files = append(files, file)
 	}
 
-	conf := Config{Importer: importer.Default()}
+	conf := Config{Importer: defaultImporter(fset)}
 	pkg, err := conf.Check("p", fset, files, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -258,7 +257,7 @@ func f(a int, s string) S {
 		t.Fatal(err)
 	}
 
-	conf := Config{Importer: importer.Default()}
+	conf := Config{Importer: defaultImporter(fset)}
 	pkg, err := conf.Check("p", fset, []*ast.File{f}, nil)
 	if err != nil {
 		t.Fatal(err)

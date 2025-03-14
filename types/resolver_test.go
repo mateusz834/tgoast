@@ -10,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/tgo-lang/lang/ast"
-	"github.com/tgo-lang/lang/importer"
 	"github.com/tgo-lang/lang/internal/testenv"
 	"github.com/tgo-lang/lang/token"
 
@@ -18,6 +17,7 @@ import (
 )
 
 type resolveTestImporter struct {
+	fset     *token.FileSet
 	importer ImporterFrom
 	imported map[string]bool
 }
@@ -31,7 +31,7 @@ func (imp *resolveTestImporter) ImportFrom(path, srcDir string, mode ImportMode)
 		panic("mode must be 0")
 	}
 	if imp.importer == nil {
-		imp.importer = importer.Default().(ImporterFrom)
+		imp.importer = defaultImporter(fset).(ImporterFrom)
 		imp.imported = make(map[string]bool)
 	}
 	pkg, err := imp.importer.ImportFrom(path, srcDir, mode)
@@ -125,7 +125,7 @@ func TestResolveIdents(t *testing.T) {
 	}
 
 	// resolve and type-check package AST
-	importer := new(resolveTestImporter)
+	importer := &resolveTestImporter{fset: fset}
 	conf := Config{Importer: importer}
 	uses := make(map[*ast.Ident]Object)
 	defs := make(map[*ast.Ident]Object)

@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/tgo-lang/lang/ast"
-	"github.com/tgo-lang/lang/importer"
 	"github.com/tgo-lang/lang/internal/testenv"
 	"github.com/tgo-lang/lang/parser"
 	"github.com/tgo-lang/lang/token"
@@ -29,7 +28,7 @@ func TestSelf(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	conf := Config{Importer: importer.Default()}
+	conf := Config{Importer: defaultImporter(fset)}
 	_, err = conf.Check("go/types", fset, files, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -84,7 +83,7 @@ func runbench(b *testing.B, path string, ignoreFuncBodies, writeInfo bool) {
 	for i := 0; i < b.N; i++ {
 		conf := Config{
 			IgnoreFuncBodies: ignoreFuncBodies,
-			Importer:         importer.Default(),
+			Importer:         defaultImporter(fset),
 		}
 		var info *Info
 		if writeInfo {

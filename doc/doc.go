@@ -7,9 +7,8 @@ package doc
 
 import (
 	"fmt"
-	"strings"
-
 	"go/doc/comment"
+	"strings"
 
 	"github.com/tgo-lang/lang/ast"
 	"github.com/tgo-lang/lang/token"
