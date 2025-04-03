@@ -1,148 +1,148 @@
-     0  *ast.File {
-     1  .  Package: 1.tgo:1:1
-     2  .  Name: *ast.Ident {
-     3  .  .  NamePos: 1.tgo:1:9
-     4  .  .  Name: "templates"
-     5  .  }
-     6  .  Decls: []ast.Decl (len = 1) {
-     7  .  .  0: *ast.FuncDecl {
-     8  .  .  .  Name: *ast.Ident {
-     9  .  .  .  .  NamePos: 1.tgo:3:6
-    10  .  .  .  .  Name: "test"
-    11  .  .  .  }
-    12  .  .  .  Type: *ast.FuncType {
-    13  .  .  .  .  Func: 1.tgo:3:1
-    14  .  .  .  .  Params: *ast.FieldList {
-    15  .  .  .  .  .  Opening: 1.tgo:3:10
-    16  .  .  .  .  .  List: []*ast.Field (len = 1) {
-    17  .  .  .  .  .  .  0: *ast.Field {
-    18  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
-    19  .  .  .  .  .  .  .  .  0: *ast.Ident {
-    20  .  .  .  .  .  .  .  .  .  NamePos: 1.tgo:3:11
-    21  .  .  .  .  .  .  .  .  .  Name: "sth"
-    22  .  .  .  .  .  .  .  .  }
-    23  .  .  .  .  .  .  .  }
-    24  .  .  .  .  .  .  .  Type: *ast.Ident {
-    25  .  .  .  .  .  .  .  .  NamePos: 1.tgo:3:15
-    26  .  .  .  .  .  .  .  .  Name: "string"
-    27  .  .  .  .  .  .  .  }
-    28  .  .  .  .  .  .  }
-    29  .  .  .  .  .  }
-    30  .  .  .  .  .  Closing: 1.tgo:3:21
-    31  .  .  .  .  }
-    32  .  .  .  }
-    33  .  .  .  Body: *ast.BlockStmt {
-    34  .  .  .  .  Lbrace: 1.tgo:3:23
-    35  .  .  .  .  List: []ast.Stmt (len = 1) {
-    36  .  .  .  .  .  0: *ast.Element {
-    37  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
-    38  .  .  .  .  .  .  .  OpenPos: 1.tgo:4:2
-    39  .  .  .  .  .  .  .  Name: *ast.Ident {
-    40  .  .  .  .  .  .  .  .  NamePos: 1.tgo:4:3
-    41  .  .  .  .  .  .  .  .  Name: "div"
-    42  .  .  .  .  .  .  .  }
-    43  .  .  .  .  .  .  .  Body: []ast.Stmt (len = 1) {
-    44  .  .  .  .  .  .  .  .  0: *ast.Attribute {
-    45  .  .  .  .  .  .  .  .  .  StartPos: 1.tgo:4:7
-    46  .  .  .  .  .  .  .  .  .  AttrName: *ast.Ident {
-    47  .  .  .  .  .  .  .  .  .  .  NamePos: 1.tgo:4:8
-    48  .  .  .  .  .  .  .  .  .  .  Name: "attr"
-    49  .  .  .  .  .  .  .  .  .  }
-    50  .  .  .  .  .  .  .  .  .  AssignPos: 1.tgo:4:12
-    51  .  .  .  .  .  .  .  .  .  Value: *ast.Text {
-    52  .  .  .  .  .  .  .  .  .  .  StartPos: 1.tgo:4:13
-    53  .  .  .  .  .  .  .  .  .  .  Text: "\"value\""
-    54  .  .  .  .  .  .  .  .  .  }
-    55  .  .  .  .  .  .  .  .  }
-    56  .  .  .  .  .  .  .  }
-    57  .  .  .  .  .  .  .  ClosePos: 1.tgo:4:20
-    58  .  .  .  .  .  .  }
-    59  .  .  .  .  .  .  Body: []ast.Stmt (len = 3) {
-    60  .  .  .  .  .  .  .  0: *ast.TemplateLiteral {
-    61  .  .  .  .  .  .  .  .  OpenPos: 1.tgo:5:3
-    62  .  .  .  .  .  .  .  .  Strings: []string (len = 2) {
-    63  .  .  .  .  .  .  .  .  .  0: "\"test "
-    64  .  .  .  .  .  .  .  .  .  1: "\""
-    65  .  .  .  .  .  .  .  .  }
-    66  .  .  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-    67  .  .  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-    68  .  .  .  .  .  .  .  .  .  .  LBrace: 1.tgo:5:10
-    69  .  .  .  .  .  .  .  .  .  .  X: *ast.Ident {
-    70  .  .  .  .  .  .  .  .  .  .  .  NamePos: 1.tgo:5:11
-    71  .  .  .  .  .  .  .  .  .  .  .  Name: "sth"
-    72  .  .  .  .  .  .  .  .  .  .  }
-    73  .  .  .  .  .  .  .  .  .  .  RBrace: 1.tgo:5:14
-    74  .  .  .  .  .  .  .  .  .  }
-    75  .  .  .  .  .  .  .  .  }
-    76  .  .  .  .  .  .  .  .  ClosePos: 1.tgo:5:15
-    77  .  .  .  .  .  .  .  }
-    78  .  .  .  .  .  .  .  1: *ast.AssignStmt {
-    79  .  .  .  .  .  .  .  .  Lhs: []ast.Expr (len = 1) {
-    80  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
-    81  .  .  .  .  .  .  .  .  .  .  NamePos: 1.tgo:6:3
-    82  .  .  .  .  .  .  .  .  .  .  Name: "a"
-    83  .  .  .  .  .  .  .  .  .  }
-    84  .  .  .  .  .  .  .  .  }
-    85  .  .  .  .  .  .  .  .  TokPos: 1.tgo:6:5
-    86  .  .  .  .  .  .  .  .  Tok: :=
-    87  .  .  .  .  .  .  .  .  Rhs: []ast.Expr (len = 1) {
-    88  .  .  .  .  .  .  .  .  .  0: *ast.BinaryExpr {
-    89  .  .  .  .  .  .  .  .  .  .  X: *ast.Ident {
-    90  .  .  .  .  .  .  .  .  .  .  .  NamePos: 1.tgo:6:8
-    91  .  .  .  .  .  .  .  .  .  .  .  Name: "sth"
-    92  .  .  .  .  .  .  .  .  .  .  }
-    93  .  .  .  .  .  .  .  .  .  .  OpPos: 1.tgo:6:12
-    94  .  .  .  .  .  .  .  .  .  .  Op: +
-    95  .  .  .  .  .  .  .  .  .  .  Y: *ast.Ident {
-    96  .  .  .  .  .  .  .  .  .  .  .  NamePos: 1.tgo:6:14
-    97  .  .  .  .  .  .  .  .  .  .  .  Name: "sth"
-    98  .  .  .  .  .  .  .  .  .  .  }
-    99  .  .  .  .  .  .  .  .  .  }
-   100  .  .  .  .  .  .  .  .  }
-   101  .  .  .  .  .  .  .  }
-   102  .  .  .  .  .  .  .  2: *ast.TemplateLiteral {
-   103  .  .  .  .  .  .  .  .  OpenPos: 1.tgo:7:3
-   104  .  .  .  .  .  .  .  .  Strings: []string (len = 2) {
-   105  .  .  .  .  .  .  .  .  .  0: "\"test "
-   106  .  .  .  .  .  .  .  .  .  1: "\""
-   107  .  .  .  .  .  .  .  .  }
-   108  .  .  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-   109  .  .  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   110  .  .  .  .  .  .  .  .  .  .  LBrace: 1.tgo:7:10
-   111  .  .  .  .  .  .  .  .  .  .  X: *ast.BinaryExpr {
-   112  .  .  .  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   113  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: 1.tgo:7:11
-   114  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
-   115  .  .  .  .  .  .  .  .  .  .  .  }
-   116  .  .  .  .  .  .  .  .  .  .  .  OpPos: 1.tgo:7:13
-   117  .  .  .  .  .  .  .  .  .  .  .  Op: +
-   118  .  .  .  .  .  .  .  .  .  .  .  Y: *ast.BasicLit {
-   119  .  .  .  .  .  .  .  .  .  .  .  .  ValuePos: 1.tgo:7:15
-   120  .  .  .  .  .  .  .  .  .  .  .  .  Kind: STRING
-   121  .  .  .  .  .  .  .  .  .  .  .  .  Value: "\"test\""
-   122  .  .  .  .  .  .  .  .  .  .  .  }
-   123  .  .  .  .  .  .  .  .  .  .  }
-   124  .  .  .  .  .  .  .  .  .  .  RBrace: 1.tgo:7:21
-   125  .  .  .  .  .  .  .  .  .  }
-   126  .  .  .  .  .  .  .  .  }
-   127  .  .  .  .  .  .  .  .  ClosePos: 1.tgo:7:22
-   128  .  .  .  .  .  .  .  }
-   129  .  .  .  .  .  .  }
-   130  .  .  .  .  .  .  EndTag: *ast.EndTag {
-   131  .  .  .  .  .  .  .  OpenPos: 1.tgo:8:2
-   132  .  .  .  .  .  .  .  Name: *ast.Ident {
-   133  .  .  .  .  .  .  .  .  NamePos: 1.tgo:8:4
-   134  .  .  .  .  .  .  .  .  Name: "div"
-   135  .  .  .  .  .  .  .  }
-   136  .  .  .  .  .  .  .  ClosePos: 1.tgo:8:7
-   137  .  .  .  .  .  .  }
-   138  .  .  .  .  .  }
-   139  .  .  .  .  }
-   140  .  .  .  .  Rbrace: 1.tgo:9:1
-   141  .  .  .  }
-   142  .  .  }
-   143  .  }
-   144  .  FileStart: 1.tgo:1:1
-   145  .  FileEnd: 1.tgo:9:3
-   146  .  GoVersion: ""
-   147  }
+*ast.File {
+   Package: 1.tgo:1:1
+   Name: *ast.Ident {
+      NamePos: 1.tgo:1:9
+      Name: "templates"
+   }
+   Decls: []ast.Decl (len = 1) {
+      0: *ast.FuncDecl {
+         Name: *ast.Ident {
+            NamePos: 1.tgo:3:6
+            Name: "test"
+         }
+         Type: *ast.FuncType {
+            Func: 1.tgo:3:1
+            Params: *ast.FieldList {
+               Opening: 1.tgo:3:10
+               List: []*ast.Field (len = 1) {
+                  0: *ast.Field {
+                     Names: []*ast.Ident (len = 1) {
+                        0: *ast.Ident {
+                           NamePos: 1.tgo:3:11
+                           Name: "sth"
+                        }
+                     }
+                     Type: *ast.Ident {
+                        NamePos: 1.tgo:3:15
+                        Name: "string"
+                     }
+                  }
+               }
+               Closing: 1.tgo:3:21
+            }
+         }
+         Body: *ast.BlockStmt {
+            Lbrace: 1.tgo:3:23
+            List: []ast.Stmt (len = 1) {
+               0: *ast.Element {
+                  OpenTag: *ast.OpenTag {
+                     OpenPos: 1.tgo:4:2
+                     Name: *ast.Ident {
+                        NamePos: 1.tgo:4:3
+                        Name: "div"
+                     }
+                     Body: []ast.Stmt (len = 1) {
+                        0: *ast.Attribute {
+                           StartPos: 1.tgo:4:7
+                           AttrName: *ast.Ident {
+                              NamePos: 1.tgo:4:8
+                              Name: "attr"
+                           }
+                           AssignPos: 1.tgo:4:12
+                           Value: *ast.Text {
+                              StartPos: 1.tgo:4:13
+                              Text: "\"value\""
+                           }
+                        }
+                     }
+                     ClosePos: 1.tgo:4:20
+                  }
+                  Body: []ast.Stmt (len = 3) {
+                     0: *ast.TemplateLiteral {
+                        OpenPos: 1.tgo:5:3
+                        Strings: []string (len = 2) {
+                           0: "\"test "
+                           1: "\""
+                        }
+                        Parts: []*ast.TemplateLiteralPart (len = 1) {
+                           0: *ast.TemplateLiteralPart {
+                              LBrace: 1.tgo:5:10
+                              X: *ast.Ident {
+                                 NamePos: 1.tgo:5:11
+                                 Name: "sth"
+                              }
+                              RBrace: 1.tgo:5:14
+                           }
+                        }
+                        ClosePos: 1.tgo:5:15
+                     }
+                     1: *ast.AssignStmt {
+                        Lhs: []ast.Expr (len = 1) {
+                           0: *ast.Ident {
+                              NamePos: 1.tgo:6:3
+                              Name: "a"
+                           }
+                        }
+                        TokPos: 1.tgo:6:5
+                        Tok: :=
+                        Rhs: []ast.Expr (len = 1) {
+                           0: *ast.BinaryExpr {
+                              X: *ast.Ident {
+                                 NamePos: 1.tgo:6:8
+                                 Name: "sth"
+                              }
+                              OpPos: 1.tgo:6:12
+                              Op: +
+                              Y: *ast.Ident {
+                                 NamePos: 1.tgo:6:14
+                                 Name: "sth"
+                              }
+                           }
+                        }
+                     }
+                     2: *ast.TemplateLiteral {
+                        OpenPos: 1.tgo:7:3
+                        Strings: []string (len = 2) {
+                           0: "\"test "
+                           1: "\""
+                        }
+                        Parts: []*ast.TemplateLiteralPart (len = 1) {
+                           0: *ast.TemplateLiteralPart {
+                              LBrace: 1.tgo:7:10
+                              X: *ast.BinaryExpr {
+                                 X: *ast.Ident {
+                                    NamePos: 1.tgo:7:11
+                                    Name: "a"
+                                 }
+                                 OpPos: 1.tgo:7:13
+                                 Op: +
+                                 Y: *ast.BasicLit {
+                                    ValuePos: 1.tgo:7:15
+                                    Kind: STRING
+                                    Value: "\"test\""
+                                 }
+                              }
+                              RBrace: 1.tgo:7:21
+                           }
+                        }
+                        ClosePos: 1.tgo:7:22
+                     }
+                  }
+                  EndTag: *ast.EndTag {
+                     OpenPos: 1.tgo:8:2
+                     Name: *ast.Ident {
+                        NamePos: 1.tgo:8:4
+                        Name: "div"
+                     }
+                     ClosePos: 1.tgo:8:7
+                  }
+               }
+            }
+            Rbrace: 1.tgo:9:1
+         }
+      }
+   }
+   FileStart: 1.tgo:1:1
+   FileEnd: 1.tgo:9:3
+   GoVersion: ""
+}

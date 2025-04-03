@@ -1,115 +1,115 @@
-     0  *ast.File {
-     1  .  Package: comments_order_before_template.tgo:1:1
-     2  .  Name: *ast.Ident {
-     3  .  .  NamePos: comments_order_before_template.tgo:1:9
-     4  .  .  Name: "templates"
-     5  .  }
-     6  .  Decls: []ast.Decl (len = 1) {
-     7  .  .  0: *ast.FuncDecl {
-     8  .  .  .  Name: *ast.Ident {
-     9  .  .  .  .  NamePos: comments_order_before_template.tgo:3:6
-    10  .  .  .  .  Name: "test"
-    11  .  .  .  }
-    12  .  .  .  Type: *ast.FuncType {
-    13  .  .  .  .  Func: comments_order_before_template.tgo:3:1
-    14  .  .  .  .  Params: *ast.FieldList {
-    15  .  .  .  .  .  Opening: comments_order_before_template.tgo:3:10
-    16  .  .  .  .  .  List: []*ast.Field (len = 1) {
-    17  .  .  .  .  .  .  0: *ast.Field {
-    18  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
-    19  .  .  .  .  .  .  .  .  0: *ast.Ident {
-    20  .  .  .  .  .  .  .  .  .  NamePos: comments_order_before_template.tgo:3:11
-    21  .  .  .  .  .  .  .  .  .  Name: "sth"
-    22  .  .  .  .  .  .  .  .  }
-    23  .  .  .  .  .  .  .  }
-    24  .  .  .  .  .  .  .  Type: *ast.Ident {
-    25  .  .  .  .  .  .  .  .  NamePos: comments_order_before_template.tgo:3:15
-    26  .  .  .  .  .  .  .  .  Name: "string"
-    27  .  .  .  .  .  .  .  }
-    28  .  .  .  .  .  .  }
-    29  .  .  .  .  .  }
-    30  .  .  .  .  .  Closing: comments_order_before_template.tgo:3:21
-    31  .  .  .  .  }
-    32  .  .  .  }
-    33  .  .  .  Body: *ast.BlockStmt {
-    34  .  .  .  .  Lbrace: comments_order_before_template.tgo:3:23
-    35  .  .  .  .  List: []ast.Stmt (len = 2) {
-    36  .  .  .  .  .  0: *ast.TemplateLiteral {
-    37  .  .  .  .  .  .  OpenPos: comments_order_before_template.tgo:4:14
-    38  .  .  .  .  .  .  Strings: []string (len = 2) {
-    39  .  .  .  .  .  .  .  0: "\"test "
-    40  .  .  .  .  .  .  .  1: "\""
-    41  .  .  .  .  .  .  }
-    42  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-    43  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-    44  .  .  .  .  .  .  .  .  LBrace: comments_order_before_template.tgo:4:21
-    45  .  .  .  .  .  .  .  .  X: *ast.Ident {
-    46  .  .  .  .  .  .  .  .  .  NamePos: comments_order_before_template.tgo:4:35
-    47  .  .  .  .  .  .  .  .  .  Name: "sth"
-    48  .  .  .  .  .  .  .  .  }
-    49  .  .  .  .  .  .  .  .  RBrace: comments_order_before_template.tgo:4:38
-    50  .  .  .  .  .  .  .  }
-    51  .  .  .  .  .  .  }
-    52  .  .  .  .  .  .  ClosePos: comments_order_before_template.tgo:4:39
-    53  .  .  .  .  .  }
-    54  .  .  .  .  .  1: *ast.TemplateLiteral {
-    55  .  .  .  .  .  .  OpenPos: comments_order_before_template.tgo:5:14
-    56  .  .  .  .  .  .  Strings: []string (len = 2) {
-    57  .  .  .  .  .  .  .  0: "\"test "
-    58  .  .  .  .  .  .  .  1: "\""
-    59  .  .  .  .  .  .  }
-    60  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-    61  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-    62  .  .  .  .  .  .  .  .  LBrace: comments_order_before_template.tgo:5:21
-    63  .  .  .  .  .  .  .  .  X: *ast.Ident {
-    64  .  .  .  .  .  .  .  .  .  NamePos: comments_order_before_template.tgo:5:35
-    65  .  .  .  .  .  .  .  .  .  Name: "sth"
-    66  .  .  .  .  .  .  .  .  }
-    67  .  .  .  .  .  .  .  .  RBrace: comments_order_before_template.tgo:5:38
-    68  .  .  .  .  .  .  .  }
-    69  .  .  .  .  .  .  }
-    70  .  .  .  .  .  .  ClosePos: comments_order_before_template.tgo:5:39
-    71  .  .  .  .  .  }
-    72  .  .  .  .  }
-    73  .  .  .  .  Rbrace: comments_order_before_template.tgo:6:1
-    74  .  .  .  }
-    75  .  .  }
-    76  .  }
-    77  .  FileStart: comments_order_before_template.tgo:1:1
-    78  .  FileEnd: comments_order_before_template.tgo:6:3
-    79  .  Comments: []*ast.CommentGroup (len = 4) {
-    80  .  .  0: *ast.CommentGroup {
-    81  .  .  .  List: []*ast.Comment (len = 1) {
-    82  .  .  .  .  0: *ast.Comment {
-    83  .  .  .  .  .  Slash: comments_order_before_template.tgo:4:2
-    84  .  .  .  .  .  Text: "/*comment*/"
-    85  .  .  .  .  }
-    86  .  .  .  }
-    87  .  .  }
-    88  .  .  1: *ast.CommentGroup {
-    89  .  .  .  List: []*ast.Comment (len = 1) {
-    90  .  .  .  .  0: *ast.Comment {
-    91  .  .  .  .  .  Slash: comments_order_before_template.tgo:4:23
-    92  .  .  .  .  .  Text: "/*comment*/"
-    93  .  .  .  .  }
-    94  .  .  .  }
-    95  .  .  }
-    96  .  .  2: *ast.CommentGroup {
-    97  .  .  .  List: []*ast.Comment (len = 1) {
-    98  .  .  .  .  0: *ast.Comment {
-    99  .  .  .  .  .  Slash: comments_order_before_template.tgo:5:2
-   100  .  .  .  .  .  Text: "/*comment*/"
-   101  .  .  .  .  }
-   102  .  .  .  }
-   103  .  .  }
-   104  .  .  3: *ast.CommentGroup {
-   105  .  .  .  List: []*ast.Comment (len = 1) {
-   106  .  .  .  .  0: *ast.Comment {
-   107  .  .  .  .  .  Slash: comments_order_before_template.tgo:5:23
-   108  .  .  .  .  .  Text: "/*comment*/"
-   109  .  .  .  .  }
-   110  .  .  .  }
-   111  .  .  }
-   112  .  }
-   113  .  GoVersion: ""
-   114  }
+*ast.File {
+   Package: comments_order_before_template.tgo:1:1
+   Name: *ast.Ident {
+      NamePos: comments_order_before_template.tgo:1:9
+      Name: "templates"
+   }
+   Decls: []ast.Decl (len = 1) {
+      0: *ast.FuncDecl {
+         Name: *ast.Ident {
+            NamePos: comments_order_before_template.tgo:3:6
+            Name: "test"
+         }
+         Type: *ast.FuncType {
+            Func: comments_order_before_template.tgo:3:1
+            Params: *ast.FieldList {
+               Opening: comments_order_before_template.tgo:3:10
+               List: []*ast.Field (len = 1) {
+                  0: *ast.Field {
+                     Names: []*ast.Ident (len = 1) {
+                        0: *ast.Ident {
+                           NamePos: comments_order_before_template.tgo:3:11
+                           Name: "sth"
+                        }
+                     }
+                     Type: *ast.Ident {
+                        NamePos: comments_order_before_template.tgo:3:15
+                        Name: "string"
+                     }
+                  }
+               }
+               Closing: comments_order_before_template.tgo:3:21
+            }
+         }
+         Body: *ast.BlockStmt {
+            Lbrace: comments_order_before_template.tgo:3:23
+            List: []ast.Stmt (len = 2) {
+               0: *ast.TemplateLiteral {
+                  OpenPos: comments_order_before_template.tgo:4:14
+                  Strings: []string (len = 2) {
+                     0: "\"test "
+                     1: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 1) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: comments_order_before_template.tgo:4:21
+                        X: *ast.Ident {
+                           NamePos: comments_order_before_template.tgo:4:35
+                           Name: "sth"
+                        }
+                        RBrace: comments_order_before_template.tgo:4:38
+                     }
+                  }
+                  ClosePos: comments_order_before_template.tgo:4:39
+               }
+               1: *ast.TemplateLiteral {
+                  OpenPos: comments_order_before_template.tgo:5:14
+                  Strings: []string (len = 2) {
+                     0: "\"test "
+                     1: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 1) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: comments_order_before_template.tgo:5:21
+                        X: *ast.Ident {
+                           NamePos: comments_order_before_template.tgo:5:35
+                           Name: "sth"
+                        }
+                        RBrace: comments_order_before_template.tgo:5:38
+                     }
+                  }
+                  ClosePos: comments_order_before_template.tgo:5:39
+               }
+            }
+            Rbrace: comments_order_before_template.tgo:6:1
+         }
+      }
+   }
+   FileStart: comments_order_before_template.tgo:1:1
+   FileEnd: comments_order_before_template.tgo:6:3
+   Comments: []*ast.CommentGroup (len = 4) {
+      0: *ast.CommentGroup {
+         List: []*ast.Comment (len = 1) {
+            0: *ast.Comment {
+               Slash: comments_order_before_template.tgo:4:2
+               Text: "/*comment*/"
+            }
+         }
+      }
+      1: *ast.CommentGroup {
+         List: []*ast.Comment (len = 1) {
+            0: *ast.Comment {
+               Slash: comments_order_before_template.tgo:4:23
+               Text: "/*comment*/"
+            }
+         }
+      }
+      2: *ast.CommentGroup {
+         List: []*ast.Comment (len = 1) {
+            0: *ast.Comment {
+               Slash: comments_order_before_template.tgo:5:2
+               Text: "/*comment*/"
+            }
+         }
+      }
+      3: *ast.CommentGroup {
+         List: []*ast.Comment (len = 1) {
+            0: *ast.Comment {
+               Slash: comments_order_before_template.tgo:5:23
+               Text: "/*comment*/"
+            }
+         }
+      }
+   }
+   GoVersion: ""
+}

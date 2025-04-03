@@ -1,469 +1,469 @@
-     0  *ast.File {
-     1  .  Package: template_literal.tgo:1:1
-     2  .  Name: *ast.Ident {
-     3  .  .  NamePos: template_literal.tgo:1:9
-     4  .  .  Name: "templates"
-     5  .  }
-     6  .  Decls: []ast.Decl (len = 1) {
-     7  .  .  0: *ast.FuncDecl {
-     8  .  .  .  Name: *ast.Ident {
-     9  .  .  .  .  NamePos: template_literal.tgo:3:6
-    10  .  .  .  .  Name: "template"
-    11  .  .  .  }
-    12  .  .  .  Type: *ast.FuncType {
-    13  .  .  .  .  Func: template_literal.tgo:3:1
-    14  .  .  .  .  Params: *ast.FieldList {
-    15  .  .  .  .  .  Opening: template_literal.tgo:3:14
-    16  .  .  .  .  .  List: []*ast.Field (len = 1) {
-    17  .  .  .  .  .  .  0: *ast.Field {
-    18  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 2) {
-    19  .  .  .  .  .  .  .  .  0: *ast.Ident {
-    20  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:3:15
-    21  .  .  .  .  .  .  .  .  .  Name: "a"
-    22  .  .  .  .  .  .  .  .  }
-    23  .  .  .  .  .  .  .  .  1: *ast.Ident {
-    24  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:3:18
-    25  .  .  .  .  .  .  .  .  .  Name: "b"
-    26  .  .  .  .  .  .  .  .  }
-    27  .  .  .  .  .  .  .  }
-    28  .  .  .  .  .  .  .  Type: *ast.Ident {
-    29  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:3:20
-    30  .  .  .  .  .  .  .  .  Name: "string"
-    31  .  .  .  .  .  .  .  }
-    32  .  .  .  .  .  .  }
-    33  .  .  .  .  .  }
-    34  .  .  .  .  .  Closing: template_literal.tgo:3:26
-    35  .  .  .  .  }
-    36  .  .  .  }
-    37  .  .  .  Body: *ast.BlockStmt {
-    38  .  .  .  .  Lbrace: template_literal.tgo:3:28
-    39  .  .  .  .  List: []ast.Stmt (len = 12) {
-    40  .  .  .  .  .  0: *ast.TemplateLiteral {
-    41  .  .  .  .  .  .  OpenPos: template_literal.tgo:4:2
-    42  .  .  .  .  .  .  Strings: []string (len = 2) {
-    43  .  .  .  .  .  .  .  0: "\""
-    44  .  .  .  .  .  .  .  1: "\""
-    45  .  .  .  .  .  .  }
-    46  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-    47  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-    48  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:4:4
-    49  .  .  .  .  .  .  .  .  X: *ast.Ident {
-    50  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:4:5
-    51  .  .  .  .  .  .  .  .  .  Name: "b"
-    52  .  .  .  .  .  .  .  .  }
-    53  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:4:6
-    54  .  .  .  .  .  .  .  }
-    55  .  .  .  .  .  .  }
-    56  .  .  .  .  .  .  ClosePos: template_literal.tgo:4:7
-    57  .  .  .  .  .  }
-    58  .  .  .  .  .  1: *ast.TemplateLiteral {
-    59  .  .  .  .  .  .  OpenPos: template_literal.tgo:6:2
-    60  .  .  .  .  .  .  Strings: []string (len = 2) {
-    61  .  .  .  .  .  .  .  0: "\"a"
-    62  .  .  .  .  .  .  .  1: "\""
-    63  .  .  .  .  .  .  }
-    64  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-    65  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-    66  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:6:5
-    67  .  .  .  .  .  .  .  .  X: *ast.Ident {
-    68  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:6:6
-    69  .  .  .  .  .  .  .  .  .  Name: "a"
-    70  .  .  .  .  .  .  .  .  }
-    71  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:6:7
-    72  .  .  .  .  .  .  .  }
-    73  .  .  .  .  .  .  }
-    74  .  .  .  .  .  .  ClosePos: template_literal.tgo:6:8
-    75  .  .  .  .  .  }
-    76  .  .  .  .  .  2: *ast.TemplateLiteral {
-    77  .  .  .  .  .  .  OpenPos: template_literal.tgo:8:2
-    78  .  .  .  .  .  .  Strings: []string (len = 2) {
-    79  .  .  .  .  .  .  .  0: "\""
-    80  .  .  .  .  .  .  .  1: "a\""
-    81  .  .  .  .  .  .  }
-    82  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-    83  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-    84  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:8:4
-    85  .  .  .  .  .  .  .  .  X: *ast.Ident {
-    86  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:8:5
-    87  .  .  .  .  .  .  .  .  .  Name: "a"
-    88  .  .  .  .  .  .  .  .  }
-    89  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:8:6
-    90  .  .  .  .  .  .  .  }
-    91  .  .  .  .  .  .  }
-    92  .  .  .  .  .  .  ClosePos: template_literal.tgo:8:8
-    93  .  .  .  .  .  }
-    94  .  .  .  .  .  3: *ast.TemplateLiteral {
-    95  .  .  .  .  .  .  OpenPos: template_literal.tgo:10:2
-    96  .  .  .  .  .  .  Strings: []string (len = 2) {
-    97  .  .  .  .  .  .  .  0: "\"aa"
-    98  .  .  .  .  .  .  .  1: "aa\""
-    99  .  .  .  .  .  .  }
-   100  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-   101  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   102  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:10:6
-   103  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   104  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:10:7
-   105  .  .  .  .  .  .  .  .  .  Name: "a"
-   106  .  .  .  .  .  .  .  .  }
-   107  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:10:8
-   108  .  .  .  .  .  .  .  }
-   109  .  .  .  .  .  .  }
-   110  .  .  .  .  .  .  ClosePos: template_literal.tgo:10:11
-   111  .  .  .  .  .  }
-   112  .  .  .  .  .  4: *ast.TemplateLiteral {
-   113  .  .  .  .  .  .  OpenPos: template_literal.tgo:12:2
-   114  .  .  .  .  .  .  Strings: []string (len = 3) {
-   115  .  .  .  .  .  .  .  0: "\"aa"
-   116  .  .  .  .  .  .  .  1: "aa"
-   117  .  .  .  .  .  .  .  2: "\""
-   118  .  .  .  .  .  .  }
-   119  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 2) {
-   120  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   121  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:12:6
-   122  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   123  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:12:7
-   124  .  .  .  .  .  .  .  .  .  Name: "a"
-   125  .  .  .  .  .  .  .  .  }
-   126  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:12:8
-   127  .  .  .  .  .  .  .  }
-   128  .  .  .  .  .  .  .  1: *ast.TemplateLiteralPart {
-   129  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:12:12
-   130  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   131  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:12:13
-   132  .  .  .  .  .  .  .  .  .  Name: "b"
-   133  .  .  .  .  .  .  .  .  }
-   134  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:12:14
-   135  .  .  .  .  .  .  .  }
-   136  .  .  .  .  .  .  }
-   137  .  .  .  .  .  .  ClosePos: template_literal.tgo:12:15
-   138  .  .  .  .  .  }
-   139  .  .  .  .  .  5: *ast.TemplateLiteral {
-   140  .  .  .  .  .  .  OpenPos: template_literal.tgo:14:2
-   141  .  .  .  .  .  .  Strings: []string (len = 3) {
-   142  .  .  .  .  .  .  .  0: "\"aa"
-   143  .  .  .  .  .  .  .  1: "aa"
-   144  .  .  .  .  .  .  .  2: "test\""
-   145  .  .  .  .  .  .  }
-   146  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 2) {
-   147  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   148  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:14:6
-   149  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   150  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:14:7
-   151  .  .  .  .  .  .  .  .  .  Name: "a"
-   152  .  .  .  .  .  .  .  .  }
-   153  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:14:8
-   154  .  .  .  .  .  .  .  }
-   155  .  .  .  .  .  .  .  1: *ast.TemplateLiteralPart {
-   156  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:14:12
-   157  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   158  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:14:13
-   159  .  .  .  .  .  .  .  .  .  Name: "b"
-   160  .  .  .  .  .  .  .  .  }
-   161  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:14:14
-   162  .  .  .  .  .  .  .  }
-   163  .  .  .  .  .  .  }
-   164  .  .  .  .  .  .  ClosePos: template_literal.tgo:14:19
-   165  .  .  .  .  .  }
-   166  .  .  .  .  .  6: *ast.TemplateLiteral {
-   167  .  .  .  .  .  .  OpenPos: template_literal.tgo:16:2
-   168  .  .  .  .  .  .  Strings: []string (len = 3) {
-   169  .  .  .  .  .  .  .  0: "\""
-   170  .  .  .  .  .  .  .  1: ""
-   171  .  .  .  .  .  .  .  2: "\""
-   172  .  .  .  .  .  .  }
-   173  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 2) {
-   174  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   175  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:16:4
-   176  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   177  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:16:5
-   178  .  .  .  .  .  .  .  .  .  Name: "a"
-   179  .  .  .  .  .  .  .  .  }
-   180  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:16:6
-   181  .  .  .  .  .  .  .  }
-   182  .  .  .  .  .  .  .  1: *ast.TemplateLiteralPart {
-   183  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:16:8
-   184  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   185  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:16:9
-   186  .  .  .  .  .  .  .  .  .  Name: "b"
-   187  .  .  .  .  .  .  .  .  }
-   188  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:16:10
-   189  .  .  .  .  .  .  .  }
-   190  .  .  .  .  .  .  }
-   191  .  .  .  .  .  .  ClosePos: template_literal.tgo:16:11
-   192  .  .  .  .  .  }
-   193  .  .  .  .  .  7: *ast.TemplateLiteral {
-   194  .  .  .  .  .  .  OpenPos: template_literal.tgo:18:2
-   195  .  .  .  .  .  .  Strings: []string (len = 3) {
-   196  .  .  .  .  .  .  .  0: "\""
-   197  .  .  .  .  .  .  .  1: ""
-   198  .  .  .  .  .  .  .  2: "\""
-   199  .  .  .  .  .  .  }
-   200  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 2) {
-   201  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   202  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:18:4
-   203  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   204  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:18:5
-   205  .  .  .  .  .  .  .  .  .  Name: "a"
-   206  .  .  .  .  .  .  .  .  }
-   207  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:18:6
-   208  .  .  .  .  .  .  .  }
-   209  .  .  .  .  .  .  .  1: *ast.TemplateLiteralPart {
-   210  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:18:8
-   211  .  .  .  .  .  .  .  .  X: *ast.BasicLit {
-   212  .  .  .  .  .  .  .  .  .  ValuePos: template_literal.tgo:18:9
-   213  .  .  .  .  .  .  .  .  .  Kind: STRING
-   214  .  .  .  .  .  .  .  .  .  Value: "\"\""
-   215  .  .  .  .  .  .  .  .  }
-   216  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:18:11
-   217  .  .  .  .  .  .  .  }
-   218  .  .  .  .  .  .  }
-   219  .  .  .  .  .  .  ClosePos: template_literal.tgo:18:12
-   220  .  .  .  .  .  }
-   221  .  .  .  .  .  8: *ast.TemplateLiteral {
-   222  .  .  .  .  .  .  OpenPos: template_literal.tgo:20:2
-   223  .  .  .  .  .  .  Strings: []string (len = 3) {
-   224  .  .  .  .  .  .  .  0: "\""
-   225  .  .  .  .  .  .  .  1: ""
-   226  .  .  .  .  .  .  .  2: "\""
-   227  .  .  .  .  .  .  }
-   228  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 2) {
-   229  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   230  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:20:4
-   231  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   232  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:20:5
-   233  .  .  .  .  .  .  .  .  .  Name: "a"
-   234  .  .  .  .  .  .  .  .  }
-   235  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:20:6
-   236  .  .  .  .  .  .  .  }
-   237  .  .  .  .  .  .  .  1: *ast.TemplateLiteralPart {
-   238  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:20:8
-   239  .  .  .  .  .  .  .  .  X: *ast.BasicLit {
-   240  .  .  .  .  .  .  .  .  .  ValuePos: template_literal.tgo:20:9
-   241  .  .  .  .  .  .  .  .  .  Kind: STRING
-   242  .  .  .  .  .  .  .  .  .  Value: "\"a\""
-   243  .  .  .  .  .  .  .  .  }
-   244  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:20:12
-   245  .  .  .  .  .  .  .  }
-   246  .  .  .  .  .  .  }
-   247  .  .  .  .  .  .  ClosePos: template_literal.tgo:20:13
-   248  .  .  .  .  .  }
-   249  .  .  .  .  .  9: *ast.TemplateLiteral {
-   250  .  .  .  .  .  .  OpenPos: template_literal.tgo:22:2
-   251  .  .  .  .  .  .  Strings: []string (len = 2) {
-   252  .  .  .  .  .  .  .  0: "\""
-   253  .  .  .  .  .  .  .  1: "\""
-   254  .  .  .  .  .  .  }
-   255  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-   256  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   257  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:22:4
-   258  .  .  .  .  .  .  .  .  X: *ast.FuncLit {
-   259  .  .  .  .  .  .  .  .  .  Type: *ast.FuncType {
-   260  .  .  .  .  .  .  .  .  .  .  Func: template_literal.tgo:22:5
-   261  .  .  .  .  .  .  .  .  .  .  Params: *ast.FieldList {
-   262  .  .  .  .  .  .  .  .  .  .  .  Opening: template_literal.tgo:22:10
-   263  .  .  .  .  .  .  .  .  .  .  .  List: []*ast.Field (len = 1) {
-   264  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Field {
-   265  .  .  .  .  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
-   266  .  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
-   267  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:22:11
-   268  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
-   269  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   270  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   271  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
-   272  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:22:13
-   273  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "string"
-   274  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   275  .  .  .  .  .  .  .  .  .  .  .  .  }
-   276  .  .  .  .  .  .  .  .  .  .  .  }
-   277  .  .  .  .  .  .  .  .  .  .  .  Closing: template_literal.tgo:22:19
-   278  .  .  .  .  .  .  .  .  .  .  }
-   279  .  .  .  .  .  .  .  .  .  }
-   280  .  .  .  .  .  .  .  .  .  Body: *ast.BlockStmt {
-   281  .  .  .  .  .  .  .  .  .  .  Lbrace: template_literal.tgo:22:21
-   282  .  .  .  .  .  .  .  .  .  .  List: []ast.Stmt (len = 1) {
-   283  .  .  .  .  .  .  .  .  .  .  .  0: *ast.TemplateLiteral {
-   284  .  .  .  .  .  .  .  .  .  .  .  .  OpenPos: template_literal.tgo:22:22
-   285  .  .  .  .  .  .  .  .  .  .  .  .  Strings: []string (len = 2) {
-   286  .  .  .  .  .  .  .  .  .  .  .  .  .  0: "\""
-   287  .  .  .  .  .  .  .  .  .  .  .  .  .  1: "\""
-   288  .  .  .  .  .  .  .  .  .  .  .  .  }
-   289  .  .  .  .  .  .  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-   290  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   291  .  .  .  .  .  .  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:22:24
-   292  .  .  .  .  .  .  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   293  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:22:25
-   294  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
-   295  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   296  .  .  .  .  .  .  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:22:26
-   297  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   298  .  .  .  .  .  .  .  .  .  .  .  .  }
-   299  .  .  .  .  .  .  .  .  .  .  .  .  ClosePos: template_literal.tgo:22:27
-   300  .  .  .  .  .  .  .  .  .  .  .  }
-   301  .  .  .  .  .  .  .  .  .  .  }
-   302  .  .  .  .  .  .  .  .  .  .  Rbrace: template_literal.tgo:22:28
-   303  .  .  .  .  .  .  .  .  .  }
-   304  .  .  .  .  .  .  .  .  }
-   305  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:22:29
-   306  .  .  .  .  .  .  .  }
-   307  .  .  .  .  .  .  }
-   308  .  .  .  .  .  .  ClosePos: template_literal.tgo:22:30
-   309  .  .  .  .  .  }
-   310  .  .  .  .  .  10: *ast.TemplateLiteral {
-   311  .  .  .  .  .  .  OpenPos: template_literal.tgo:24:2
-   312  .  .  .  .  .  .  Strings: []string (len = 3) {
-   313  .  .  .  .  .  .  .  0: "\""
-   314  .  .  .  .  .  .  .  1: "test"
-   315  .  .  .  .  .  .  .  2: "\""
-   316  .  .  .  .  .  .  }
-   317  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 2) {
-   318  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   319  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:24:4
-   320  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   321  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:24:5
-   322  .  .  .  .  .  .  .  .  .  Name: "a"
-   323  .  .  .  .  .  .  .  .  }
-   324  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:24:6
-   325  .  .  .  .  .  .  .  }
-   326  .  .  .  .  .  .  .  1: *ast.TemplateLiteralPart {
-   327  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:24:12
-   328  .  .  .  .  .  .  .  .  X: *ast.FuncLit {
-   329  .  .  .  .  .  .  .  .  .  Type: *ast.FuncType {
-   330  .  .  .  .  .  .  .  .  .  .  Func: template_literal.tgo:24:13
-   331  .  .  .  .  .  .  .  .  .  .  Params: *ast.FieldList {
-   332  .  .  .  .  .  .  .  .  .  .  .  Opening: template_literal.tgo:24:17
-   333  .  .  .  .  .  .  .  .  .  .  .  List: []*ast.Field (len = 1) {
-   334  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Field {
-   335  .  .  .  .  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
-   336  .  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
-   337  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:24:18
-   338  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
-   339  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   340  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   341  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
-   342  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:24:20
-   343  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "string"
-   344  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   345  .  .  .  .  .  .  .  .  .  .  .  .  }
-   346  .  .  .  .  .  .  .  .  .  .  .  }
-   347  .  .  .  .  .  .  .  .  .  .  .  Closing: template_literal.tgo:24:26
-   348  .  .  .  .  .  .  .  .  .  .  }
-   349  .  .  .  .  .  .  .  .  .  }
-   350  .  .  .  .  .  .  .  .  .  Body: *ast.BlockStmt {
-   351  .  .  .  .  .  .  .  .  .  .  Lbrace: template_literal.tgo:24:28
-   352  .  .  .  .  .  .  .  .  .  .  List: []ast.Stmt (len = 1) {
-   353  .  .  .  .  .  .  .  .  .  .  .  0: *ast.TemplateLiteral {
-   354  .  .  .  .  .  .  .  .  .  .  .  .  OpenPos: template_literal.tgo:24:29
-   355  .  .  .  .  .  .  .  .  .  .  .  .  Strings: []string (len = 2) {
-   356  .  .  .  .  .  .  .  .  .  .  .  .  .  0: "\""
-   357  .  .  .  .  .  .  .  .  .  .  .  .  .  1: "\""
-   358  .  .  .  .  .  .  .  .  .  .  .  .  }
-   359  .  .  .  .  .  .  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 1) {
-   360  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   361  .  .  .  .  .  .  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:24:31
-   362  .  .  .  .  .  .  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   363  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:24:32
-   364  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
-   365  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   366  .  .  .  .  .  .  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:24:33
-   367  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   368  .  .  .  .  .  .  .  .  .  .  .  .  }
-   369  .  .  .  .  .  .  .  .  .  .  .  .  ClosePos: template_literal.tgo:24:34
-   370  .  .  .  .  .  .  .  .  .  .  .  }
-   371  .  .  .  .  .  .  .  .  .  .  }
-   372  .  .  .  .  .  .  .  .  .  .  Rbrace: template_literal.tgo:24:35
-   373  .  .  .  .  .  .  .  .  .  }
-   374  .  .  .  .  .  .  .  .  }
-   375  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:24:36
-   376  .  .  .  .  .  .  .  }
-   377  .  .  .  .  .  .  }
-   378  .  .  .  .  .  .  ClosePos: template_literal.tgo:24:37
-   379  .  .  .  .  .  }
-   380  .  .  .  .  .  11: *ast.TemplateLiteral {
-   381  .  .  .  .  .  .  OpenPos: template_literal.tgo:26:2
-   382  .  .  .  .  .  .  Strings: []string (len = 3) {
-   383  .  .  .  .  .  .  .  0: "\""
-   384  .  .  .  .  .  .  .  1: "test"
-   385  .  .  .  .  .  .  .  2: "\""
-   386  .  .  .  .  .  .  }
-   387  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 2) {
-   388  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   389  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:26:4
-   390  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   391  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:26:5
-   392  .  .  .  .  .  .  .  .  .  Name: "a"
-   393  .  .  .  .  .  .  .  .  }
-   394  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:26:6
-   395  .  .  .  .  .  .  .  }
-   396  .  .  .  .  .  .  .  1: *ast.TemplateLiteralPart {
-   397  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:26:12
-   398  .  .  .  .  .  .  .  .  X: *ast.FuncLit {
-   399  .  .  .  .  .  .  .  .  .  Type: *ast.FuncType {
-   400  .  .  .  .  .  .  .  .  .  .  Func: template_literal.tgo:26:13
-   401  .  .  .  .  .  .  .  .  .  .  Params: *ast.FieldList {
-   402  .  .  .  .  .  .  .  .  .  .  .  Opening: template_literal.tgo:26:17
-   403  .  .  .  .  .  .  .  .  .  .  .  List: []*ast.Field (len = 1) {
-   404  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Field {
-   405  .  .  .  .  .  .  .  .  .  .  .  .  .  Names: []*ast.Ident (len = 1) {
-   406  .  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.Ident {
-   407  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:26:18
-   408  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
-   409  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   410  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   411  .  .  .  .  .  .  .  .  .  .  .  .  .  Type: *ast.Ident {
-   412  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:26:20
-   413  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "string"
-   414  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   415  .  .  .  .  .  .  .  .  .  .  .  .  }
-   416  .  .  .  .  .  .  .  .  .  .  .  }
-   417  .  .  .  .  .  .  .  .  .  .  .  Closing: template_literal.tgo:26:26
-   418  .  .  .  .  .  .  .  .  .  .  }
-   419  .  .  .  .  .  .  .  .  .  }
-   420  .  .  .  .  .  .  .  .  .  Body: *ast.BlockStmt {
-   421  .  .  .  .  .  .  .  .  .  .  Lbrace: template_literal.tgo:26:28
-   422  .  .  .  .  .  .  .  .  .  .  List: []ast.Stmt (len = 1) {
-   423  .  .  .  .  .  .  .  .  .  .  .  0: *ast.TemplateLiteral {
-   424  .  .  .  .  .  .  .  .  .  .  .  .  OpenPos: template_literal.tgo:26:29
-   425  .  .  .  .  .  .  .  .  .  .  .  .  Strings: []string (len = 3) {
-   426  .  .  .  .  .  .  .  .  .  .  .  .  .  0: "\""
-   427  .  .  .  .  .  .  .  .  .  .  .  .  .  1: ""
-   428  .  .  .  .  .  .  .  .  .  .  .  .  .  2: "\""
-   429  .  .  .  .  .  .  .  .  .  .  .  .  }
-   430  .  .  .  .  .  .  .  .  .  .  .  .  Parts: []*ast.TemplateLiteralPart (len = 2) {
-   431  .  .  .  .  .  .  .  .  .  .  .  .  .  0: *ast.TemplateLiteralPart {
-   432  .  .  .  .  .  .  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:26:31
-   433  .  .  .  .  .  .  .  .  .  .  .  .  .  .  X: *ast.Ident {
-   434  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  NamePos: template_literal.tgo:26:32
-   435  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Name: "a"
-   436  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   437  .  .  .  .  .  .  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:26:33
-   438  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   439  .  .  .  .  .  .  .  .  .  .  .  .  .  1: *ast.TemplateLiteralPart {
-   440  .  .  .  .  .  .  .  .  .  .  .  .  .  .  LBrace: template_literal.tgo:26:35
-   441  .  .  .  .  .  .  .  .  .  .  .  .  .  .  X: *ast.BasicLit {
-   442  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ValuePos: template_literal.tgo:26:36
-   443  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Kind: STRING
-   444  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  Value: "\"\""
-   445  .  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   446  .  .  .  .  .  .  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:26:38
-   447  .  .  .  .  .  .  .  .  .  .  .  .  .  }
-   448  .  .  .  .  .  .  .  .  .  .  .  .  }
-   449  .  .  .  .  .  .  .  .  .  .  .  .  ClosePos: template_literal.tgo:26:39
-   450  .  .  .  .  .  .  .  .  .  .  .  }
-   451  .  .  .  .  .  .  .  .  .  .  }
-   452  .  .  .  .  .  .  .  .  .  .  Rbrace: template_literal.tgo:26:40
-   453  .  .  .  .  .  .  .  .  .  }
-   454  .  .  .  .  .  .  .  .  }
-   455  .  .  .  .  .  .  .  .  RBrace: template_literal.tgo:26:41
-   456  .  .  .  .  .  .  .  }
-   457  .  .  .  .  .  .  }
-   458  .  .  .  .  .  .  ClosePos: template_literal.tgo:26:42
-   459  .  .  .  .  .  }
-   460  .  .  .  .  }
-   461  .  .  .  .  Rbrace: template_literal.tgo:27:1
-   462  .  .  .  }
-   463  .  .  }
-   464  .  }
-   465  .  FileStart: template_literal.tgo:1:1
-   466  .  FileEnd: template_literal.tgo:27:3
-   467  .  GoVersion: ""
-   468  }
+*ast.File {
+   Package: template_literal.tgo:1:1
+   Name: *ast.Ident {
+      NamePos: template_literal.tgo:1:9
+      Name: "templates"
+   }
+   Decls: []ast.Decl (len = 1) {
+      0: *ast.FuncDecl {
+         Name: *ast.Ident {
+            NamePos: template_literal.tgo:3:6
+            Name: "template"
+         }
+         Type: *ast.FuncType {
+            Func: template_literal.tgo:3:1
+            Params: *ast.FieldList {
+               Opening: template_literal.tgo:3:14
+               List: []*ast.Field (len = 1) {
+                  0: *ast.Field {
+                     Names: []*ast.Ident (len = 2) {
+                        0: *ast.Ident {
+                           NamePos: template_literal.tgo:3:15
+                           Name: "a"
+                        }
+                        1: *ast.Ident {
+                           NamePos: template_literal.tgo:3:18
+                           Name: "b"
+                        }
+                     }
+                     Type: *ast.Ident {
+                        NamePos: template_literal.tgo:3:20
+                        Name: "string"
+                     }
+                  }
+               }
+               Closing: template_literal.tgo:3:26
+            }
+         }
+         Body: *ast.BlockStmt {
+            Lbrace: template_literal.tgo:3:28
+            List: []ast.Stmt (len = 12) {
+               0: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:4:2
+                  Strings: []string (len = 2) {
+                     0: "\""
+                     1: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 1) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:4:4
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:4:5
+                           Name: "b"
+                        }
+                        RBrace: template_literal.tgo:4:6
+                     }
+                  }
+                  ClosePos: template_literal.tgo:4:7
+               }
+               1: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:6:2
+                  Strings: []string (len = 2) {
+                     0: "\"a"
+                     1: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 1) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:6:5
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:6:6
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:6:7
+                     }
+                  }
+                  ClosePos: template_literal.tgo:6:8
+               }
+               2: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:8:2
+                  Strings: []string (len = 2) {
+                     0: "\""
+                     1: "a\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 1) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:8:4
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:8:5
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:8:6
+                     }
+                  }
+                  ClosePos: template_literal.tgo:8:8
+               }
+               3: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:10:2
+                  Strings: []string (len = 2) {
+                     0: "\"aa"
+                     1: "aa\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 1) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:10:6
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:10:7
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:10:8
+                     }
+                  }
+                  ClosePos: template_literal.tgo:10:11
+               }
+               4: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:12:2
+                  Strings: []string (len = 3) {
+                     0: "\"aa"
+                     1: "aa"
+                     2: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 2) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:12:6
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:12:7
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:12:8
+                     }
+                     1: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:12:12
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:12:13
+                           Name: "b"
+                        }
+                        RBrace: template_literal.tgo:12:14
+                     }
+                  }
+                  ClosePos: template_literal.tgo:12:15
+               }
+               5: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:14:2
+                  Strings: []string (len = 3) {
+                     0: "\"aa"
+                     1: "aa"
+                     2: "test\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 2) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:14:6
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:14:7
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:14:8
+                     }
+                     1: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:14:12
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:14:13
+                           Name: "b"
+                        }
+                        RBrace: template_literal.tgo:14:14
+                     }
+                  }
+                  ClosePos: template_literal.tgo:14:19
+               }
+               6: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:16:2
+                  Strings: []string (len = 3) {
+                     0: "\""
+                     1: ""
+                     2: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 2) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:16:4
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:16:5
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:16:6
+                     }
+                     1: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:16:8
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:16:9
+                           Name: "b"
+                        }
+                        RBrace: template_literal.tgo:16:10
+                     }
+                  }
+                  ClosePos: template_literal.tgo:16:11
+               }
+               7: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:18:2
+                  Strings: []string (len = 3) {
+                     0: "\""
+                     1: ""
+                     2: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 2) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:18:4
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:18:5
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:18:6
+                     }
+                     1: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:18:8
+                        X: *ast.BasicLit {
+                           ValuePos: template_literal.tgo:18:9
+                           Kind: STRING
+                           Value: "\"\""
+                        }
+                        RBrace: template_literal.tgo:18:11
+                     }
+                  }
+                  ClosePos: template_literal.tgo:18:12
+               }
+               8: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:20:2
+                  Strings: []string (len = 3) {
+                     0: "\""
+                     1: ""
+                     2: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 2) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:20:4
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:20:5
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:20:6
+                     }
+                     1: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:20:8
+                        X: *ast.BasicLit {
+                           ValuePos: template_literal.tgo:20:9
+                           Kind: STRING
+                           Value: "\"a\""
+                        }
+                        RBrace: template_literal.tgo:20:12
+                     }
+                  }
+                  ClosePos: template_literal.tgo:20:13
+               }
+               9: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:22:2
+                  Strings: []string (len = 2) {
+                     0: "\""
+                     1: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 1) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:22:4
+                        X: *ast.FuncLit {
+                           Type: *ast.FuncType {
+                              Func: template_literal.tgo:22:5
+                              Params: *ast.FieldList {
+                                 Opening: template_literal.tgo:22:10
+                                 List: []*ast.Field (len = 1) {
+                                    0: *ast.Field {
+                                       Names: []*ast.Ident (len = 1) {
+                                          0: *ast.Ident {
+                                             NamePos: template_literal.tgo:22:11
+                                             Name: "a"
+                                          }
+                                       }
+                                       Type: *ast.Ident {
+                                          NamePos: template_literal.tgo:22:13
+                                          Name: "string"
+                                       }
+                                    }
+                                 }
+                                 Closing: template_literal.tgo:22:19
+                              }
+                           }
+                           Body: *ast.BlockStmt {
+                              Lbrace: template_literal.tgo:22:21
+                              List: []ast.Stmt (len = 1) {
+                                 0: *ast.TemplateLiteral {
+                                    OpenPos: template_literal.tgo:22:22
+                                    Strings: []string (len = 2) {
+                                       0: "\""
+                                       1: "\""
+                                    }
+                                    Parts: []*ast.TemplateLiteralPart (len = 1) {
+                                       0: *ast.TemplateLiteralPart {
+                                          LBrace: template_literal.tgo:22:24
+                                          X: *ast.Ident {
+                                             NamePos: template_literal.tgo:22:25
+                                             Name: "a"
+                                          }
+                                          RBrace: template_literal.tgo:22:26
+                                       }
+                                    }
+                                    ClosePos: template_literal.tgo:22:27
+                                 }
+                              }
+                              Rbrace: template_literal.tgo:22:28
+                           }
+                        }
+                        RBrace: template_literal.tgo:22:29
+                     }
+                  }
+                  ClosePos: template_literal.tgo:22:30
+               }
+               10: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:24:2
+                  Strings: []string (len = 3) {
+                     0: "\""
+                     1: "test"
+                     2: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 2) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:24:4
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:24:5
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:24:6
+                     }
+                     1: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:24:12
+                        X: *ast.FuncLit {
+                           Type: *ast.FuncType {
+                              Func: template_literal.tgo:24:13
+                              Params: *ast.FieldList {
+                                 Opening: template_literal.tgo:24:17
+                                 List: []*ast.Field (len = 1) {
+                                    0: *ast.Field {
+                                       Names: []*ast.Ident (len = 1) {
+                                          0: *ast.Ident {
+                                             NamePos: template_literal.tgo:24:18
+                                             Name: "a"
+                                          }
+                                       }
+                                       Type: *ast.Ident {
+                                          NamePos: template_literal.tgo:24:20
+                                          Name: "string"
+                                       }
+                                    }
+                                 }
+                                 Closing: template_literal.tgo:24:26
+                              }
+                           }
+                           Body: *ast.BlockStmt {
+                              Lbrace: template_literal.tgo:24:28
+                              List: []ast.Stmt (len = 1) {
+                                 0: *ast.TemplateLiteral {
+                                    OpenPos: template_literal.tgo:24:29
+                                    Strings: []string (len = 2) {
+                                       0: "\""
+                                       1: "\""
+                                    }
+                                    Parts: []*ast.TemplateLiteralPart (len = 1) {
+                                       0: *ast.TemplateLiteralPart {
+                                          LBrace: template_literal.tgo:24:31
+                                          X: *ast.Ident {
+                                             NamePos: template_literal.tgo:24:32
+                                             Name: "a"
+                                          }
+                                          RBrace: template_literal.tgo:24:33
+                                       }
+                                    }
+                                    ClosePos: template_literal.tgo:24:34
+                                 }
+                              }
+                              Rbrace: template_literal.tgo:24:35
+                           }
+                        }
+                        RBrace: template_literal.tgo:24:36
+                     }
+                  }
+                  ClosePos: template_literal.tgo:24:37
+               }
+               11: *ast.TemplateLiteral {
+                  OpenPos: template_literal.tgo:26:2
+                  Strings: []string (len = 3) {
+                     0: "\""
+                     1: "test"
+                     2: "\""
+                  }
+                  Parts: []*ast.TemplateLiteralPart (len = 2) {
+                     0: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:26:4
+                        X: *ast.Ident {
+                           NamePos: template_literal.tgo:26:5
+                           Name: "a"
+                        }
+                        RBrace: template_literal.tgo:26:6
+                     }
+                     1: *ast.TemplateLiteralPart {
+                        LBrace: template_literal.tgo:26:12
+                        X: *ast.FuncLit {
+                           Type: *ast.FuncType {
+                              Func: template_literal.tgo:26:13
+                              Params: *ast.FieldList {
+                                 Opening: template_literal.tgo:26:17
+                                 List: []*ast.Field (len = 1) {
+                                    0: *ast.Field {
+                                       Names: []*ast.Ident (len = 1) {
+                                          0: *ast.Ident {
+                                             NamePos: template_literal.tgo:26:18
+                                             Name: "a"
+                                          }
+                                       }
+                                       Type: *ast.Ident {
+                                          NamePos: template_literal.tgo:26:20
+                                          Name: "string"
+                                       }
+                                    }
+                                 }
+                                 Closing: template_literal.tgo:26:26
+                              }
+                           }
+                           Body: *ast.BlockStmt {
+                              Lbrace: template_literal.tgo:26:28
+                              List: []ast.Stmt (len = 1) {
+                                 0: *ast.TemplateLiteral {
+                                    OpenPos: template_literal.tgo:26:29
+                                    Strings: []string (len = 3) {
+                                       0: "\""
+                                       1: ""
+                                       2: "\""
+                                    }
+                                    Parts: []*ast.TemplateLiteralPart (len = 2) {
+                                       0: *ast.TemplateLiteralPart {
+                                          LBrace: template_literal.tgo:26:31
+                                          X: *ast.Ident {
+                                             NamePos: template_literal.tgo:26:32
+                                             Name: "a"
+                                          }
+                                          RBrace: template_literal.tgo:26:33
+                                       }
+                                       1: *ast.TemplateLiteralPart {
+                                          LBrace: template_literal.tgo:26:35
+                                          X: *ast.BasicLit {
+                                             ValuePos: template_literal.tgo:26:36
+                                             Kind: STRING
+                                             Value: "\"\""
+                                          }
+                                          RBrace: template_literal.tgo:26:38
+                                       }
+                                    }
+                                    ClosePos: template_literal.tgo:26:39
+                                 }
+                              }
+                              Rbrace: template_literal.tgo:26:40
+                           }
+                        }
+                        RBrace: template_literal.tgo:26:41
+                     }
+                  }
+                  ClosePos: template_literal.tgo:26:42
+               }
+            }
+            Rbrace: template_literal.tgo:27:1
+         }
+      }
+   }
+   FileStart: template_literal.tgo:1:1
+   FileEnd: template_literal.tgo:27:3
+   GoVersion: ""
+}

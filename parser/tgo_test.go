@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"regexp"
 	"slices"
 	"strings"
 	"testing"
@@ -385,13 +386,12 @@ func TestTgoSyntax(t *testing.T) {
 				}
 			}
 
-			var b strings.Builder
-			ast.Fprint(&b, fs, f, ast.NotNilFilter)
+			got := printFileAST(fs, f)
 
 			expect, err := os.ReadFile(expectFileName)
 			if err != nil {
 				if errors.Is(err, os.ErrNotExist) {
-					if err := os.WriteFile(expectFileName, []byte(b.String()), 06660); err != nil {
+					if err := os.WriteFile(expectFileName, []byte(got), 06660); err != nil {
 						t.Fatal(err)
 					}
 					continue
@@ -399,7 +399,6 @@ func TestTgoSyntax(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			got := b.String()
 			if string(expect) != got {
 				t.Errorf("unexpected in %v", testFile)
 				d, err := gitDiff(t.TempDir(), string(expect), got)
@@ -409,7 +408,13 @@ func TestTgoSyntax(t *testing.T) {
 			}
 		}
 	}
+}
 
+func printFileAST(fset *token.FileSet, f *ast.File) string {
+	var b strings.Builder
+	ast.Fprint(&b, fset, f, ast.NotNilFilter)
+	got := regexp.MustCompile(`(?m)^\s*\d+  `).ReplaceAllString(b.String(), "") // remove line numbers
+	return regexp.MustCompile(`.  `).ReplaceAllString(got, "   ")               // change ".  " indent to "   "
 }
 
 func fuzzAddDir(f *testing.F, testdata string) {
