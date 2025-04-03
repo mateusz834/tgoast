@@ -2,10 +2,12 @@ package types_test
 
 import (
 	"maps"
+	"slices"
 	"strings"
 	"testing"
 
 	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/internal/types/errors"
 	"github.com/tgo-lang/lang/parser"
 	"github.com/tgo-lang/lang/token"
 	. "github.com/tgo-lang/lang/types"
@@ -387,5 +389,95 @@ func test() {
 	v, ok := infos.Types[basicLit]
 	if ok {
 		t.Fatalf("infos.Types[basicLit] = %v; want = <nil>", v)
+	}
+}
+
+func TestTgoInvalidSyntaxTreeTemplateLiteral(t *testing.T) {
+	cases := []struct {
+		name string
+		lit  ast.TemplateLiteral
+		errs []string
+	}{
+		{
+			name: "zero val",
+			lit:  ast.TemplateLiteral{},
+			errs: []string{
+				"(*ast.TemplateLiteral).Parts is empty",
+				"(*ast.TemplateLiteral).Strings is empty",
+			},
+		},
+		{
+			name: "zero parts",
+			lit:  ast.TemplateLiteral{Strings: []string{`"`, `"`}},
+			errs: []string{
+				"(*ast.TemplateLiteral).Parts is empty",
+				"(*ast.TemplateLiteral).Strings != len((*ast.TemplateLiteral).Parts)+1",
+			},
+		},
+		{
+			name: "zero strings",
+			lit:  ast.TemplateLiteral{Parts: []*ast.TemplateLiteralPart{{X: &ast.BasicLit{Kind: token.STRING, Value: `""`}}}},
+			errs: []string{
+				"(*ast.TemplateLiteral).Strings is empty",
+			},
+		},
+	}
+
+	const src = `package test
+
+import "github.com/mateusz834/tgo"
+
+func test(tgo.Ctx) error {
+	"\{1}"
+	<div @attr="\{1}"> </div>
+	return nil
+}
+`
+
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			fset := token.NewFileSet()
+			f, err := parser.ParseFile(fset, "test", src, parser.SkipObjectResolution|parser.ParseComments|parser.ParseTgo)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			ast.Inspect(f, func(n ast.Node) bool {
+				switch n := n.(type) {
+				case *ast.TemplateLiteral:
+					n.Strings = tt.lit.Strings
+					n.Parts = tt.lit.Parts
+				}
+				return true
+			})
+
+			errs := []string{}
+			cfg := Config{
+				Importer: defaultImporter(fset),
+				Error: func(err error) {
+					if c := readCode(err.(Error)); c != errors.InvalidSyntaxTree {
+						t.Errorf("unexpected error code: %v; want: %v", c, errors.InvalidSyntaxTree)
+					}
+					errs = append(errs, err.Error())
+				},
+			}
+
+			_, err = cfg.Check("path", fset, []*ast.File{f}, nil)
+			if err == nil {
+				t.Fatal("unexpected success")
+			}
+
+			want := slices.Concat(tt.errs, tt.errs)
+			if len(errs) != len(want) {
+				t.Fatalf("got = %v; want = %v", errs, want)
+			}
+
+			for i := range want {
+				got, want := errs[i], want[i]
+				if !strings.Contains(got, want) {
+					t.Fatalf("got = %v; want = %v", errs, want)
+				}
+			}
+		})
 	}
 }

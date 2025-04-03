@@ -425,6 +425,16 @@ L:
 }
 
 func (check *Checker) templateLiteral(v *ast.TemplateLiteral) {
+	if len(v.Parts) == 0 {
+		check.error(v, InvalidSyntaxTree, "(*ast.TemplateLiteral).Parts is empty")
+	}
+
+	if len(v.Strings) == 0 {
+		check.error(v, InvalidSyntaxTree, "(*ast.TemplateLiteral).Strings is empty")
+	} else if len(v.Strings) != len(v.Parts)+1 {
+		check.error(v, InvalidSyntaxTree, "(*ast.TemplateLiteral).Strings != len((*ast.TemplateLiteral).Parts)+1")
+	}
+
 	for _, v := range v.Parts {
 		var o operand
 		check.expr(nil, &o, v.X)
