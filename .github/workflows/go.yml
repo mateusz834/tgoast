@@ -2,7 +2,6 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -19,3 +18,6 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Test (default tgo mode)
+      run: go test -tags defaulttgo -v ./...

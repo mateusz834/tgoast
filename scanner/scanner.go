@@ -15,6 +15,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/tgo-lang/lang/internal/defaulttgo"
 	"github.com/tgo-lang/lang/token"
 )
 
@@ -109,6 +110,11 @@ type Mode uint
 const (
 	ScanComments    Mode = 1 << iota // return comments as COMMENT tokens
 	dontInsertSemis                  // do not automatically insert semicolons - for testing only
+
+)
+
+const (
+	ScanTgo Mode = 1 << 32
 )
 
 // Init prepares the scanner s to tokenize the text src by setting the
@@ -126,6 +132,10 @@ const (
 // Note that Init may call err if there is an error in the first character
 // of the file.
 func (s *Scanner) Init(file *token.File, src []byte, err ErrorHandler, mode Mode) {
+	if defaulttgo.Enabled {
+		mode |= ScanTgo
+	}
+
 	// Explicitly initialize all fields since a scanner may be reused.
 	if file.Size() != len(src) {
 		panic(fmt.Sprintf("file size (%d) does not match src len (%d)", file.Size(), len(src)))
@@ -665,7 +675,7 @@ func (s *Scanner) scanString() (token.Token, string) {
 			break
 		}
 		if ch == '\\' {
-			if s.ch == '{' {
+			if s.mode&ScanTgo != 0 && s.ch == '{' {
 				s.next()
 				return token.STRING_TEMPLATE, string(s.src[offs : s.offset-2])
 			}
@@ -938,7 +948,7 @@ scanAgain:
 			if s.ch == '-' {
 				s.next()
 				tok = token.ARROW
-			} else if s.ch == '/' && s.peek() != '/' && s.peek() != '*' {
+			} else if s.mode&ScanTgo != 0 && s.ch == '/' && s.peek() != '/' && s.peek() != '*' {
 				s.next()
 				tok = token.END_TAG
 			} else {
@@ -962,7 +972,11 @@ scanAgain:
 		case '~':
 			tok = token.TILDE
 		case '@':
-			tok = token.AT
+			if s.mode&ScanTgo != 0 {
+				tok = token.AT
+				break
+			}
+			fallthrough
 		default:
 			// next reports unexpected BOMs - don't repeat
 			if ch != bom {
@@ -991,6 +1005,9 @@ scanAgain:
 }
 
 func (s *Scanner) TemplateLiteralContinue() (pos token.Pos, tok token.Token, lit string) {
+	if s.mode&ScanTgo == 0 {
+		panic("invalid use of TemplateLiteralContinue in non-ScanTgo mode")
+	}
 	s.allowInsertSemiAfterGTR = false
 	s.prevGTR = false
 	s.templateLiteralContinue = true
@@ -1001,5 +1018,8 @@ func (s *Scanner) TemplateLiteralContinue() (pos token.Pos, tok token.Token, lit
 }
 
 func (s *Scanner) AllowInsertSemiAfterGTR() {
+	if s.mode&ScanTgo == 0 {
+		panic("invalid use of AllowInsertSemiAfterGTR in non-ScanTgo mode")
+	}
 	s.allowInsertSemiAfterGTR = true
 }

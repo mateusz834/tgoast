@@ -1080,8 +1080,6 @@ func (p *printer) expr1(expr ast.Expr, prec1, depth int) {
 		}
 		p.print(blank)
 		p.expr(x.Value)
-	case *ast.TemplateLiteralExpr:
-		p.templateLiteralExpr(x)
 	default:
 		panic("unreachable")
 	}
@@ -1542,14 +1540,18 @@ func (p *printer) stmt(stmt ast.Stmt, nextIsRBrace bool) {
 		p.expr(stripParens(s.X))
 		p.print(blank)
 		p.block(s.Body, 1)
-	case *ast.ElementBlockStmt:
-		p.elementBlockStmt(s)
+	case *ast.Element:
+		p.element(s)
 	case *ast.OpenTag:
 		p.opentag(s)
 	case *ast.EndTag:
 		p.endtag(s)
-	case *ast.AttributeStmt:
+	case *ast.Attribute:
 		p.attr(s)
+	case *ast.TemplateLiteral:
+		p.templateLiteral(s)
+	case *ast.Text:
+		p.text(s)
 	default:
 		panic("unreachable")
 	}
@@ -1891,13 +1893,10 @@ func (p *printer) funcBody(headerSize int, sep whiteSpace, b *ast.BlockStmt) {
 	p.level = 0
 
 	hasTgoNode := slices.ContainsFunc(b.List, func(n ast.Stmt) bool {
-		switch n := n.(type) {
-		case *ast.OpenTag, *ast.EndTag, *ast.ElementBlockStmt, *ast.AttributeStmt:
+		switch n.(type) {
+		case *ast.OpenTag, *ast.EndTag, *ast.Element,
+			*ast.Attribute, *ast.Text, *ast.TemplateLiteral:
 			return true
-		case *ast.ExprStmt:
-			x, isBasicLit := n.X.(*ast.BasicLit)
-			_, isTemplate := n.X.(*ast.TemplateLiteralExpr)
-			return (isBasicLit && x.Kind == token.STRING) || isTemplate
 		}
 		return false
 	})

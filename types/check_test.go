@@ -64,6 +64,10 @@ func parseFiles(t *testing.T, filenames []string, srcs [][]byte, mode parser.Mod
 	var files []*ast.File
 	var errlist []error
 	for i, filename := range filenames {
+		mode := mode
+		if filepath.Ext(filename) == ".tgo" {
+			mode |= parser.ParseTgo
+		}
 		file, err := parser.ParseFile(fset, filename, srcs[i], mode)
 		if file == nil {
 			t.Fatalf("%s: %s", filename, err)
@@ -227,7 +231,8 @@ func testFilesImpl(t *testing.T, filenames []string, srcs [][]byte, manual bool,
 	// collect expected errors
 	errmap := make(map[string]map[int][]comment)
 	for i, filename := range filenames {
-		if m := commentMap(srcs[i], regexp.MustCompile("^ ERRORx? ")); len(m) > 0 {
+		tgo := filepath.Ext(filename) == ".tgo"
+		if m := commentMap(srcs[i], tgo, regexp.MustCompile("^ ERRORx? ")); len(m) > 0 {
 			errmap[filename] = m
 		}
 	}

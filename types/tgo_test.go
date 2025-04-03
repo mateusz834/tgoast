@@ -2,51 +2,14 @@ package types_test
 
 import (
 	"maps"
+	"strings"
 	"testing"
 
 	"github.com/tgo-lang/lang/ast"
-	"github.com/tgo-lang/lang/importer"
-	"github.com/tgo-lang/lang/internal/tgoimporter"
 	"github.com/tgo-lang/lang/parser"
 	"github.com/tgo-lang/lang/token"
 	. "github.com/tgo-lang/lang/types"
 )
-
-func TestTgoTest(t *testing.T) {
-	const src = `package test
-
-import "github.com/mateusz834/tgo"
-
-func _(tgo.Ctx) error {
-	<div
-		@attr="value"
-	>
-		<div>
-			"\{"some string"}, \{123}"
-		</div>
-	</div>
-	return nil
-}
-`
-	fset := token.NewFileSet()
-
-	f, err := parser.ParseFile(fset, "test.tgo", src, parser.SkipObjectResolution|parser.ParseComments)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	cfg := Config{
-		Error: func(err error) {
-			t.Logf("err: %v\n", err)
-		},
-		Importer: &tgoimporter.TgoDefaultImporter{I: importer.Default().(ImporterFrom)},
-	}
-	p, err := cfg.Check("test", fset, []*ast.File{f}, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Log(p)
-}
 
 func TestTgo(t *testing.T) {
 	testDirFiles(t, "../internal/types/testdata/tgo", false)
@@ -80,7 +43,7 @@ func test(tgo.Ctx) error {
 `
 
 	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, "pkg.go", src, parser.SkipObjectResolution)
+	f, err := parser.ParseFile(fset, "pkg.go", src, parser.SkipObjectResolution|parser.ParseTgo)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,21 +57,21 @@ func test(tgo.Ctx) error {
 		Scopes:     map[ast.Node]*Scope{},
 	}
 
-	cfg := Config{Importer: &tgoimporter.TgoDefaultImporter{I: importer.Default().(ImporterFrom)}}
+	cfg := Config{Importer: defaultImporter(fset)}
 	pkg, err := cfg.Check("pkg", fset, []*ast.File{f}, &infos)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	fun := f.Decls[1].(*ast.FuncDecl)
-	article := fun.Body.List[0].(*ast.ElementBlockStmt)
-	div := article.Body[2].(*ast.ElementBlockStmt)
+	article := fun.Body.List[0].(*ast.Element)
+	div := article.Body[2].(*ast.Element)
 
-	articleOpenTagAttrTemplateLit := article.OpenTag.Body[1].(*ast.AttributeStmt).Value.(*ast.TemplateLiteralExpr)
-	articleTemplateLit := article.Body[1].(*ast.ExprStmt).X.(*ast.TemplateLiteralExpr)
-	divTemplateLit1 := div.Body[1].(*ast.ExprStmt).X.(*ast.TemplateLiteralExpr)
-	divTemplateLit2 := div.Body[2].(*ast.ExprStmt).X.(*ast.TemplateLiteralExpr)
-	divTemplateLit3 := div.Body[4].(*ast.ExprStmt).X.(*ast.TemplateLiteralExpr)
+	articleOpenTagAttrTemplateLit := article.OpenTag.Body[1].(*ast.Attribute).Value.(*ast.TemplateLiteral)
+	articleTemplateLit := article.Body[1].(*ast.TemplateLiteral)
+	divTemplateLit1 := div.Body[1].(*ast.TemplateLiteral)
+	divTemplateLit2 := div.Body[2].(*ast.TemplateLiteral)
+	divTemplateLit3 := div.Body[4].(*ast.TemplateLiteral)
 
 	t.Run("types", func(t *testing.T) {
 		wantTypes := map[ast.Expr]Type{
@@ -222,4 +185,207 @@ func test(tgo.Ctx) error {
 	})
 
 	_ = pkg
+}
+
+func TestTgoScopes(t *testing.T) {
+	const src = `package test
+
+import "github.com/mateusz834/tgo"
+
+func test(tgo.Ctx) error {
+	<div>
+		"test"
+	</div>
+	return nil
+}
+
+func test2(tgo.Ctx) error {
+	<br>
+	return nil
+}
+
+func test3(tgo.Ctx) error {
+	<div>
+		<br>
+		<span>
+			"test"
+			a2 := 2
+			_ = a2
+		</span>
+		a1 := 1
+		_ = a1
+	</div>
+	return nil
+}
+`
+
+	cases := []struct {
+		name  string
+		src   string
+		valid bool
+	}{
+		{"valid src", src, true},
+		{"non tgo funcs with tgo imported", strings.ReplaceAll(src, "(tgo.Ctx)", "()"), false},
+		{
+			"non tgo funcs tgo not imported",
+			strings.ReplaceAll(strings.ReplaceAll(src, "(tgo.Ctx)", "()"), `import "github.com/mateusz834/tgo"`, `import "invalid"`),
+			false,
+		},
+	}
+
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			fset := token.NewFileSet()
+			f, err := parser.ParseFile(fset, "test.tgo", tt.src, parser.SkipObjectResolution|parser.ParseTgo)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			cfg := Config{
+				Importer: defaultImporter(fset),
+				Error: func(err error) {
+					if tt.valid {
+						t.Fatal(err)
+					}
+				},
+			}
+			infos := Info{Scopes: make(map[ast.Node]*Scope)}
+			pkg, err := cfg.Check("test", fset, []*ast.File{f}, &infos)
+			if err != nil && tt.valid {
+				t.Fatal(err)
+			}
+
+			elements := []*ast.Element{
+				f.Decls[1].(*ast.FuncDecl).Body.List[0].(*ast.Element),
+				f.Decls[3].(*ast.FuncDecl).Body.List[0].(*ast.Element),
+				f.Decls[3].(*ast.FuncDecl).Body.List[0].(*ast.Element).Body[1].(*ast.Element),
+			}
+
+			fScope := pkg.Scope().Child(0)
+			if c := fScope.Child(0).Child(1); c != infos.Scopes[elements[0]] {
+				t.Errorf("fScope.Child(0).Child(1) = %v; want = %v", c, infos.Scopes[elements[0]])
+			}
+			if c := fScope.Child(2).Child(1); c != infos.Scopes[elements[1]] {
+				t.Errorf("fScope.Child(2).Child(1) = %v; want = %v", c, infos.Scopes[elements[1]])
+			}
+			if c := fScope.Child(2).Child(1).Child(2); c != infos.Scopes[elements[2]] {
+				t.Errorf("fScope.Child(2).Child(1).Child(2) = %v; want = %v", c, infos.Scopes[elements[2]])
+			}
+
+			if c := fScope.Child(0).Child(0); c != infos.Scopes[elements[0].OpenTag] {
+				t.Errorf("fScope.Child(0).Child(0) = %v; want = %v", c, infos.Scopes[elements[0].OpenTag])
+			}
+			if c := fScope.Child(2).Child(0); c != infos.Scopes[elements[1].OpenTag] {
+				t.Errorf("fScope.Child(2).Child(0) = %v; want = %v", c, infos.Scopes[elements[1].OpenTag])
+			}
+			if c := fScope.Child(2).Child(1).Child(1); c != infos.Scopes[elements[2].OpenTag] {
+				t.Errorf("fScope.Child(2).Child(1).Child(1) = %v; want = %v", c, infos.Scopes[elements[2].OpenTag])
+			}
+
+			tag := f.Decls[2].(*ast.FuncDecl).Body.List[0].(*ast.OpenTag)
+			if infos.Scopes[tag] == nil {
+				t.Error("infos.Scopes[tag] = nil")
+			}
+			if c := fScope.Child(1).Child(0); c != infos.Scopes[tag] {
+				t.Errorf("fScope.Child(1).Child(0) = %v; want = %v", c, infos.Scopes[tag])
+			}
+
+			tag2 := elements[1].Body[0].(*ast.OpenTag)
+			if infos.Scopes[tag2] == nil {
+				t.Error("infos.Scopes[tag2] = nil")
+			}
+			if c := fScope.Child(2).Child(1).Child(0); c != infos.Scopes[tag2] {
+				t.Errorf("fScope.Child(2).Child(1).Child(0) = %v; want = %v", c, infos.Scopes[tag2])
+			}
+
+			if infos.Scopes[elements[1]].Lookup("a1") == nil {
+				t.Errorf(`infos.Scopes[elements[1]].Lookup("a1") == nil`)
+			}
+			if infos.Scopes[elements[2]].Lookup("a2") == nil {
+				t.Errorf(`infos.Scopes[elements[2]].Lookup("a2") == nil`)
+			}
+		})
+	}
+}
+
+func TestTgoScopesInvalid(t *testing.T) {
+	const src = `package test
+
+import "github.com/mateusz834/tgo"
+
+func test(tgo.Ctx) error {
+	<br
+		{
+			<br>
+			<div
+				"test"
+			></div>
+		}
+	>
+	return nil
+}
+`
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, "test.tgo", src, parser.SkipObjectResolution|parser.ParseTgo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cfg := Config{
+		Importer: defaultImporter(fset),
+		Error:    func(err error) {},
+	}
+	infos := Info{Scopes: make(map[ast.Node]*Scope)}
+	_, err = cfg.Check("test", fset, []*ast.File{f}, &infos)
+	t.Log(err)
+	if err == nil {
+		t.Fatal("Check() did not fail with an error")
+	}
+
+	tag := f.Decls[1].(*ast.FuncDecl).Body.List[0].(*ast.OpenTag)
+	tag2 := tag.Body[0].(*ast.BlockStmt).List[0].(*ast.OpenTag)
+	element := tag.Body[0].(*ast.BlockStmt).List[1].(*ast.Element)
+
+	if infos.Scopes[tag] == nil {
+		t.Errorf("infos.Scopes[tag] = <nil>")
+	}
+	if infos.Scopes[tag2] == nil {
+		t.Errorf("infos.Scopes[tag2] = <nil>")
+	}
+	if infos.Scopes[element] == nil {
+		t.Errorf("infos.Scopes[element] = <nil>")
+	}
+	if infos.Scopes[element.OpenTag] == nil {
+		t.Errorf("infos.Scopes[element.OpenTag] = <nil>")
+	}
+}
+
+// This test checks that no type information is recorded for BasicLit in non-tgo mode,
+// we re-use such syntax for *ast.Text in tgo mode. Test just as an alert if something
+// changes upstream, so we know.
+func TestTgoBasicLit(t *testing.T) {
+	const src = `package test
+func test() {
+	"test"
+}
+`
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, "test.go", src, parser.SkipObjectResolution)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	basicLit := f.Decls[0].(*ast.FuncDecl).Body.List[0].(*ast.ExprStmt).X.(*ast.BasicLit)
+
+	infos := Info{Types: map[ast.Expr]TypeAndValue{}}
+	cfg := Config{}
+	_, err = cfg.Check("test", fset, []*ast.File{f}, &infos)
+	if err == nil {
+		t.Fatal("Check() did not fail with an error")
+	}
+
+	v, ok := infos.Types[basicLit]
+	if ok {
+		t.Fatalf("infos.Types[basicLit] = %v; want = <nil>", v)
+	}
 }

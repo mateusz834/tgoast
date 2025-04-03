@@ -7,6 +7,7 @@ package errors_test
 import (
 	"fmt"
 	"reflect"
+	"slices"
 	"strings"
 	"testing"
 
@@ -21,6 +22,16 @@ import (
 	. "github.com/tgo-lang/lang/types"
 )
 
+var tgoErrs = []string{
+	"MisplacedTemplateLiteral",
+	"MisplacedText",
+	"MisplacedAttribute",
+	"MisplacedTag",
+	"JumpOverEndTag",
+	"MisplacedReturn",
+	"InvalidTemplateLiteralType",
+}
+
 func TestErrorCodeExamples(t *testing.T) {
 	testenv.MustHaveGoBuild(t) // go command needed to resolve std .a files for importer.Default().
 
@@ -30,7 +41,7 @@ func TestErrorCodeExamples(t *testing.T) {
 			examples := strings.Split(doc, "Example:")
 			for i := 1; i < len(examples); i++ {
 				example := strings.TrimSpace(examples[i])
-				err := checkExample(t, example)
+				err := checkExample(t, name, example)
 				if err == nil {
 					t.Fatalf("no error in example #%d", i)
 				}
@@ -91,13 +102,17 @@ func readCode(err Error) int {
 	return int(v.FieldByName("go116code").Int())
 }
 
-func checkExample(t *testing.T, example string) error {
+func checkExample(t *testing.T, name, example string) error {
 	t.Helper()
 	fset := token.NewFileSet()
 	if !strings.HasPrefix(example, "package") {
 		example = "package p\n\n" + example
 	}
-	file, err := parser.ParseFile(fset, "example.go", example, 0)
+	var mode parser.Mode
+	if slices.Contains(tgoErrs, name) {
+		mode = parser.ParseTgo
+	}
+	file, err := parser.ParseFile(fset, "example.go", example, mode)
 	if err != nil {
 		t.Fatal(err)
 	}

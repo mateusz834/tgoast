@@ -21,8 +21,8 @@ func (check *Checker) isTerminating(s ast.Stmt, label string) bool {
 
 	case *ast.BadStmt, *ast.DeclStmt, *ast.EmptyStmt, *ast.SendStmt,
 		*ast.IncDecStmt, *ast.AssignStmt, *ast.GoStmt, *ast.DeferStmt,
-		*ast.RangeStmt, *ast.ElementBlockStmt, *ast.OpenTag, *ast.EndTag,
-		*ast.AttributeStmt:
+		*ast.RangeStmt, *ast.Element, *ast.OpenTag, *ast.EndTag,
+		*ast.Attribute, *ast.TemplateLiteral, *ast.Text:
 		// no chance
 
 	case *ast.LabeledStmt:
@@ -115,7 +115,7 @@ func hasBreak(s ast.Stmt, label string, implicit bool) bool {
 
 	case *ast.BadStmt, *ast.DeclStmt, *ast.EmptyStmt, *ast.ExprStmt,
 		*ast.SendStmt, *ast.IncDecStmt, *ast.AssignStmt, *ast.GoStmt,
-		*ast.DeferStmt, *ast.ReturnStmt, *ast.EndTag, *ast.AttributeStmt:
+		*ast.DeferStmt, *ast.ReturnStmt, *ast.EndTag, *ast.Attribute:
 		// no chance
 
 	case *ast.LabeledStmt:
@@ -170,7 +170,7 @@ func hasBreak(s ast.Stmt, label string, implicit bool) bool {
 		if label != "" && hasBreak(s.Body, label, false) {
 			return true
 		}
-	case *ast.ElementBlockStmt:
+	case *ast.Element:
 		return hasBreakList(s.Body, label, implicit) || hasBreakList(s.OpenTag.Body, label, implicit)
 	case *ast.OpenTag:
 		return hasBreakList(s.Body, label, implicit)

@@ -69,19 +69,50 @@ var errRx = regexp.MustCompile(`^/\* *ERROR *(HERE|AFTER)? *"([^"]*)" *\*/$`)
 
 // expectedErrors collects the regular expressions of ERROR comments found
 // in files and returns them as a map of error positions to error messages.
-func expectedErrors(fset *token.FileSet, filename string, src []byte) map[token.Pos]string {
+func expectedErrors(fset *token.FileSet, filename string, src []byte, parserMode Mode) map[token.Pos]string {
 	errors := make(map[token.Pos]string)
+
+	var tgo scanner.Mode
+	if parserMode&ParseTgo != 0 {
+		tgo = scanner.ScanTgo
+	}
 
 	var s scanner.Scanner
 	// file was parsed already - do not add it again to the file
 	// set otherwise the position information returned here will
 	// not match the position information collected by the parser
-	s.Init(getFile(fset, filename), src, nil, scanner.ScanComments)
+	s.Init(getFile(fset, filename), src, nil, scanner.ScanComments|tgo)
 	var prev token.Pos // position of last non-comment, non-semicolon token
 	var here token.Pos // position immediately after the token at position prev
 
+	depth := make([]int, 0, 16)
 	for {
-		pos, tok, lit := s.Scan()
+		var (
+			pos token.Pos
+			tok token.Token
+			lit string
+		)
+
+		if len(depth) != 0 && depth[len(depth)-1] == 0 {
+			depth = depth[:len(depth)-1]
+			pos, tok, lit = s.TemplateLiteralContinue()
+		} else {
+			pos, tok, lit = s.Scan()
+		}
+
+		switch tok {
+		case token.STRING_TEMPLATE:
+			depth = append(depth, 1)
+		case token.LBRACE:
+			if len(depth) != 0 {
+				depth[len(depth)-1]++
+			}
+		case token.RBRACE:
+			if len(depth) != 0 {
+				depth[len(depth)-1]--
+			}
+		}
+
 		switch tok {
 		case token.EOF:
 			return errors
@@ -176,7 +207,7 @@ func checkErrors(t *testing.T, filename string, input any, mode Mode, expectErro
 	if expectErrors {
 		// we are expecting the following errors
 		// (collect these after parsing a file so that it is found in the file set)
-		expected = expectedErrors(fset, filename, src)
+		expected = expectedErrors(fset, filename, src, mode)
 	}
 
 	// verify errors returned by the parser

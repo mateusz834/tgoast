@@ -43,7 +43,7 @@ func (p *printer) tagForceNewline(tagOpenPos, nameStartPos, nameEndPos, tagClose
 	return forceNewline
 }
 
-func (p *printer) elementBlockStmt(b *ast.ElementBlockStmt) {
+func (p *printer) element(b *ast.Element) {
 	p.opentag(b.OpenTag)
 	indent := 1
 	oneline := false
@@ -129,7 +129,7 @@ func (p *printer) endtag(b *ast.EndTag) {
 	p.inEndTag = false
 }
 
-func (p *printer) attr(a *ast.AttributeStmt) {
+func (p *printer) attr(a *ast.Attribute) {
 	p.setPos(a.StartPos)
 	p.print(token.AT)
 
@@ -140,11 +140,26 @@ func (p *printer) attr(a *ast.AttributeStmt) {
 		p.setPos(a.AssignPos)
 		p.print(token.ASSIGN)
 		p.setPos(a.Value.Pos())
-		p.expr(a.Value)
+		switch v := a.Value.(type) {
+		case *ast.TemplateLiteral:
+			p.templateLiteral(v)
+		case *ast.Text:
+			p.text(v)
+		default:
+			panic("unreachable")
+		}
 	}
 }
 
-func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
+func (p *printer) text(n *ast.Text) {
+	p.expr(&ast.BasicLit{
+		ValuePos: n.StartPos,
+		Kind:     token.STRING,
+		Value:    n.Text,
+	})
+}
+
+func (p *printer) templateLiteral(x *ast.TemplateLiteral) {
 	p.setPos(x.OpenPos)
 	p.print(x.Strings[0])
 	for i := range x.Parts {
@@ -160,7 +175,7 @@ func (p *printer) templateLiteralExpr(x *ast.TemplateLiteralExpr) {
 	}
 }
 
-func (p *printer) isOneline(b *ast.ElementBlockStmt) bool {
+func (p *printer) isOneline(b *ast.Element) bool {
 	if p.lineFor(b.OpenTag.Pos()) != p.lineFor(b.EndTag.End()) {
 		return false
 	}
@@ -173,17 +188,12 @@ func (p *printer) isOneline(b *ast.ElementBlockStmt) bool {
 		hasTagNodes := false
 		for _, v := range list {
 			switch v := v.(type) {
-			case *ast.ExprStmt:
-				switch v := v.X.(type) {
-				case *ast.BasicLit:
-					if v.Kind == token.STRING {
-						hasStringNodes = true
-						continue
-					}
-				case *ast.TemplateLiteralExpr:
-					hasStringNodes = true
-					continue
-				}
+			case *ast.Text:
+				hasStringNodes = true
+				continue
+			case *ast.TemplateLiteral:
+				hasStringNodes = true
+				continue
 			case *ast.OpenTag:
 				if len(v.Body) == 0 {
 					hasTagNodes = true
@@ -192,7 +202,7 @@ func (p *printer) isOneline(b *ast.ElementBlockStmt) bool {
 			case *ast.EndTag:
 				hasTagNodes = true
 				continue
-			case *ast.ElementBlockStmt:
+			case *ast.Element:
 				hasTagNodes = true
 				if len(v.OpenTag.Body) == 0 {
 					checkList(v.Body)

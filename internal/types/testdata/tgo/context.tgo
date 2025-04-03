@@ -5,7 +5,7 @@ import "github.com/mateusz834/tgo"
 func _() {
 	< /* ERROR "open tag is not allowed inside a non-tgo function" */ div>
 	</ /* ERROR "end tag is not allowed inside a non-tgo function" */ div>
-	"test" // ERROR `"test" (untyped string constant) is not used`
+	"test" // ERROR "text is not allowed inside a non-tgo function"
 	"\{ /* ERROR "template literal is not allowed inside a non-tgo function" */ "test"}"
 	< /* ERROR "open tag is not allowed inside a non-tgo function" */ div
 		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr="value"
@@ -18,7 +18,7 @@ func _() {
 var _ = func() {
 	< /* ERROR "open tag is not allowed inside a non-tgo function" */ div>
 	</ /* ERROR "end tag is not allowed inside a non-tgo function" */ div>
-	"test" // ERROR `"test" (untyped string constant) is not used`
+	"test" // ERROR "text is not allowed inside a non-tgo function"
 	"\{ /* ERROR "template literal is not allowed inside a non-tgo function" */ "test"}"
 	< /* ERROR "open tag is not allowed inside a non-tgo function" */ div
 		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr="value"
@@ -71,7 +71,7 @@ var _ = func(tgo.Ctx) error {
 
 func _(tgo.Ctx) error {
 	<div
-		"test" // ERROR `"test" (untyped string constant) is not used`
+		"test" // ERROR "text is not allowed inside of an tag"
 		"\{ /* ERROR "template literal inside of an tag" */ "test"}"
 	>
 	</div>
@@ -81,7 +81,7 @@ func _(tgo.Ctx) error {
 func _(tgo.Ctx) error {
 	<div>
 		<div
-			"test" // ERROR `"test" (untyped string constant) is not used`
+			"test" // ERROR "text is not allowed inside of an tag"
 			"\{ /* ERROR "template literal inside of an tag" */ "test"}"
 		>
 		</div>
@@ -131,7 +131,7 @@ func _(tgo.Ctx) error {
 func _(tgo.Ctx) error {
 	<div
 		{
-			< /* ERROR "tag is not allowed inside a tag" */ div>
+			< /* ERROR "open tag is not allowed inside a tag" */ div>
 			</ /* ERROR "end tag is not allowed inside a tag" */ div>
 		}
 	>

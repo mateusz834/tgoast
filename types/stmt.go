@@ -424,7 +424,7 @@ L:
 	return T
 }
 
-func (check *Checker) templateLiteralExpr(v *ast.TemplateLiteralExpr) {
+func (check *Checker) templateLiteral(v *ast.TemplateLiteral) {
 	for _, v := range v.Parts {
 		var o operand
 		check.expr(nil, &o, v.X)
@@ -482,17 +482,6 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		check.stmt(ctxt, s.Stmt)
 
 	case *ast.ExprStmt:
-		if v, ok := s.X.(*ast.TemplateLiteralExpr); ok {
-			if ctxt&inTgoFunc == 0 {
-				check.error(s, MisplacedTemplateLiteral, "template literal is not allowed inside a non-tgo function")
-			}
-			if ctxt&inOpenTag != 0 {
-				check.error(s, MisplacedTemplateLiteral, "template literal inside of an tag")
-			}
-			check.templateLiteralExpr(v)
-			return
-		}
-
 		// spec: "With the exception of specific built-in functions,
 		// function and method calls and receive operations can appear
 		// in statement context. Such statements may be parenthesized."
@@ -502,10 +491,6 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		var code Code
 		switch x.mode {
 		default:
-			if v, ok := s.X.(*ast.BasicLit); ok && v.Kind == token.STRING &&
-				ctxt&inTgoFunc != 0 && ctxt&inOpenTag == 0 {
-				return
-			}
 			if kind == statement {
 				return
 			}
@@ -945,18 +930,20 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		inner = breakOk | continueOk | (inner &^ (breakNotOkElementBlockStmt | continueNotOkElementBlockStmt | breakNotOkOpenTag | continueNotOkOpenTag))
 		check.rangeStmt(inner, s)
 
-	case *ast.ElementBlockStmt:
+	case *ast.Element:
 		check.stmt(inner, s.OpenTag)
-		check.openScope(s, "ElementBlockStmt")
+
+		check.openScope(s, "Element")
 		check.stmtList(inner|inElementBody|breakNotOkElementBlockStmt|continueNotOkElementBlockStmt, s.Body)
 		check.closeScope()
+
 		check.stmt(inner, s.EndTag)
 	case *ast.OpenTag:
 		if ctxt&inTgoFunc == 0 {
 			check.error(s, MisplacedTag, "open tag is not allowed inside a non-tgo function")
 		}
 		if ctxt&inOpenTag != 0 {
-			check.error(s, MisplacedTag, "tag is not allowed inside a tag")
+			check.error(s, MisplacedTag, "open tag is not allowed inside a tag")
 		}
 
 		check.openScope(s, "OpenTag")
@@ -970,7 +957,7 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 		if ctxt&inOpenTag != 0 {
 			check.error(s, MisplacedTag, "end tag is not allowed inside a tag")
 		}
-	case *ast.AttributeStmt:
+	case *ast.Attribute:
 		if ctxt&inTgoFunc == 0 {
 			check.error(s, MisplacedAttribute, "attribute is not allowed inside a non-tgo function")
 		}
@@ -978,15 +965,27 @@ func (check *Checker) stmt(ctxt stmtContext, s ast.Stmt) {
 			check.error(s, MisplacedAttribute, "attribute is not allowed outside a tag")
 		}
 		switch v := s.Value.(type) {
-		case *ast.TemplateLiteralExpr:
-			check.templateLiteralExpr(v)
-		case *ast.BasicLit:
-			if v.Kind != token.STRING {
-				check.error(s, InvalidSyntaxTree, "invalid TemplateLiteralExpr value")
-			}
-		case nil:
+		case *ast.TemplateLiteral:
+			check.templateLiteral(v)
+		case *ast.Text, nil:
+			// Ok
 		default:
-			check.error(s, InvalidSyntaxTree, "invalid TemplateLiteralExpr value")
+			check.error(s, InvalidSyntaxTree, "invalid (*ast.Attribute).Value")
+		}
+	case *ast.TemplateLiteral:
+		if ctxt&inTgoFunc == 0 {
+			check.error(s, MisplacedTemplateLiteral, "template literal is not allowed inside a non-tgo function")
+		}
+		if ctxt&inOpenTag != 0 {
+			check.error(s, MisplacedTemplateLiteral, "template literal inside of an tag")
+		}
+		check.templateLiteral(s)
+	case *ast.Text:
+		if ctxt&inTgoFunc == 0 {
+			check.error(s, MisplacedText, "text is not allowed inside a non-tgo function")
+		}
+		if ctxt&inOpenTag != 0 {
+			check.error(s, MisplacedText, "text is not allowed inside of an tag")
 		}
 	default:
 		check.error(s, InvalidSyntaxTree, "invalid statement")

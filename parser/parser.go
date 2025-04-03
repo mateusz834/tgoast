@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/tgo-lang/lang/ast"
+	"github.com/tgo-lang/lang/internal/defaulttgo"
 	"github.com/tgo-lang/lang/scanner"
 	"github.com/tgo-lang/lang/token"
 )
@@ -44,9 +45,10 @@ type parser struct {
 	goVersion   string            // minimum Go version found in //go:build comment
 
 	// Next token
-	pos token.Pos   // token position
-	tok token.Token // one token look-ahead
-	lit string      // token literal
+	pos         token.Pos            // token position
+	tok         token.Token          // one token look-ahead
+	lit         string               // token literal
+	templateLit *ast.TemplateLiteral // populated when tok == token.STRING_TEMPLATE.
 
 	// Error recovery
 	// (used to limit the number of calls to parser.advance
@@ -64,14 +66,22 @@ type parser struct {
 	// nestLev is used to track and limit the recursion depth
 	// during parsing.
 	nestLev int
-
-	templateLit []*ast.TemplateLiteralExpr
 }
 
 func (p *parser) init(file *token.File, src []byte, mode Mode) {
+	if defaulttgo.Enabled {
+		mode |= ParseTgo
+	}
+
 	p.file = file
 	eh := func(pos token.Position, msg string) { p.errors.Add(pos, msg) }
-	p.scanner.Init(p.file, src, eh, scanner.ScanComments)
+
+	scannerMode := scanner.ScanComments
+	if mode&ParseTgo != 0 {
+		scannerMode |= scanner.ScanTgo
+	}
+
+	p.scanner.Init(p.file, src, eh, scannerMode)
 
 	p.top = true
 	p.mode = mode
@@ -219,13 +229,9 @@ func (p *parser) consumeCommentGroup(n int) (comments *ast.CommentGroup, endline
 // Lead and line comments may be considered documentation that is
 // stored in the AST.
 func (p *parser) next() {
-	p.nextToken()
-	p.nextTgoTemplate()
-}
-
-func (p *parser) nextToken() {
 	p.leadComment = nil
 	p.lineComment = nil
+	p.templateLit = nil
 	prev := p.pos
 	p.next0()
 
@@ -255,6 +261,30 @@ func (p *parser) nextToken() {
 			// comment group, thus the last comment group is a lead comment.
 			p.leadComment = comment
 		}
+	}
+
+	// Parse string template literals here, to make an illusion to the rest of
+	// the parser that a string template is just a single token.
+	// This way callers of next do not have to consider string templates specially.
+	// This is especially important for callers that do not expect template literals,
+	// we have to properly parse such template literals too (even though they they are unexpected
+	// in some context, like variable assignment).
+	if p.tok == token.STRING_TEMPLATE {
+		// Preserve p.lineComment/p.leadComment values set by the comment handler above.
+		// With the current use of p.lineComment/p.leadComment it is not strictly necessary to preserve them,
+		// as all p.lineComment/p.leadComment access is preceded with an p.tok check and it is
+		// never a p.tok == token.STRING_TEMPLATE guard. But for correctness lets do so.
+		line := p.lineComment
+		lead := p.leadComment
+
+		pos := p.pos
+		p.templateLit = p.parseTemplateLiteral()
+		p.tok = token.STRING_TEMPLATE
+		p.pos = pos
+		p.lit = ""
+
+		p.lineComment = line
+		p.leadComment = lead
 	}
 }
 
@@ -1407,11 +1437,13 @@ func (p *parser) parseStmtList() (list []ast.Stmt) {
 		defer un(trace(p, "StatementList"))
 	}
 
-	for p.tok != token.CASE && p.tok != token.DEFAULT && p.tok != token.RBRACE && p.tok != token.GTR && p.tok != token.EOF {
+	for p.tok != token.CASE && p.tok != token.DEFAULT && p.tok != token.RBRACE && p.tok != token.EOF && (p.mode&ParseTgo == 0 || p.tok != token.GTR) {
 		list = append(list, p.parseStmt())
 	}
 
-	list = p.combineElemmentBlocks(list)
+	if p.mode&ParseTgo != 0 {
+		list = p.combineElemmentBlocks(list)
+	}
 
 	return
 }
@@ -2437,8 +2469,10 @@ func (p *parser) parseStmt() (s ast.Stmt) {
 		defer un(trace(p, "Statement"))
 	}
 
-	if s := p.parseTgoStmt(); s != nil {
-		return s
+	if p.mode&ParseTgo != 0 {
+		if s = p.parseTgoStmt(); s != nil {
+			return s
+		}
 	}
 
 	switch p.tok {
@@ -2454,15 +2488,36 @@ func (p *parser) parseStmt() (s ast.Stmt) {
 		// parsed by parseSimpleStmt - don't expect a semicolon after
 		// them
 		if _, isLabeledStmt := s.(*ast.LabeledStmt); !isLabeledStmt {
-			allowEndTag := false
-			if n, ok := s.(*ast.ExprStmt); ok {
-				x, isBasicLit := n.X.(*ast.BasicLit)
-				allowEndTag = isBasicLit && x.Kind == token.STRING
+			// Convert a s.(*ast.ExprStmt).X.(*ast.BasicLit) (with Kind == STRING) into
+			// an *ast.Text in tgo mode.
+			if n, ok := s.(*ast.ExprStmt); p.mode&ParseTgo != 0 && ok {
+				if n, ok := n.X.(*ast.BasicLit); ok && n.Kind == token.STRING {
+					s = &ast.Text{
+						StartPos: n.ValuePos,
+						Text:     n.Value,
+					}
+					p.expectSemiAllowEndTag()
+					break
+				}
 			}
-			if allowEndTag {
-				p.expectSemiAllowEndTag()
-			} else {
-				p.expectSemi()
+			p.expectSemi()
+		}
+
+		// Assert that in tgo mode it is not possible to reach here with (*ast.LabeledStmt).Stmt
+		// field set to a s.(*ast.ExprStmt).X.(*ast.BasicLit) with Kind == STRING.
+		if _, ok := s.(*ast.LabeledStmt); p.mode&ParseTgo != 0 && ok {
+			s := s
+			for {
+				if l, ok := s.(*ast.LabeledStmt); ok {
+					s = l.Stmt
+					continue
+				}
+				break
+			}
+			if n, ok := s.(*ast.ExprStmt); ok {
+				if n, ok := n.X.(*ast.BasicLit); ok && n.Kind == token.STRING {
+					panic("unreachable")
+				}
 			}
 		}
 	case token.GO:

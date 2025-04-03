@@ -84,7 +84,7 @@ func (p *parser) combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 
 					// TODO: if void element, then error.
 
-					var s ast.Stmt = &ast.ElementBlockStmt{
+					var s ast.Stmt = &ast.Element{
 						OpenTag: unlabeledOpenTag,
 						Body:    body,
 						EndTag:  unlabeledStmt,
@@ -122,18 +122,6 @@ func (p *parser) combineElemmentBlocks(list []ast.Stmt) (out []ast.Stmt) {
 	}
 	out = append(out, list[last:]...)
 	return
-}
-
-func (p *parser) nextTgoTemplate() {
-	if p.tok == token.STRING_TEMPLATE {
-		pos := p.pos
-		p.templateLit = append(p.templateLit, nil)
-		i := len(p.templateLit) - 1
-		p.templateLit[i] = p.parseTemplateLiteral()
-		p.tok = token.STRING_TEMPLATE
-		p.pos = pos
-		p.lit = ""
-	}
 }
 
 func (p *parser) parseTgoOpenTag() *ast.OpenTag {
@@ -234,15 +222,13 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 		// a semicolon may be omitted before a closing ">"
 		return &ast.EmptyStmt{Semicolon: p.pos, Implicit: true}
 	case token.STRING_TEMPLATE:
-		lit := p.templateLit[len(p.templateLit)-1]
-		p.templateLit = p.templateLit[:len(p.templateLit)-1]
+		lit := p.templateLit
 		if lit == nil {
-			// TODO: figure out if this can happen
 			panic("unreachable")
 		}
 		p.next()
 		p.expectSemiAllowEndTag()
-		return &ast.ExprStmt{X: lit}
+		return lit
 	case token.AT:
 		startPos := p.pos
 
@@ -254,41 +240,32 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 
 			p.next()
 
-			var val ast.Expr
+			var val ast.AttrValue
 			if p.tok == token.STRING {
-				val = &ast.BasicLit{
-					ValuePos: p.pos,
-					Kind:     p.tok,
-					Value:    p.lit,
+				val = &ast.Text{
+					StartPos: p.pos,
+					Text:     p.lit,
 				}
 				p.next()
 			} else if p.tok == token.STRING_TEMPLATE {
-				lit := p.templateLit[len(p.templateLit)-1]
-				p.templateLit = p.templateLit[:len(p.templateLit)-1]
-				if lit == nil {
+				val = p.templateLit
+				if p.templateLit == nil {
 					panic("unreachable")
 				}
-				val = lit
 				p.next()
 			} else {
 				p.expect(token.STRING)
-			}
-
-			endPos := assignPos
-			if val != nil {
-				endPos = val.End() - 1
 			}
 
 			if p.tok != token.AT && p.tok != token.GTR {
 				p.expectSemi()
 			}
 
-			return &ast.AttributeStmt{
+			return &ast.Attribute{
 				StartPos:  startPos,
 				AttrName:  ident,
 				AssignPos: assignPos,
 				Value:     val,
-				EndPos:    endPos,
 			}
 		}
 
@@ -296,10 +273,9 @@ func (p *parser) parseTgoStmt() (s ast.Stmt) {
 			p.expectSemi()
 		}
 
-		return &ast.AttributeStmt{
+		return &ast.Attribute{
 			StartPos: startPos,
 			AttrName: ident,
-			EndPos:   ident.End() - 1,
 		}
 	}
 
@@ -318,51 +294,46 @@ func (p *parser) parseTagStmtList() (list []ast.Stmt) {
 	return
 }
 
-func (p *parser) parseElementBlockStmtList() (list []ast.Stmt) {
-	if p.trace {
-		defer un(trace(p, "TagStatementList"))
-	}
+func (p *parser) parseTemplateLiteral() *ast.TemplateLiteral {
+	defer decNestLev(incNestLev(p))
+	assert(p.tok == token.STRING_TEMPLATE, "parseTemplateLiteral called with p.tok != token.STRING_TEMPLATE")
 
-	for p.tok != token.CASE && p.tok != token.DEFAULT && p.tok != token.END_TAG && p.tok != token.RBRACE && p.tok != token.EOF {
-		list = append(list, p.parseStmt())
-	}
-
-	return
-}
-
-func (p *parser) parseTemplateLiteral() *ast.TemplateLiteralExpr {
 	var (
 		startPos = p.pos
-		strings  = []string{p.lit}
-		parts    = []*ast.TemplateLiteralPart{}
-
-		closePos token.Pos
+		strings  []string
+		parts    []*ast.TemplateLiteralPart
 	)
 
-	for {
+	for p.tok == token.STRING_TEMPLATE {
+		strings = append(strings, p.lit)
 		lBracePos := token.Pos(int(p.pos) + len(p.lit) + 1)
+
 		p.next()
+		var expr ast.Expr
+		if p.tok == token.RBRACE {
+			p.errorExpected(p.pos, "operand")
+		} else {
+			expr = p.parseExpr()
+		}
+
 		parts = append(parts, &ast.TemplateLiteralPart{
 			LBrace: lBracePos,
-			X:      p.parseExpr(),
+			X:      expr,
 			RBrace: p.pos,
 		})
+
 		if p.tok != token.RBRACE {
 			p.errorExpected(p.pos, "'"+token.RBRACE.String()+"'")
 		}
+
 		p.pos, p.tok, p.lit = p.scanner.TemplateLiteralContinue()
-		strings = append(strings, p.lit)
-		if p.tok == token.STRING {
-			closePos = p.pos + token.Pos(len(p.lit)) - 1
-			break
-		}
 	}
 
-	return &ast.TemplateLiteralExpr{
+	return &ast.TemplateLiteral{
 		OpenPos:  startPos,
-		Strings:  strings,
+		Strings:  append(strings, p.lit),
 		Parts:    parts,
-		ClosePos: closePos,
+		ClosePos: p.pos + token.Pos(len(p.lit)) - 1,
 	}
 }
 

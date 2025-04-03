@@ -29,12 +29,17 @@ type comment struct {
 // (the matching comment appears at the beginning of the file), then the
 // recorded position is unknown (line, col = 0, 0).
 // If there are no matching comments, the result is nil.
-func commentMap(src []byte, rx *regexp.Regexp) (res map[int][]comment) {
+func commentMap(src []byte, tgo bool, rx *regexp.Regexp) (res map[int][]comment) {
 	fset := token.NewFileSet()
 	file := fset.AddFile("", -1, len(src))
 
+	var tgoMode scanner.Mode
+	if tgo {
+		tgoMode = scanner.ScanTgo
+	}
+
 	var s scanner.Scanner
-	s.Init(file, src, nil, scanner.ScanComments)
+	s.Init(file, src, nil, scanner.ScanComments|tgoMode)
 	var prev token.Pos // position of last non-comment, non-semicolon token
 
 	depth := make([]int, 0, 16)
@@ -55,6 +60,8 @@ func commentMap(src []byte, rx *regexp.Regexp) (res map[int][]comment) {
 		switch tok {
 		case token.EOF:
 			return
+		case token.STRING_TEMPLATE:
+			depth = append(depth, 1)
 		case token.LBRACE:
 			if len(depth) != 0 {
 				depth[len(depth)-1]++
@@ -63,8 +70,6 @@ func commentMap(src []byte, rx *regexp.Regexp) (res map[int][]comment) {
 			if len(depth) != 0 {
 				depth[len(depth)-1]--
 			}
-		case token.STRING_TEMPLATE:
-			depth = append(depth, 1)
 		case token.COMMENT:
 			if lit[1] == '*' {
 				lit = lit[:len(lit)-2] // strip trailing */
@@ -99,7 +104,7 @@ x /* ERROR "3:1" */                // ignore automatically inserted semicolon he
 	package /* ERROR "7:2" */  // indented with tab
         import  /* ERROR "8:9" */  // indented with blanks
 `
-	m := commentMap([]byte(src), regexp.MustCompile("^ ERROR "))
+	m := commentMap([]byte(src), false, regexp.MustCompile("^ ERROR "))
 	found := 0 // number of errors found
 	for line, errlist := range m {
 		for _, err := range errlist {

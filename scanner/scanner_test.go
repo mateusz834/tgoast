@@ -11,6 +11,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/tgo-lang/lang/internal/defaulttgo"
 	"github.com/tgo-lang/lang/token"
 )
 
@@ -668,14 +669,16 @@ func TestInit(t *testing.T) {
 }
 
 func TestStdErrorHandler(t *testing.T) {
-	const src = "$\n" + // illegal character, cause an error
-		"$ $\n" + // two errors on the same line
+	defaulttgo.ExpectDisabled(t)
+
+	const src = "@\n" + // illegal character, cause an error
+		"@ @\n" + // two errors on the same line
 		"//line File2:20\n" +
-		"$\n" + // different file, but same line
+		"@\n" + // different file, but same line
 		"//line File2:1\n" +
-		"$ $\n" + // same file, decreasing line number
+		"@ @\n" + // same file, decreasing line number
 		"//line File1:1\n" +
-		"$ $ $" // original file, line 1 again
+		"@ @ @" // original file, line 1 again
 
 	var list ErrorList
 	eh := func(pos token.Position, msg string) { list.Add(pos, msg) }
@@ -1124,79 +1127,4 @@ func TestNumbers(t *testing.T) {
 			t.Errorf("%q: got %s; want EOF", test.src, tok)
 		}
 	}
-}
-
-func TestTempalteLitearalTwoPartsSecondString(t *testing.T) {
-	const src = `"\{a}\{""}"`
-	var s Scanner
-	fs := token.NewFileSet()
-	s.Init(fs.AddFile("test", fs.Base(), len(src)), []byte(src), nil, 0)
-
-	wantNextToken := func(templateContinue bool, wantPos token.Pos, wantTok token.Token, wantLit string) {
-		t.Helper()
-		var (
-			pos token.Pos
-			tok token.Token
-			lit string
-			f   string
-		)
-		if templateContinue {
-			pos, tok, lit = s.TemplateLiteralContinue()
-			f = "TemplateLiteralContinue"
-		} else {
-			pos, tok, lit = s.Scan()
-			f = "Scan"
-		}
-		if pos != wantPos || tok != wantTok || lit != wantLit {
-			t.Errorf(
-				"s.%v() = (%v, %v, %q); want = (%v, %v, %q)",
-				f, pos, tok, lit, wantPos, wantTok, wantLit,
-			)
-		}
-	}
-
-	wantNextToken(false, 1, token.STRING_TEMPLATE, `"`)
-	wantNextToken(false, 4, token.IDENT, `a`)
-	wantNextToken(false, 5, token.RBRACE, ``)
-	wantNextToken(true, 6, token.STRING_TEMPLATE, ``)
-	wantNextToken(false, 8, token.STRING, `""`)
-	wantNextToken(false, 10, token.RBRACE, ``)
-	wantNextToken(true, 11, token.STRING, `"`)
-}
-
-func TestTempalteLitearalSemiInsertion(t *testing.T) {
-	const src = `"\{//test` + "\n" + `a}"` + "\n"
-	var s Scanner
-	fs := token.NewFileSet()
-	s.Init(fs.AddFile("test", fs.Base(), len(src)), []byte(src), nil, ScanComments)
-
-	wantNextToken := func(templateContinue bool, wantTok token.Token, wantLit string) {
-		t.Helper()
-		var (
-			pos token.Pos
-			tok token.Token
-			lit string
-			f   string
-		)
-		if templateContinue {
-			pos, tok, lit = s.TemplateLiteralContinue()
-			f = "TemplateLiteralContinue"
-		} else {
-			pos, tok, lit = s.Scan()
-			f = "Scan"
-		}
-		if tok != wantTok || lit != wantLit {
-			t.Errorf(
-				"s.%v() = (%v, %v, %q); want = (_, %v, %q)",
-				f, pos, tok, lit, wantTok, wantLit,
-			)
-		}
-	}
-
-	wantNextToken(false, token.STRING_TEMPLATE, `"`)
-	wantNextToken(false, token.COMMENT, `//test`)
-	wantNextToken(false, token.IDENT, `a`)
-	wantNextToken(false, token.RBRACE, ``)
-	wantNextToken(true, token.STRING, `"`)
-	wantNextToken(false, token.SEMICOLON, "\n")
 }

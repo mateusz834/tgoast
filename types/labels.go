@@ -307,7 +307,7 @@ func (check *Checker) blockBranches(all *Scope, parent *block, lstmt *ast.Labele
 		case *ast.RangeStmt:
 			stmtBranches(s.Body)
 
-		case *ast.ElementBlockStmt:
+		case *ast.Element:
 			stmtBranches(s.OpenTag)
 
 			escapingJmps := check.blockBranches(all, b, nil, s.Body, true)

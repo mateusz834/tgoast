@@ -20,7 +20,7 @@
     19  .  .  .  Body: *ast.BlockStmt {
     20  .  .  .  .  Lbrace: comment_in_tag.tgo:3:13
     21  .  .  .  .  List: []ast.Stmt (len = 3) {
-    22  .  .  .  .  .  0: *ast.ElementBlockStmt {
+    22  .  .  .  .  .  0: *ast.Element {
     23  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
     24  .  .  .  .  .  .  .  OpenPos: comment_in_tag.tgo:4:2
     25  .  .  .  .  .  .  .  Name: *ast.Ident {

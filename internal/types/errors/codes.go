@@ -1502,6 +1502,25 @@ const (
 	// }
 	MisplacedTemplateLiteral
 
+	// MisplacedText occurs when a text node is misplaced,
+	// either inside of an non-tgo func or inside of a tag.
+	//
+	// Example:
+	// func f() {
+	//		"test"
+	// }
+	//
+	// Example:
+	// import "github.com/mateusz834/tgo"
+	//
+	// func f(tgo.Ctx) error {
+	//		<div
+	//			"text"
+	// 		>
+	//		</div>
+	// }
+	MisplacedText
+
 	// MisplacedAttribute occurs when an attribute is misplaced,
 	// either inside of a non-tgo func or not inside of a tag.
 	//

@@ -32,7 +32,7 @@ func TestTgoSyntax(t *testing.T) {
 			}
 
 			fs := token.NewFileSet()
-			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments|parser.AllErrors)
+			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments|parser.AllErrors|parser.ParseTgo)
 			if f == nil || f.Doc == nil || f.Doc.List[0].Text != "// fmtWithErrors" {
 				if err != nil {
 					if v, ok := err.(scanner.ErrorList); ok {
@@ -124,7 +124,7 @@ func TestTgoFormattedIdempotent(t *testing.T) {
 			}
 
 			fs := token.NewFileSet()
-			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments|parser.AllErrors)
+			f, err := parser.ParseFile(fs, filepath.Base(testFile), content, parser.SkipObjectResolution|parser.ParseComments|parser.AllErrors|parser.ParseTgo)
 			if f == nil || f.Doc == nil || f.Doc.List[0].Text != "// fmtWithErrors" {
 				if err != nil {
 					if v, ok := err.(scanner.ErrorList); ok {
@@ -155,5 +155,48 @@ func TestTgoFormattedIdempotent(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestTgoPrintOneLineFunc(t *testing.T) {
+	cases := []struct {
+		name  string
+		src   string
+		fmted string
+		mode  parser.Mode
+	}{
+		{
+			name:  "non-tgo with BasicLit node",
+			src:   "package main\n\nfunc test() { \"test\" }\n",
+			fmted: "package main\n\nfunc test() { \"test\" }\n",
+			mode:  0,
+		},
+		{
+			name:  "tgo with Text node",
+			src:   "package main\n\nfunc test() { \"test\" }\n",
+			fmted: "package main\n\nfunc test() {\n\t\"test\"\n}\n",
+			mode:  parser.ParseTgo,
+		},
+	}
+
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			fset := token.NewFileSet()
+			f, err := parser.ParseFile(fset, "test", tt.src, parser.SkipObjectResolution|parser.ParseComments|tt.mode)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			var out strings.Builder
+			cfg := Config{Tabwidth: 8, Mode: UseSpaces | TabIndent}
+			if err := cfg.Fprint(&out, fset, f); err != nil {
+				t.Fatal(err)
+			}
+
+			got := out.String()
+			if got != tt.fmted {
+				t.Fatalf("got: %q; want: %q", got, tt.fmted)
+			}
+		})
 	}
 }

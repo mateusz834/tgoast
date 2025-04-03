@@ -56,6 +56,11 @@ const (
 	SpuriousErrors                                    // same as AllErrors, for backward-compatibility
 	SkipObjectResolution                              // skip deprecated identifier resolution; see ParseFile
 	AllErrors            = SpuriousErrors             // report all errors (not just the first 10 on different lines)
+
+)
+
+const (
+	ParseTgo Mode = 1 << 32
 )
 
 // ParseFile parses the source code of a single Go source file and returns
@@ -146,17 +151,48 @@ func ParseFile(fset *token.FileSet, filename string, src any, mode Mode) (f *ast
 // If the directory couldn't be read, a nil map and the respective error are
 // returned. If a parse error occurred, a non-nil but incomplete map and the
 // first error encountered are returned.
+//
+// When the [ParseTgo] bit is set in mode, files with a ".tgo" extension are also parsed.
+// For ".tgo" files, the [ParseTgo] bit remains set when passed to [ParseFile].
+// For ".go" files, the [ParseTgo] bit is cleared before being passed to [ParseFile].
+// In [ParseTgo] mode when directory contains both "file.go" and "file.tgo", the tgo
+// version is being parsed, while the ".go" one gets ignored.
 func ParseDir(fset *token.FileSet, path string, filter func(fs.FileInfo) bool, mode Mode) (pkgs map[string]*ast.Package, first error) {
 	list, err := os.ReadDir(path)
 	if err != nil {
 		return nil, err
 	}
 
+	var tgoFiles map[string]struct{}
+	if mode&ParseTgo != 0 {
+		tgoFiles = make(map[string]struct{})
+		for _, v := range list {
+			if v.IsDir() {
+				continue
+			}
+			ext := filepath.Ext(v.Name())
+			if ext == ".tgo" {
+				tgoFiles[strings.TrimSuffix(v.Name(), ".tgo")] = struct{}{}
+			}
+		}
+	}
+
 	pkgs = make(map[string]*ast.Package)
 	for _, d := range list {
-		if d.IsDir() || !strings.HasSuffix(d.Name(), ".go") {
+		if d.IsDir() || (!strings.HasSuffix(d.Name(), ".go") && (mode&ParseTgo == 0 || !strings.HasSuffix(d.Name(), ".tgo"))) {
 			continue
 		}
+
+		mode := mode
+		ext := filepath.Ext(d.Name())
+		if ext == ".go" {
+			// Ignore ".go" files, when file with the same name exists, but with an ".tgo" extension.
+			if _, ok := tgoFiles[strings.TrimSuffix(d.Name(), ".go")]; ok {
+				continue
+			}
+			mode = mode &^ ParseTgo // clear [ParseTgo] bit for .go files.
+		}
+
 		if filter != nil {
 			info, err := d.Info()
 			if err != nil {
@@ -244,6 +280,8 @@ func ParseExprFrom(fset *token.FileSet, filename string, src any, mode Mode) (ex
 // If syntax errors were found, the result is a partial AST (with [ast.Bad]* nodes
 // representing the fragments of erroneous source code). Multiple errors are
 // returned via a scanner.ErrorList which is sorted by source position.
+//
+// It does not parse tgo-nodes, for such cases use [ParseExprFrom] with [ParseTgo] mode.
 func ParseExpr(x string) (ast.Expr, error) {
 	return ParseExprFrom(token.NewFileSet(), "", []byte(x), 0)
 }

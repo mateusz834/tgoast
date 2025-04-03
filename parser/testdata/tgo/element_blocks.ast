@@ -20,7 +20,7 @@
     19  .  .  .  Body: *ast.BlockStmt {
     20  .  .  .  .  Lbrace: element_blocks.tgo:3:13
     21  .  .  .  .  List: []ast.Stmt (len = 1) {
-    22  .  .  .  .  .  0: *ast.ElementBlockStmt {
+    22  .  .  .  .  .  0: *ast.Element {
     23  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
     24  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:4:2
     25  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -128,7 +128,7 @@
    127  .  .  .  .  .  .  .  }
    128  .  .  .  .  .  .  }
    129  .  .  .  .  .  }
-   130  .  .  .  .  .  1: *ast.ElementBlockStmt {
+   130  .  .  .  .  .  1: *ast.Element {
    131  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    132  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:18:2
    133  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -165,7 +165,7 @@
    164  .  .  .  Body: *ast.BlockStmt {
    165  .  .  .  .  Lbrace: element_blocks.tgo:22:13
    166  .  .  .  .  List: []ast.Stmt (len = 1) {
-   167  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   167  .  .  .  .  .  0: *ast.Element {
    168  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    169  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:23:2
    170  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -221,7 +221,7 @@
    220  .  .  .  Body: *ast.BlockStmt {
    221  .  .  .  .  Lbrace: element_blocks.tgo:28:13
    222  .  .  .  .  List: []ast.Stmt (len = 2) {
-   223  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   223  .  .  .  .  .  0: *ast.Element {
    224  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    225  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:29:2
    226  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -451,7 +451,7 @@
    450  .  .  .  Body: *ast.BlockStmt {
    451  .  .  .  .  Lbrace: element_blocks.tgo:54:13
    452  .  .  .  .  List: []ast.Stmt (len = 1) {
-   453  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   453  .  .  .  .  .  0: *ast.Element {
    454  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    455  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:55:2
    456  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -515,7 +515,7 @@
    514  .  .  .  Body: *ast.BlockStmt {
    515  .  .  .  .  Lbrace: element_blocks.tgo:61:13
    516  .  .  .  .  List: []ast.Stmt (len = 1) {
-   517  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   517  .  .  .  .  .  0: *ast.Element {
    518  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    519  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:62:2
    520  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -579,7 +579,7 @@
    578  .  .  .  Body: *ast.BlockStmt {
    579  .  .  .  .  Lbrace: element_blocks.tgo:68:13
    580  .  .  .  .  List: []ast.Stmt (len = 1) {
-   581  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   581  .  .  .  .  .  0: *ast.Element {
    582  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    583  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:69:2
    584  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -660,7 +660,7 @@
    659  .  .  .  Body: *ast.BlockStmt {
    660  .  .  .  .  Lbrace: element_blocks.tgo:76:13
    661  .  .  .  .  List: []ast.Stmt (len = 1) {
-   662  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   662  .  .  .  .  .  0: *ast.Element {
    663  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    664  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:77:2
    665  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -687,7 +687,7 @@
    686  .  .  .  .  .  .  .  .  .  }
    687  .  .  .  .  .  .  .  .  }
    688  .  .  .  .  .  .  .  }
-   689  .  .  .  .  .  .  .  1: *ast.ElementBlockStmt {
+   689  .  .  .  .  .  .  .  1: *ast.Element {
    690  .  .  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    691  .  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:79:3
    692  .  .  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -753,7 +753,7 @@
    752  .  .  .  Body: *ast.BlockStmt {
    753  .  .  .  .  Lbrace: element_blocks.tgo:85:13
    754  .  .  .  .  List: []ast.Stmt (len = 1) {
-   755  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   755  .  .  .  .  .  0: *ast.Element {
    756  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    757  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:86:2
    758  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -780,7 +780,7 @@
    779  .  .  .  .  .  .  .  .  .  }
    780  .  .  .  .  .  .  .  .  }
    781  .  .  .  .  .  .  .  }
-   782  .  .  .  .  .  .  .  1: *ast.ElementBlockStmt {
+   782  .  .  .  .  .  .  .  1: *ast.Element {
    783  .  .  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    784  .  .  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:88:3
    785  .  .  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -846,7 +846,7 @@
    845  .  .  .  Body: *ast.BlockStmt {
    846  .  .  .  .  Lbrace: element_blocks.tgo:94:13
    847  .  .  .  .  List: []ast.Stmt (len = 1) {
-   848  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   848  .  .  .  .  .  0: *ast.Element {
    849  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    850  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:95:2
    851  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -893,7 +893,7 @@
    892  .  .  .  Body: *ast.BlockStmt {
    893  .  .  .  .  Lbrace: element_blocks.tgo:100:13
    894  .  .  .  .  List: []ast.Stmt (len = 1) {
-   895  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   895  .  .  .  .  .  0: *ast.Element {
    896  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    897  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:101:2
    898  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -957,7 +957,7 @@
    956  .  .  .  Body: *ast.BlockStmt {
    957  .  .  .  .  Lbrace: element_blocks.tgo:107:13
    958  .  .  .  .  List: []ast.Stmt (len = 1) {
-   959  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   959  .  .  .  .  .  0: *ast.Element {
    960  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    961  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:108:2
    962  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -1021,7 +1021,7 @@
   1020  .  .  .  Body: *ast.BlockStmt {
   1021  .  .  .  .  Lbrace: element_blocks.tgo:114:13
   1022  .  .  .  .  List: []ast.Stmt (len = 1) {
-  1023  .  .  .  .  .  0: *ast.ElementBlockStmt {
+  1023  .  .  .  .  .  0: *ast.Element {
   1024  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
   1025  .  .  .  .  .  .  .  OpenPos: element_blocks.tgo:115:2
   1026  .  .  .  .  .  .  .  Name: *ast.Ident {

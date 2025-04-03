@@ -312,6 +312,8 @@ type Info struct {
 	//     *ast.CommClause
 	//     *ast.ForStmt
 	//     *ast.RangeStmt
+	//     *ast.Element
+	//     *ast.OpenTag
 	//
 	Scopes map[ast.Node]*Scope
 

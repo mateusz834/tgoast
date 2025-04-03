@@ -4,7 +4,7 @@
      3  .  .  NamePos: labels.tgo:1:9
      4  .  .  Name: "templates"
      5  .  }
-     6  .  Decls: []ast.Decl (len = 3) {
+     6  .  Decls: []ast.Decl (len = 4) {
      7  .  .  0: *ast.FuncDecl {
      8  .  .  .  Name: *ast.Ident {
      9  .  .  .  .  NamePos: labels.tgo:3:6
@@ -56,7 +56,7 @@
     55  .  .  .  Body: *ast.BlockStmt {
     56  .  .  .  .  Lbrace: labels.tgo:9:10
     57  .  .  .  .  List: []ast.Stmt (len = 1) {
-    58  .  .  .  .  .  0: *ast.ElementBlockStmt {
+    58  .  .  .  .  .  0: *ast.Element {
     59  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
     60  .  .  .  .  .  .  .  OpenPos: labels.tgo:10:2
     61  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -106,7 +106,7 @@
    105  .  .  .  Body: *ast.BlockStmt {
    106  .  .  .  .  Lbrace: labels.tgo:15:10
    107  .  .  .  .  List: []ast.Stmt (len = 1) {
-   108  .  .  .  .  .  0: *ast.ElementBlockStmt {
+   108  .  .  .  .  .  0: *ast.Element {
    109  .  .  .  .  .  .  OpenTag: *ast.OpenTag {
    110  .  .  .  .  .  .  .  OpenPos: labels.tgo:16:2
    111  .  .  .  .  .  .  .  Name: *ast.Ident {
@@ -141,54 +141,102 @@
    140  .  .  .  .  Rbrace: labels.tgo:20:1
    141  .  .  .  }
    142  .  .  }
-   143  .  }
-   144  .  FileStart: labels.tgo:1:1
-   145  .  FileEnd: labels.tgo:31:5
-   146  .  Comments: []*ast.CommentGroup (len = 1) {
-   147  .  .  0: *ast.CommentGroup {
-   148  .  .  .  List: []*ast.Comment (len = 10) {
-   149  .  .  .  .  0: *ast.Comment {
-   150  .  .  .  .  .  Slash: labels.tgo:22:1
-   151  .  .  .  .  .  Text: "// TODO: test these cases (add tests with errors, maybe like the go/types framework):"
-   152  .  .  .  .  }
-   153  .  .  .  .  1: *ast.Comment {
-   154  .  .  .  .  .  Slash: labels.tgo:23:1
-   155  .  .  .  .  .  Text: "//func _() {"
-   156  .  .  .  .  }
-   157  .  .  .  .  2: *ast.Comment {
-   158  .  .  .  .  .  Slash: labels.tgo:24:1
-   159  .  .  .  .  .  Text: "//\tL:"
-   160  .  .  .  .  }
-   161  .  .  .  .  3: *ast.Comment {
-   162  .  .  .  .  .  Slash: labels.tgo:25:1
-   163  .  .  .  .  .  Text: "//\t</div>"
-   164  .  .  .  .  }
-   165  .  .  .  .  4: *ast.Comment {
-   166  .  .  .  .  .  Slash: labels.tgo:26:1
-   167  .  .  .  .  .  Text: "//}"
-   168  .  .  .  .  }
-   169  .  .  .  .  5: *ast.Comment {
-   170  .  .  .  .  .  Slash: labels.tgo:27:1
-   171  .  .  .  .  .  Text: "//"
-   172  .  .  .  .  }
-   173  .  .  .  .  6: *ast.Comment {
-   174  .  .  .  .  .  Slash: labels.tgo:28:1
-   175  .  .  .  .  .  Text: "//func _() {"
-   176  .  .  .  .  }
-   177  .  .  .  .  7: *ast.Comment {
-   178  .  .  .  .  .  Slash: labels.tgo:29:1
-   179  .  .  .  .  .  Text: "//\tL:"
-   180  .  .  .  .  }
-   181  .  .  .  .  8: *ast.Comment {
-   182  .  .  .  .  .  Slash: labels.tgo:30:1
-   183  .  .  .  .  .  Text: "//\t>"
-   184  .  .  .  .  }
-   185  .  .  .  .  9: *ast.Comment {
-   186  .  .  .  .  .  Slash: labels.tgo:31:1
-   187  .  .  .  .  .  Text: "//}"
-   188  .  .  .  .  }
+   143  .  .  3: *ast.FuncDecl {
+   144  .  .  .  Name: *ast.Ident {
+   145  .  .  .  .  NamePos: labels.tgo:22:6
+   146  .  .  .  .  Name: "_"
+   147  .  .  .  }
+   148  .  .  .  Type: *ast.FuncType {
+   149  .  .  .  .  Func: labels.tgo:22:1
+   150  .  .  .  .  Params: *ast.FieldList {
+   151  .  .  .  .  .  Opening: labels.tgo:22:7
+   152  .  .  .  .  .  Closing: labels.tgo:22:8
+   153  .  .  .  .  }
+   154  .  .  .  }
+   155  .  .  .  Body: *ast.BlockStmt {
+   156  .  .  .  .  Lbrace: labels.tgo:22:10
+   157  .  .  .  .  List: []ast.Stmt (len = 2) {
+   158  .  .  .  .  .  0: *ast.LabeledStmt {
+   159  .  .  .  .  .  .  Label: *ast.Ident {
+   160  .  .  .  .  .  .  .  NamePos: labels.tgo:23:1
+   161  .  .  .  .  .  .  .  Name: "L"
+   162  .  .  .  .  .  .  }
+   163  .  .  .  .  .  .  Colon: labels.tgo:23:2
+   164  .  .  .  .  .  .  Stmt: *ast.Text {
+   165  .  .  .  .  .  .  .  StartPos: labels.tgo:24:2
+   166  .  .  .  .  .  .  .  Text: "\"test\""
+   167  .  .  .  .  .  .  }
+   168  .  .  .  .  .  }
+   169  .  .  .  .  .  1: *ast.LabeledStmt {
+   170  .  .  .  .  .  .  Label: *ast.Ident {
+   171  .  .  .  .  .  .  .  NamePos: labels.tgo:26:1
+   172  .  .  .  .  .  .  .  Name: "L1"
+   173  .  .  .  .  .  .  }
+   174  .  .  .  .  .  .  Colon: labels.tgo:26:3
+   175  .  .  .  .  .  .  Stmt: *ast.LabeledStmt {
+   176  .  .  .  .  .  .  .  Label: *ast.Ident {
+   177  .  .  .  .  .  .  .  .  NamePos: labels.tgo:27:1
+   178  .  .  .  .  .  .  .  .  Name: "L2"
+   179  .  .  .  .  .  .  .  }
+   180  .  .  .  .  .  .  .  Colon: labels.tgo:27:3
+   181  .  .  .  .  .  .  .  Stmt: *ast.Text {
+   182  .  .  .  .  .  .  .  .  StartPos: labels.tgo:28:2
+   183  .  .  .  .  .  .  .  .  Text: "\"test\""
+   184  .  .  .  .  .  .  .  }
+   185  .  .  .  .  .  .  }
+   186  .  .  .  .  .  }
+   187  .  .  .  .  }
+   188  .  .  .  .  Rbrace: labels.tgo:29:1
    189  .  .  .  }
    190  .  .  }
    191  .  }
-   192  .  GoVersion: ""
-   193  }
+   192  .  FileStart: labels.tgo:1:1
+   193  .  FileEnd: labels.tgo:40:5
+   194  .  Comments: []*ast.CommentGroup (len = 1) {
+   195  .  .  0: *ast.CommentGroup {
+   196  .  .  .  List: []*ast.Comment (len = 10) {
+   197  .  .  .  .  0: *ast.Comment {
+   198  .  .  .  .  .  Slash: labels.tgo:31:1
+   199  .  .  .  .  .  Text: "// TODO: test these cases (add tests with errors, maybe like the go/types framework):"
+   200  .  .  .  .  }
+   201  .  .  .  .  1: *ast.Comment {
+   202  .  .  .  .  .  Slash: labels.tgo:32:1
+   203  .  .  .  .  .  Text: "//func _() {"
+   204  .  .  .  .  }
+   205  .  .  .  .  2: *ast.Comment {
+   206  .  .  .  .  .  Slash: labels.tgo:33:1
+   207  .  .  .  .  .  Text: "//\tL:"
+   208  .  .  .  .  }
+   209  .  .  .  .  3: *ast.Comment {
+   210  .  .  .  .  .  Slash: labels.tgo:34:1
+   211  .  .  .  .  .  Text: "//\t</div>"
+   212  .  .  .  .  }
+   213  .  .  .  .  4: *ast.Comment {
+   214  .  .  .  .  .  Slash: labels.tgo:35:1
+   215  .  .  .  .  .  Text: "//}"
+   216  .  .  .  .  }
+   217  .  .  .  .  5: *ast.Comment {
+   218  .  .  .  .  .  Slash: labels.tgo:36:1
+   219  .  .  .  .  .  Text: "//"
+   220  .  .  .  .  }
+   221  .  .  .  .  6: *ast.Comment {
+   222  .  .  .  .  .  Slash: labels.tgo:37:1
+   223  .  .  .  .  .  Text: "//func _() {"
+   224  .  .  .  .  }
+   225  .  .  .  .  7: *ast.Comment {
+   226  .  .  .  .  .  Slash: labels.tgo:38:1
+   227  .  .  .  .  .  Text: "//\tL:"
+   228  .  .  .  .  }
+   229  .  .  .  .  8: *ast.Comment {
+   230  .  .  .  .  .  Slash: labels.tgo:39:1
+   231  .  .  .  .  .  Text: "//\t>"
+   232  .  .  .  .  }
+   233  .  .  .  .  9: *ast.Comment {
+   234  .  .  .  .  .  Slash: labels.tgo:40:1
+   235  .  .  .  .  .  Text: "//}"
+   236  .  .  .  .  }
+   237  .  .  .  }
+   238  .  .  }
+   239  .  }
+   240  .  GoVersion: ""
+   241  }

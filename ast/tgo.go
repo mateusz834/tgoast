@@ -6,39 +6,41 @@ import (
 
 func walkTgo(v Visitor, node Node) bool {
 	switch n := node.(type) {
-	case *ElementBlockStmt:
+	case *Element:
 		Walk(v, n.OpenTag)
 		walkList(v, n.Body)
 		Walk(v, n.EndTag)
-		return true
 	case *OpenTag:
 		Walk(v, n.Name)
 		walkList(v, n.Body)
-		return true
 	case *EndTag:
 		Walk(v, n.Name)
-		return true
-	case *AttributeStmt:
+	case *Attribute:
 		Walk(v, n.AttrName)
 		if n.Value != nil {
 			Walk(v, n.Value)
 		}
-		return true
-	case *TemplateLiteralExpr:
-		for _, x := range n.Parts {
-			Walk(v, x)
-		}
-		return true
+	case *TemplateLiteral:
+		walkList(v, n.Parts)
 	case *TemplateLiteralPart:
 		Walk(v, n.X)
-		return true
+	case *Text:
 	default:
 		return false
 	}
+	return true
 }
 
+type AttrValue interface {
+	Node
+	attrVal()
+}
+
+func (*Text) attrVal()            {}
+func (*TemplateLiteral) attrVal() {}
+
 type (
-	ElementBlockStmt struct {
+	Element struct {
 		OpenTag *OpenTag
 		Body    []Stmt
 		EndTag  *EndTag
@@ -57,46 +59,59 @@ type (
 		ClosePos token.Pos // position of the ">" sign.
 	}
 
-	AttributeStmt struct {
-		StartPos  token.Pos // positon of the "@" sign
-		AttrName  Expr      // *Ident
-		AssignPos token.Pos // positon of the "=" sign, might be token.NoPos.
-		Value     Expr      // not nil only when AssignPos != token.NoPos
-		EndPos    token.Pos
+	Attribute struct {
+		StartPos  token.Pos // position of the "@" sign
+		AttrName  *Ident
+		AssignPos token.Pos // position of the "=" sign, might be token.NoPos.
+		Value     AttrValue // not nil only when AssignPos != token.NoPos
+	}
+
+	TemplateLiteral struct {
+		OpenPos  token.Pos // position of the oppening '"'.
+		Strings  []string
+		Parts    []*TemplateLiteralPart
+		ClosePos token.Pos // position of the closing '"'
+	}
+
+	TemplateLiteralPart struct {
+		LBrace token.Pos
+		X      Expr
+		RBrace token.Pos
+	}
+
+	Text struct {
+		StartPos token.Pos
+		Text     string
 	}
 )
 
-func (s *OpenTag) Pos() token.Pos          { return s.OpenPos }
-func (s *EndTag) Pos() token.Pos           { return s.OpenPos }
-func (s *ElementBlockStmt) Pos() token.Pos { return s.OpenTag.Pos() }
-func (s *AttributeStmt) Pos() token.Pos    { return s.StartPos }
+func (n *Element) Pos() token.Pos             { return n.OpenTag.Pos() }
+func (n *OpenTag) Pos() token.Pos             { return n.OpenPos }
+func (n *EndTag) Pos() token.Pos              { return n.OpenPos }
+func (n *Attribute) Pos() token.Pos           { return n.StartPos }
+func (n *TemplateLiteral) Pos() token.Pos     { return n.OpenPos }
+func (n *TemplateLiteralPart) Pos() token.Pos { return n.LBrace }
+func (n *Text) Pos() token.Pos                { return n.StartPos }
 
-func (s *OpenTag) End() token.Pos          { return s.ClosePos + 1 }
-func (s *EndTag) End() token.Pos           { return s.ClosePos + 1 }
-func (s *ElementBlockStmt) End() token.Pos { return s.EndTag.End() }
-func (s *AttributeStmt) End() token.Pos    { return s.EndPos + 1 }
-
-func (s *OpenTag) stmtNode()          {}
-func (s *EndTag) stmtNode()           {}
-func (s *ElementBlockStmt) stmtNode() {}
-func (s *AttributeStmt) stmtNode()    {}
-
-type TemplateLiteralExpr struct {
-	OpenPos  token.Pos // positon of the oppening '"'.
-	Strings  []string
-	Parts    []*TemplateLiteralPart
-	ClosePos token.Pos // position of the closing '"'
+func (n *Element) End() token.Pos { return n.EndTag.End() }
+func (n *OpenTag) End() token.Pos { return n.ClosePos + 1 }
+func (n *EndTag) End() token.Pos  { return n.ClosePos + 1 }
+func (n *Attribute) End() token.Pos {
+	if n.Value != nil {
+		return n.Value.End()
+	}
+	if n.AttrName != nil {
+		return n.AttrName.End()
+	}
+	return n.StartPos + 1
 }
+func (n *TemplateLiteral) End() token.Pos     { return n.ClosePos + 1 }
+func (n *TemplateLiteralPart) End() token.Pos { return n.RBrace + 1 }
+func (n *Text) End() token.Pos                { return token.Pos(int(n.StartPos) + len(n.Text)) }
 
-func (s *TemplateLiteralExpr) Pos() token.Pos { return s.OpenPos }
-func (s *TemplateLiteralExpr) End() token.Pos { return s.ClosePos + 1 }
-func (s *TemplateLiteralExpr) exprNode()      {}
-
-type TemplateLiteralPart struct {
-	LBrace token.Pos
-	X      Expr
-	RBrace token.Pos
-}
-
-func (s *TemplateLiteralPart) Pos() token.Pos { return s.LBrace }
-func (s *TemplateLiteralPart) End() token.Pos { return s.RBrace + 1 }
+func (*Element) stmtNode()         {}
+func (*OpenTag) stmtNode()         {}
+func (*EndTag) stmtNode()          {}
+func (*Attribute) stmtNode()       {}
+func (*TemplateLiteral) stmtNode() {}
+func (*Text) stmtNode()            {}

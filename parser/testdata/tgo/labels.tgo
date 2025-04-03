@@ -19,6 +19,15 @@ func _() {
 	</div>
 }
 
+func _() {
+L:
+	"test"
+
+L1:
+L2:
+	"test"
+}
+
 // TODO: test these cases (add tests with errors, maybe like the go/types framework):
 //func _() {
 //	L:
