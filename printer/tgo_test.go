@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/tgo-lang/lang/ast"
 	"github.com/tgo-lang/lang/parser"
 	"github.com/tgo-lang/lang/scanner"
 	"github.com/tgo-lang/lang/token"
@@ -198,5 +199,22 @@ func TestTgoPrintOneLineFunc(t *testing.T) {
 				t.Fatalf("got: %q; want: %q", got, tt.fmted)
 			}
 		})
+	}
+}
+
+func TestTgoPrintAttributeNoAssignPos(t *testing.T) {
+	attr := &ast.Attribute{
+		AttrName:  ast.NewIdent("attr"),
+		AssignPos: token.NoPos, // zero val
+		Value:     &ast.Text{Text: `"test"`},
+	}
+	var b strings.Builder
+	if err := Fprint(&b, token.NewFileSet(), attr); err != nil {
+		t.Fatal(err)
+	}
+
+	const want = `@attr="test"`
+	if b.String() != want {
+		t.Fatalf("got = %q; want = %q", b.String(), want)
 	}
 }

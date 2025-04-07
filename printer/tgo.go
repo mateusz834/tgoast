@@ -136,7 +136,7 @@ func (p *printer) attr(a *ast.Attribute) {
 	p.setPos(a.AttrName.Pos())
 	p.print(a.AttrName)
 
-	if a.AssignPos != token.NoPos {
+	if a.Value != nil {
 		p.setPos(a.AssignPos)
 		p.print(token.ASSIGN)
 		p.setPos(a.Value.Pos())
