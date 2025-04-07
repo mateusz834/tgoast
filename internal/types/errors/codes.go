@@ -1482,7 +1482,10 @@ const (
 	// errors. The solution is to rebuild the application with a
 	// newer Go release.
 	TooNew
+)
 
+// Errors returned for tgo files.
+const (
 	// MisplacedTemplateLiteral occurs when a template literal
 	// is misplaced, either inside of an non-tgo func or inside of a tag.
 	//
@@ -1500,7 +1503,7 @@ const (
 	// 		>
 	//		</div>
 	// }
-	MisplacedTemplateLiteral
+	MisplacedTemplateLiteral Code = 255 - iota
 
 	// MisplacedText occurs when a text node is misplaced,
 	// either inside of an non-tgo func or inside of a tag.

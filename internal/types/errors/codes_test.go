@@ -212,3 +212,14 @@ func TestErrorCodeStyle(t *testing.T) {
 		fmt.Printf("max length: %d (%s)\n", len(longestName), longestName)
 	}
 }
+
+// Make sure that our "tgo" error codes do not conflict with the upstream ones.
+func TestErrorCodeUnique(t *testing.T) {
+	codes := make(map[int]bool)
+	walkCodes(t, func(s string, i int, vs *ast.ValueSpec) {
+		if codes[i] {
+			t.Errorf("duplicate code found: %v", i)
+		}
+		codes[i] = true
+	})
+}
