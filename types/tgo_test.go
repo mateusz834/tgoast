@@ -611,3 +611,110 @@ func test() {
 		}
 	}
 }
+
+// As of writing of this test i am not entirely sure how in go/types
+// the "incremental" API is expected to work: see https://go.dev/issue/20124
+// But this test just proves that the tgo runtime is kept in the checker and
+// next calls to Files() have the tgo runtime avail.
+// This is related to [TestTgoErrorsRuntimeImportedInDifferentFile] just so that the behaviour is consistent.
+func TestTgoCheckerReuseTemplateLit(t *testing.T) {
+	errs := []string{}
+	cfg := Config{
+		Importer: defaultImporter(fset),
+		Error: func(err error) {
+			errs = append(errs, err.(Error).Msg)
+		},
+	}
+
+	fset := token.NewFileSet()
+	c := NewChecker(&cfg, fset, NewPackage("", ""), nil)
+
+	const src = `package test; import "github.com/mateusz834/tgo"; var fakeUse tgo.Ctx`
+	f, err := parser.ParseFile(fset, "file.go", src, parser.SkipObjectResolution|parser.ParseComments)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const src2 = `package test; func test2() { "\{1.1}" }`
+	f2, err := parser.ParseFile(fset, "file2.go", src2, parser.SkipObjectResolution|parser.ParseComments|parser.ParseTgo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if err := c.Files([]*ast.File{f}); err != nil {
+		t.Errorf("c.Files(f) = %v; want = <nil>", err)
+	}
+
+	if err := c.Files([]*ast.File{f2}); err == nil {
+		t.Errorf("c.Files(f2) = <nil>")
+	}
+
+	wantErrs := []string{
+		"template literal is not allowed inside a non-tgo function",
+		"float64 does not satisfy tgo.DynamicWriteAllowed (float64 missing in string | github.com/mateusz834/tgo.UnsafeHTML | int | uint | rune)",
+	}
+	if !slices.Equal(wantErrs, errs) {
+		t.Fatalf("got errors = %v; want = %v", errs, wantErrs)
+	}
+}
+
+// This test makes sure that the "incremental" API, preserves imports
+// between calls to Files, as we in the tgo-mode compare few types
+// based on the pointer identity.
+func TestTgoCheckerReuse(t *testing.T) {
+	errs := []string{}
+	cfg := Config{
+		Importer: &tgoImportedOnceTestImporter{t: t, i: defaultImporter(fset).(ImporterFrom)},
+		Error: func(err error) {
+			errs = append(errs, err.(Error).Msg)
+		},
+	}
+
+	fset := token.NewFileSet()
+	c := NewChecker(&cfg, fset, NewPackage("", ""), nil)
+
+	const src = `package test; import "github.com/mateusz834/tgo"; var fakeUse tgo.Ctx`
+	f, err := parser.ParseFile(fset, "file.go", src, parser.SkipObjectResolution|parser.ParseComments)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	const src2 = `package test; import "github.com/mateusz834/tgo"; func test2(tgo.Ctx) tgo.Error { "text"; return nil }`
+	f2, err := parser.ParseFile(fset, "file2.go", src2, parser.SkipObjectResolution|parser.ParseComments|parser.ParseTgo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if err := c.Files([]*ast.File{f}); err != nil {
+		t.Errorf("c.Files(f) = %v; want = <nil>", err)
+	}
+
+	if err := c.Files([]*ast.File{f2}); err != nil {
+		t.Errorf("c.Files(f) = %v; want = <nil>", err)
+	}
+}
+
+type tgoImportedOnceTestImporter struct {
+	t           *testing.T
+	i           ImporterFrom
+	tgoImported bool
+}
+
+func (f *tgoImportedOnceTestImporter) handleImport(path string) {
+	if f.tgoImported {
+		f.t.Errorf("tgo package imported twice")
+	}
+	if path == "github.com/mateusz834/tgo" {
+		f.tgoImported = true
+	}
+}
+
+func (f *tgoImportedOnceTestImporter) Import(path string) (*Package, error) {
+	f.handleImport(path)
+	return f.i.Import(path)
+}
+
+func (f *tgoImportedOnceTestImporter) ImportFrom(path, dir string, mode ImportMode) (*Package, error) {
+	f.handleImport(path)
+	return f.i.ImportFrom(path, dir, mode)
+}
