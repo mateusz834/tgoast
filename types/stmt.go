@@ -439,25 +439,35 @@ func (check *Checker) templateLiteral(v *ast.TemplateLiteral) {
 		var o operand
 		check.expr(nil, &o, v.X)
 
-		// TODO: what if it is nil?
-		if check.tgoDynamicWriteAllowed != nil {
-			tp := NewTypeParam(NewTypeName(v.X.Pos(), check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
-			err := check.newError(InvalidTemplateLiteralType)
-			targs := check.infer(v.X, []*TypeParam{tp}, nil, NewTuple(NewVar(v.X.Pos(), check.pkg, "t", tp)), []*operand{&o}, false, err)
-			if targs == nil {
-				if !err.empty() {
-					check.errorf(err.posn(), InvalidTemplateLiteralType, "%s", err.msg())
-				}
-				continue
-			}
-			cause := ""
-			implements := check.implements(targs[0], check.tgoDynamicWriteAllowed, true, &cause)
-			if !implements {
-				check.softErrorf(&o, InvalidTemplateLiteralType, "%s", cause)
-			}
-
-			check.assignment(&o, targs[0], "template literal part")
+		if check.tgoDynamicWriteAllowed == nil {
+			// Skip if tgo runtime is not imported, we still would have failed with
+			// a MisplacedTemplateLiteral error before.
+			// This is not ideal, as errors are going to differ for template literals inside of
+			// non-tgo funcs only depending on whether the file (or even package) imports the tgo runtime.
+			// See ../internal/types/testdata/tgo/template_literal_invalid_tgo_imported.tgo
+			// See ../internal/types/testdata/tgo/template_literal_invalid_tgo_not_imported.tgo
+			// See  TestTgoErrorsRuntimeImportedInDifferentFile
+			// This behaviour might not matter in practice though.
+			assert(check.firstErr != nil)
+			continue
 		}
+
+		tp := NewTypeParam(NewTypeName(v.X.Pos(), check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
+		err := check.newError(InvalidTemplateLiteralType)
+		targs := check.infer(v.X, []*TypeParam{tp}, nil, NewTuple(NewVar(v.X.Pos(), check.pkg, "t", tp)), []*operand{&o}, false, err)
+		if targs == nil {
+			if !err.empty() {
+				check.errorf(err.posn(), InvalidTemplateLiteralType, "%s", err.msg())
+			}
+			continue
+		}
+		cause := ""
+		implements := check.implements(targs[0], check.tgoDynamicWriteAllowed, true, &cause)
+		if !implements {
+			check.softErrorf(&o, InvalidTemplateLiteralType, "%s", cause)
+		}
+
+		check.assignment(&o, targs[0], "template literal part")
 	}
 }
 

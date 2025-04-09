@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"fmt"
 	"maps"
 	"slices"
 	"strings"
@@ -479,5 +480,134 @@ func test(tgo.Ctx) error {
 				}
 			}
 		})
+	}
+}
+
+// This test represents the possibly wrong behaviour of the type-checker in terms of errors
+// being produced for template literal parts in case the tgo runtime package is not imported directly
+// by the file having template literals, but by a other file (in the same package).
+// Also see ../internal/types/testdata/tgo/template_literal_invalid_tgo_imported.tgo
+// Also see ../internal/types/testdata/tgo/template_literal_invalid_tgo_not_imported.tgo
+func TestTgoErrorsRuntimeImportedInDifferentFile(t *testing.T) {
+	files := []string{
+		`package test; import "github.com/mateusz834/tgo"; var fakeUse tgo.Ctx `,
+		`package test; func test() { "\{1.1}" }`,
+	}
+	for i := range 2 {
+		name := "normal"
+		files := slices.Clone(files)
+		if i == 1 {
+			name = "reverse"
+			slices.Reverse(files) // order of files should not change the errors.
+		}
+		t.Run(name, func(t *testing.T) {
+			parsedFiles := []*ast.File{}
+			fset := token.NewFileSet()
+			for i, src := range files {
+				f, err := parser.ParseFile(fset, fmt.Sprintf("test%v.tgo", i), src, parser.SkipObjectResolution|parser.ParseComments|parser.ParseTgo)
+				if err != nil {
+					t.Fatal(err)
+				}
+				parsedFiles = append(parsedFiles, f)
+			}
+
+			errs := []string{}
+			cfg := Config{
+				Importer: defaultImporter(fset),
+				Error: func(err error) {
+					errs = append(errs, err.(Error).Msg)
+				},
+			}
+
+			_, err := cfg.Check("path", fset, parsedFiles, nil)
+			if err == nil {
+				t.Fatal("unexpected success")
+			}
+
+			wantErrs := []string{
+				`template literal is not allowed inside a non-tgo function`,
+				`float64 does not satisfy tgo.DynamicWriteAllowed (float64 missing in string | github.com/mateusz834/tgo.UnsafeHTML | int | uint | rune)`,
+			}
+
+			if !slices.Equal(wantErrs, errs) {
+				t.Fatalf("got errors = %v; want = %v", errs, wantErrs)
+			}
+		})
+	}
+}
+
+// This test makes sure that even-though we don't have the tgo runtime imported,
+// the template parts parts are still type-checked.
+func TestTgoRuntimeNotImportedTemplateLitErrors(t *testing.T) {
+	const src = `package test
+
+import "math"
+
+func test() {
+	"\{1.1} \{1} \{"str"} \{func () error { var err, unused error; return err }()}"
+	"\{math.MaxUint}" // This would have cause an overflow error if tgo runtime was imported (int is not inferred).
+}
+`
+	fset := token.NewFileSet()
+	f, err := parser.ParseFile(fset, "file.tgo", src, parser.SkipObjectResolution|parser.ParseComments|parser.ParseTgo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	errs := []string{}
+	cfg := Config{
+		Importer: defaultImporter(fset),
+		Error: func(err error) {
+			errs = append(errs, err.(Error).Msg)
+		},
+	}
+
+	infos := &Info{
+		Types: map[ast.Expr]TypeAndValue{},
+		Defs:  map[*ast.Ident]Object{},
+	}
+	_, err = cfg.Check("path", fset, []*ast.File{f}, infos)
+	if err == nil {
+		t.Fatal("unexpected success")
+	}
+
+	wantErrs := []string{
+		"template literal is not allowed inside a non-tgo function",
+		"declared and not used: unused",
+		"template literal is not allowed inside a non-tgo function",
+	}
+	if !slices.Equal(wantErrs, errs) {
+		t.Fatalf("got errors = %v; want = %v", errs, wantErrs)
+	}
+
+	funcBody := f.Decls[1].(*ast.FuncDecl).Body.List
+	templateLit1 := funcBody[0].(*ast.TemplateLiteral)
+	templateLit2 := funcBody[1].(*ast.TemplateLiteral)
+
+	// If the tgo runtime had been imported, all of these would be typed.
+	wantTypes := []Type{Typ[UntypedFloat], Typ[UntypedInt], Typ[UntypedString], Universe.Lookup("error").Type()}
+
+	for i, want := range wantTypes {
+		expr := templateLit1.Parts[i].X
+		got := infos.Types[expr]
+		if got.Type != want {
+			t.Errorf("infos.Types[templateLit1.Parts[%v].X].Type = %v; want = %v", i, got, want)
+		}
+	}
+
+	got := infos.Types[templateLit2.Parts[0].X]
+	if got.Type != Typ[UntypedInt] {
+		t.Errorf("infos.Types[templateLit2.Parts[0].X].Type = %v; want = %v", got, Typ[UntypedInt])
+	}
+
+	funcInLastPart := templateLit1.Parts[3].X.(*ast.CallExpr).Fun.(*ast.FuncLit).Body
+	names := funcInLastPart.List[0].(*ast.DeclStmt).Decl.(*ast.GenDecl).Specs[0].(*ast.ValueSpec).Names
+	if len(names) == 0 {
+		t.Errorf("len(names) == 0")
+	}
+	for _, name := range names {
+		if infos.Defs[name] == nil {
+			t.Errorf("infos.Defs[%v] = nil", name)
+		}
 	}
 }
