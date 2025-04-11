@@ -1612,4 +1612,7 @@ const (
 	//		"\{1.1}"
 	// }
 	InvalidTemplateLiteralType
+
+	// InvalidTgoRuntime occurs when the imported tgo runtime is invalid.
+	InvalidTgoRuntime
 )

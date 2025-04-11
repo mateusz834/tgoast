@@ -718,3 +718,166 @@ func (f *tgoImportedOnceTestImporter) ImportFrom(path, dir string, mode ImportMo
 	f.handleImport(path)
 	return f.i.ImportFrom(path, dir, mode)
 }
+
+// This test makes sure that we handle gracefully and return a proper error when the tgo runtime in invalid.
+func TestInvalidTgoRuntimeTypes(t *testing.T) {
+	cases := []struct {
+		name   string
+		src    string
+		tgoSrc string
+		errs   []string
+	}{
+		{
+			name:   "valid",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1.1}"; return nil }`,
+			tgoSrc: "type Ctx struct{}; type Error = error; type DynamicWriteAllowed interface { int|string|float64 }",
+			errs:   []string{},
+		},
+		{
+			name:   "invalid ctx",
+			src:    `func test(string) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "var Ctx string; type Error = error; type DynamicWriteAllowed interface { int|string }",
+			errs: []string{
+				`"github.com/mateusz834/tgo" is not a valid tgo runtime package`,
+				"template literal is not allowed inside a non-tgo function",
+			},
+		},
+		{
+			name:   "invalid ctx2",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "var Ctx string; type Error = error; type DynamicWriteAllowed interface { int|string }",
+			errs: []string{
+				`"github.com/mateusz834/tgo" is not a valid tgo runtime package`,
+				"tgo.Ctx (variable of type string) is not a type",
+				"template literal is not allowed inside a non-tgo function",
+			},
+		},
+		{
+			name:   "invalid ctx missing",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "type Error = error; type DynamicWriteAllowed interface { int|string }",
+			errs: []string{
+				`"github.com/mateusz834/tgo" is not a valid tgo runtime package`,
+				"undefined: tgo.Ctx",
+				"template literal is not allowed inside a non-tgo function",
+			},
+		},
+		{
+			name:   "valid error alias",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "type Ctx struct{}; type Error = err; type err = error; type DynamicWriteAllowed interface { int|string }",
+			errs:   []string{},
+		},
+		{
+			name:   "invalid error",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "type Ctx struct{}; type Error = *int; type DynamicWriteAllowed interface { int|string }",
+			errs: []string{
+				`"github.com/mateusz834/tgo" is not a valid tgo runtime package`,
+				"template literal is not allowed inside a non-tgo function",
+			},
+		},
+		{
+			name:   "invalid error2",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "type Ctx struct{}; type Error error; type DynamicWriteAllowed interface { int|string }",
+			errs: []string{
+				`"github.com/mateusz834/tgo" is not a valid tgo runtime package`,
+				"template literal is not allowed inside a non-tgo function",
+			},
+		},
+		{
+			name:   "invalid error3",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "type Ctx struct{}; type Error interface{ Error() string }; type DynamicWriteAllowed interface { int|string }",
+			errs: []string{
+				`"github.com/mateusz834/tgo" is not a valid tgo runtime package`,
+				"template literal is not allowed inside a non-tgo function",
+			},
+		},
+		{
+			name:   "invalid DynamicWriteAllowed",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "type Ctx struct{}; type Error = err; type err = error; type DynamicWriteAllowed struct{}",
+			errs: []string{
+				`"github.com/mateusz834/tgo" is not a valid tgo runtime package`,
+			},
+		},
+		{
+			name:   "invalid DynamicWriteAllowed2",
+			src:    `func test(tgo.Ctx) tgo.Error { "\{1}"; return nil }`,
+			tgoSrc: "type Ctx struct{}; type Error = err; type err = error; var DynamicWriteAllowed interface { String() }",
+			errs: []string{
+				`"github.com/mateusz834/tgo" is not a valid tgo runtime package`,
+			},
+		},
+	}
+
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			fset := token.NewFileSet()
+			src := `package test; import "github.com/mateusz834/tgo"; ` + tt.src
+			f, err := parser.ParseFile(fset, "file.go", src, parser.SkipObjectResolution|parser.ParseComments|parser.ParseTgo)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			errs := []string{}
+			cfg := Config{
+				Importer: &tgoTestSrcImporter{
+					t:    t,
+					i:    defaultImporter(fset).(ImporterFrom),
+					fset: fset,
+					src:  "package tgo; " + tt.tgoSrc,
+				},
+				Error: func(err error) {
+					errs = append(errs, err.(Error).Msg)
+				},
+			}
+			cfg.Check("path", fset, []*ast.File{f}, nil)
+			if !slices.Equal(errs, tt.errs) {
+				t.Fatalf("got errors = %v; want = %v", errs, tt.errs)
+			}
+		})
+	}
+}
+
+type tgoTestSrcImporter struct {
+	fset *token.FileSet
+	t    *testing.T
+	i    ImporterFrom
+	src  string
+}
+
+func (i *tgoTestSrcImporter) handleImport(path string) *Package {
+	if path != "github.com/mateusz834/tgo" {
+		return nil
+	}
+	if i.src == "" {
+		i.t.Errorf("tgo runtime imported twice")
+	}
+	f, err := parser.ParseFile(i.fset, "tgo.go", i.src, parser.ParseComments|parser.SkipObjectResolution)
+	if err != nil {
+		i.t.Fatalf("failed to parse tgo runtime: %v", err)
+	}
+	pkg, err := new(Config).Check("path", i.fset, []*ast.File{f}, nil)
+	if err != nil {
+		i.t.Fatalf("failed to type-check tgo runtime: %v", err)
+	}
+	i.src = ""
+	return pkg
+}
+
+func (i *tgoTestSrcImporter) Import(path string) (*Package, error) {
+	if pkg := i.handleImport(path); pkg != nil {
+		return pkg, nil
+	}
+	return i.i.Import(path)
+}
+
+func (i *tgoTestSrcImporter) ImportFrom(path, dir string, mode ImportMode) (*Package, error) {
+	if pkg := i.handleImport(path); pkg != nil {
+		return pkg, nil
+	}
+	return i.i.ImportFrom(path, dir, mode)
+}

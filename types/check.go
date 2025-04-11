@@ -199,9 +199,49 @@ type Checker struct {
 	// debugging
 	indent int // indentation for tracing
 
+	// tgoTypes contains all types cached from the tgo runtime, that are needed for
+	// type checking of tgo files. All (or selective) types might be nil, either when
+	// the tgo runtime was not explicitly imported, was imported but declarations were missing,
+	// or declarations were invalid (not what we expected).
+	tgoTypes tgoTypes
+}
+
+type tgoTypes struct {
 	tgoCtx                 Type
 	tgoDynamicWriteAllowed Type
 	tgoError               Type
+}
+
+func (t *tgoTypes) checkImport(check *Checker, at positioner, path string) {
+	if path != "github.com/mateusz834/tgo" {
+		return
+	}
+	if t.tgoCtx == nil || t.tgoError == nil || t.tgoDynamicWriteAllowed == nil {
+		check.error(at, InvalidTgoRuntime, `"github.com/mateusz834/tgo" is not a valid tgo runtime package`)
+	}
+}
+
+func (t *tgoTypes) fill(check *Checker, at positioner, path string, pkg *Package) {
+	if path == "github.com/mateusz834/tgo" && pkg.Complete() {
+		pkgScope := pkg.Scope()
+
+		if ctx, ok := pkgScope.Lookup("Ctx").(*TypeName); ok {
+			t.tgoCtx = ctx.Type()
+		}
+
+		if error, ok := pkgScope.Lookup("Error").(*TypeName); ok {
+			builtinError := Universe.Lookup("error").Type()
+			if Identical(error.Type(), builtinError) {
+				t.tgoError = error.Type()
+			}
+		}
+
+		if dyn, ok := pkgScope.Lookup("DynamicWriteAllowed").(*TypeName); ok && IsInterface(dyn.Type()) {
+			t.tgoDynamicWriteAllowed = dyn.Type()
+		}
+
+		t.checkImport(check, at, path)
+	}
 }
 
 // addDeclDep adds the dependency edge (check.decl -> to) if check.decl exists

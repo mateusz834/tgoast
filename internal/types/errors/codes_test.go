@@ -30,6 +30,7 @@ var tgoErrs = []string{
 	"JumpOverEndTag",
 	"MisplacedReturn",
 	"InvalidTemplateLiteralType",
+	"InvalidTgoRuntime",
 }
 
 func TestErrorCodeExamples(t *testing.T) {

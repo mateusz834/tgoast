@@ -43,9 +43,9 @@ func (check *Checker) funcBody(decl *declInfo, name string, sig *Signature, body
 
 	var ctxt stmtContext
 	if sig.params.Len() > 0 && sig.results.Len() == 1 {
-		if sig.params.At(0).Type() == check.tgoCtx &&
+		if sig.params.At(0).Type() == check.tgoTypes.tgoCtx &&
 			(sig.results.At(0).Type() == Universe.Lookup("error").Type() ||
-				sig.results.At(0).Type() == check.tgoError) {
+				sig.results.At(0).Type() == check.tgoTypes.tgoError) {
 			ctxt |= inTgoFunc
 		}
 	}
@@ -439,7 +439,7 @@ func (check *Checker) templateLiteral(v *ast.TemplateLiteral) {
 		var o operand
 		check.expr(nil, &o, v.X)
 
-		if check.tgoDynamicWriteAllowed == nil {
+		if check.tgoTypes.tgoDynamicWriteAllowed == nil {
 			// Skip if tgo runtime is not imported, we still would have failed with
 			// a MisplacedTemplateLiteral error before.
 			// This is not ideal, as errors are going to differ for template literals inside of
@@ -452,7 +452,7 @@ func (check *Checker) templateLiteral(v *ast.TemplateLiteral) {
 			continue
 		}
 
-		tp := NewTypeParam(NewTypeName(v.X.Pos(), check.pkg, "T", nil), check.tgoDynamicWriteAllowed)
+		tp := NewTypeParam(NewTypeName(v.X.Pos(), check.pkg, "T", nil), check.tgoTypes.tgoDynamicWriteAllowed)
 		err := check.newError(InvalidTemplateLiteralType)
 		targs := check.infer(v.X, []*TypeParam{tp}, nil, NewTuple(NewVar(v.X.Pos(), check.pkg, "t", tp)), []*operand{&o}, false, err)
 		if targs == nil {
@@ -462,7 +462,7 @@ func (check *Checker) templateLiteral(v *ast.TemplateLiteral) {
 			continue
 		}
 		cause := ""
-		implements := check.implements(targs[0], check.tgoDynamicWriteAllowed, true, &cause)
+		implements := check.implements(targs[0], check.tgoTypes.tgoDynamicWriteAllowed, true, &cause)
 		if !implements {
 			check.softErrorf(&o, InvalidTemplateLiteralType, "%s", cause)
 		}
