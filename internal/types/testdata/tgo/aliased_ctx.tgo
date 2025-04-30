@@ -1,0 +1,25 @@
+// -gotypesalias=1
+
+// This test ensures that type aliases are not followed while determining tgo-funcs,
+// so that the type checker aligns with the transpiler's definition of a tgo-func.
+
+package test
+
+import "github.com/mateusz834/tgo"
+
+type Ctx = tgo.Ctx
+
+func test(Ctx) error {
+	< /* ERROR "open tag is not allowed inside a non-tgo function" */ div>
+	</ /* ERROR "end tag is not allowed inside a non-tgo function" */ div>
+	"test" // ERROR "text is not allowed inside a non-tgo function"
+	"\{ /* ERROR "template literal is not allowed inside a non-tgo function" */ "test"}"
+	< /* ERROR "open tag is not allowed inside a non-tgo function" */ div
+		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr="value"
+		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr="\{"value"}"
+		@ /* ERROR "attribute is not allowed inside a non-tgo function" */ attr
+	>
+		"test" // ERROR "text is not allowed inside a non-tgo function"
+	</ /* ERROR "end tag is not allowed inside a non-tgo function" */ div>
+	return nil
+}
